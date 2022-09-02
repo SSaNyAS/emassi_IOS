@@ -126,12 +126,7 @@ class LoginViewController: UIViewController{
     }
     
     func setupPasswordTextField(){
-        let textField = UITextField()
-        textField.font = .systemFont(ofSize: 16)
-        textField.layer.cornerRadius = 12
-        textField.leftView = UIView(frame: .init(x: 0, y: 0, width: 8, height: textField.frame.height))
-        textField.leftViewMode = .always
-        textField.backgroundColor = .secondarySystemBackground
+        let textField = UITextFieldEmassi()
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)
@@ -143,19 +138,14 @@ class LoginViewController: UIViewController{
 
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: 10),
-            textField.heightAnchor.constraint(equalToConstant: 46),
+            textField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
     }
     
     func setupLoginTextField(){
-        let textField = UITextField()
-        textField.font = .systemFont(ofSize: 16)
-        textField.layer.cornerRadius = 12
-        textField.leftView = UIView(frame: .init(x: 0, y: 0, width: 8, height: textField.frame.height))
-        textField.leftViewMode = .always
-        textField.backgroundColor = .secondarySystemBackground
+        let textField = UITextFieldEmassi()
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)
@@ -167,7 +157,7 @@ class LoginViewController: UIViewController{
 
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 10),
-            textField.heightAnchor.constraint(equalToConstant: 46),
+            textField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
@@ -205,16 +195,9 @@ class LoginViewController: UIViewController{
         welcomeLabel = label
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
-    }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        loginButton?.setCornerRadius(value: 12)
-        goRegisterButton?.setCornerRadius(value: 12)
-        loginTextField?.layer.cornerRadius = 12
-        passwordTextField?.layer.cornerRadius = 12
     }
 }

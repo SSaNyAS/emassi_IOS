@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import UIKit
-extension UIButton{
+import UIKit.UIView
+
+extension UIView{
     func setCornerRadius(value: CGFloat){
         self.layer.cornerRadius = value
         self.setNeedsLayout()

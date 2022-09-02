@@ -21,9 +21,12 @@
 		114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80EC28C12F510028F39B /* UIColorExtension.swift */; };
 		114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */; };
 		114E80F228C219630028F39B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F128C219630028F39B /* LoginViewController.swift */; };
-		114E80F428C242250028F39B /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F328C242250028F39B /* UIButtonExtension.swift */; };
+		114E80F428C242250028F39B /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F328C242250028F39B /* UIViewExtension.swift */; };
 		114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F628C24E890028F39B /* RegisterViewController.swift */; };
 		114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FA28C24F340028F39B /* UIButtonEmassi.swift */; };
+		114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */; };
+		114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FE28C254700028F39B /* UITextFieldExtension.swift */; };
+		114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810028C28AA90028F39B /* UISeparatorWithView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,9 +65,12 @@
 		114E80EC28C12F510028F39B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionViewCell.swift; sourceTree = "<group>"; };
 		114E80F128C219630028F39B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		114E80F328C242250028F39B /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
+		114E80F328C242250028F39B /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		114E80F628C24E890028F39B /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		114E80FA28C24F340028F39B /* UIButtonEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonEmassi.swift; sourceTree = "<group>"; };
+		114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldEmassi.swift; sourceTree = "<group>"; };
+		114E80FE28C254700028F39B /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
+		114E810028C28AA90028F39B /* UISeparatorWithView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISeparatorWithView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				114E80EC28C12F510028F39B /* UIColorExtension.swift */,
-				114E80F328C242250028F39B /* UIButtonExtension.swift */,
+				114E80F328C242250028F39B /* UIViewExtension.swift */,
+				114E80FE28C254700028F39B /* UITextFieldExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -187,6 +194,8 @@
 			isa = PBXGroup;
 			children = (
 				114E80FA28C24F340028F39B /* UIButtonEmassi.swift */,
+				114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */,
+				114E810028C28AA90028F39B /* UISeparatorWithView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -324,11 +333,14 @@
 			files = (
 				114E80BA28C108B70028F39B /* ViewController.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
+				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
+				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
-				114E80F428C242250028F39B /* UIButtonExtension.swift in Sources */,
+				114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */,
+				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,

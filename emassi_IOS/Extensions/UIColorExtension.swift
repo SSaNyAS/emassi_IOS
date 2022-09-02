@@ -6,13 +6,10 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIColor
 
 extension UIColor {
     static var baseAppColor: UIColor{
-        return UIColor(red: 87/255, green: 144/255, blue: 155/255, alpha: 1)
-    }
-    static var veryLightGray: UIColor{
         return UIColor(red: 87/255, green: 144/255, blue: 155/255, alpha: 1)
     }
 }
