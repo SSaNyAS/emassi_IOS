@@ -17,6 +17,13 @@
 		114E80D028C108B80028F39B /* emassi_IOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80CF28C108B80028F39B /* emassi_IOSTests.swift */; };
 		114E80DA28C108B80028F39B /* emassi_IOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80D928C108B80028F39B /* emassi_IOSUITests.swift */; };
 		114E80DC28C108B80028F39B /* emassi_IOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80DB28C108B80028F39B /* emassi_IOSUITestsLaunchTests.swift */; };
+		114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80E928C12AD60028F39B /* OnboardingViewController.swift */; };
+		114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80EC28C12F510028F39B /* UIColorExtension.swift */; };
+		114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */; };
+		114E80F228C219630028F39B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F128C219630028F39B /* LoginViewController.swift */; };
+		114E80F428C242250028F39B /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F328C242250028F39B /* UIButtonExtension.swift */; };
+		114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80F628C24E890028F39B /* RegisterViewController.swift */; };
+		114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FA28C24F340028F39B /* UIButtonEmassi.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +58,13 @@
 		114E80D528C108B80028F39B /* emassi_IOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = emassi_IOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		114E80D928C108B80028F39B /* emassi_IOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = emassi_IOSUITests.swift; sourceTree = "<group>"; };
 		114E80DB28C108B80028F39B /* emassi_IOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = emassi_IOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		114E80E928C12AD60028F39B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		114E80EC28C12F510028F39B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionViewCell.swift; sourceTree = "<group>"; };
+		114E80F128C219630028F39B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		114E80F328C242250028F39B /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
+		114E80F628C24E890028F39B /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		114E80FA28C24F340028F39B /* UIButtonEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonEmassi.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +115,11 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				114E80F828C24EDA0028F39B /* CustomViews */,
+				114E80F528C24E770028F39B /* RegisterView */,
+				114E80F028C219470028F39B /* LoginView */,
+				114E80EB28C12F3A0028F39B /* Extensions */,
+				114E80E828C10B050028F39B /* OnboardingView */,
 				114E80B528C108B70028F39B /* AppDelegate.swift */,
 				114E80B728C108B70028F39B /* SceneDelegate.swift */,
 				114E80B928C108B70028F39B /* ViewController.swift */,
@@ -128,6 +147,48 @@
 				114E80DB28C108B80028F39B /* emassi_IOSUITestsLaunchTests.swift */,
 			);
 			path = emassi_IOSUITests;
+			sourceTree = "<group>";
+		};
+		114E80E828C10B050028F39B /* OnboardingView */ = {
+			isa = PBXGroup;
+			children = (
+				114E80E928C12AD60028F39B /* OnboardingViewController.swift */,
+				114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */,
+			);
+			path = OnboardingView;
+			sourceTree = "<group>";
+		};
+		114E80EB28C12F3A0028F39B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				114E80EC28C12F510028F39B /* UIColorExtension.swift */,
+				114E80F328C242250028F39B /* UIButtonExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		114E80F028C219470028F39B /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				114E80F128C219630028F39B /* LoginViewController.swift */,
+			);
+			path = LoginView;
+			sourceTree = "<group>";
+		};
+		114E80F528C24E770028F39B /* RegisterView */ = {
+			isa = PBXGroup;
+			children = (
+				114E80F628C24E890028F39B /* RegisterViewController.swift */,
+			);
+			path = RegisterView;
+			sourceTree = "<group>";
+		};
+		114E80F828C24EDA0028F39B /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				114E80FA28C24F340028F39B /* UIButtonEmassi.swift */,
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,9 +323,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				114E80BA28C108B70028F39B /* ViewController.swift in Sources */,
+				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
+				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
+				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
+				114E80F428C242250028F39B /* UIButtonExtension.swift in Sources */,
+				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
+				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +517,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -477,6 +546,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
