@@ -13,6 +13,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
     
     weak var backgroundImageView: UIImageView?
     weak var titleTextLabel: UILabel?
+    private var isSetuppedConstraints = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,31 +34,50 @@ class PerformersCategoryTableViewCell: UITableViewCell{
     @MainActor
     public func setImage(image: UIImage?){
         backgroundImageView?.image = image
+        setNeedsUpdateConstraints()
     }
     
     func setupDefaultSettings(){
         let imageView = UIImageView()
+        
         imageView.contentMode = .scaleAspectFit
-        backgroundView = imageView
+        contentView.addSubview(imageView)
+        backgroundImageView = imageView
+        backgroundColor = .clear
         
         let label = UILabel()
         label.textColor = .white
         label.font = .systemFont(ofSize: 28, weight: .medium)
         label.textAlignment = .center
+        
+        contentView.contentMode = .scaleToFill
+        contentView.addSubview(label)
+        titleTextLabel = label
+        setNeedsUpdateConstraints()
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+        if !isSetuppedConstraints {
+            isSetuppedConstraints = true
+            setupCustomConstraints()
+        }
+    }
+    
+    func setupCustomConstraints(){
+        guard let imageView = backgroundImageView, let label = titleTextLabel else {return}
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
-        
         NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
             label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 20)
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
-        
     }
 }

@@ -30,6 +30,7 @@
 		114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810228C37E760028F39B /* UICheckBoxEmassi.swift */; };
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
+		114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformerCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		114E810228C37E760028F39B /* UICheckBoxEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckBoxEmassi.swift; sourceTree = "<group>"; };
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
+		114E810928C3C6AE0028F39B /* PerformerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			children = (
 				114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */,
 				114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */,
+				114E810928C3C6AE0028F39B /* PerformerCategory.swift */,
 			);
 			path = PerformersCategories;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
+				114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
