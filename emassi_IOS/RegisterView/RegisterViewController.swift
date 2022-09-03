@@ -174,7 +174,10 @@ class RegisterViewController: UIViewController{
     }
     
     func setupSendNewsChecker(){
-        let checker = UISwitch()
+        let checker = UICheckBoxEmassi()
+        let text = "Периодически всем пользователям сервиса мы присылаем письма с новостями Emassi и интересными объявлениями. Если вы хотите быть в курсе того, что происходит с Emassi, подтвердите свое согласие."
+        checker.textView?.text = text
+        checker.textView?.font = .systemFont(ofSize: 16)
         checker.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(checker)
@@ -192,7 +195,14 @@ class RegisterViewController: UIViewController{
     }
     
     func setupEulaAcceptChecker(){
-        let checker = UISwitch()
+        let checker = UICheckBoxEmassi()
+        let text = "Я соглашаюсь с правилами пользования сервиса, также с передачей и обработкой моих данных в Emassi. Я подтверждаю свое совершеннолетие и ответственность за размещение объявления."
+        let attrString = NSMutableAttributedString(string: text)
+        let range = attrString.mutableString.range(of: "правилами пользования")
+        attrString.addAttribute(.link, value: "https://yandex.ru", range: range)
+        attrString.addAttribute(.foregroundColor, value: UIColor.placeholderText, range: .init(location: 0, length: text.count))
+        checker.textView?.attributedText = attrString
+        checker.textView?.font = .systemFont(ofSize: 16)
         checker.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(checker)

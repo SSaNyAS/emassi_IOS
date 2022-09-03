@@ -13,4 +13,8 @@ extension UIView{
         self.layer.cornerRadius = value
         self.setNeedsLayout()
     }
+    func setBorder(){
+        self.layer.borderColor = UIColor.placeholderText.cgColor
+        self.layer.borderWidth = 2
+    }
 }

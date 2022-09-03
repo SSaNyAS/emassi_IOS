@@ -27,6 +27,9 @@
 		114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */; };
 		114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80FE28C254700028F39B /* UITextFieldExtension.swift */; };
 		114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810028C28AA90028F39B /* UISeparatorWithView.swift */; };
+		114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810228C37E760028F39B /* UICheckBoxEmassi.swift */; };
+		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
+		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldEmassi.swift; sourceTree = "<group>"; };
 		114E80FE28C254700028F39B /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		114E810028C28AA90028F39B /* UISeparatorWithView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISeparatorWithView.swift; sourceTree = "<group>"; };
+		114E810228C37E760028F39B /* UICheckBoxEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckBoxEmassi.swift; sourceTree = "<group>"; };
+		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
+		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +127,7 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				114E810428C39F5A0028F39B /* PerformersCategories */,
 				114E80F828C24EDA0028F39B /* CustomViews */,
 				114E80F528C24E770028F39B /* RegisterView */,
 				114E80F028C219470028F39B /* LoginView */,
@@ -196,8 +203,18 @@
 				114E80FA28C24F340028F39B /* UIButtonEmassi.swift */,
 				114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */,
 				114E810028C28AA90028F39B /* UISeparatorWithView.swift */,
+				114E810228C37E760028F39B /* UICheckBoxEmassi.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		114E810428C39F5A0028F39B /* PerformersCategories */ = {
+			isa = PBXGroup;
+			children = (
+				114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */,
+				114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */,
+			);
+			path = PerformersCategories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */,
 				114E80BA28C108B70028F39B /* ViewController.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
 				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
@@ -343,8 +361,10 @@
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
+				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
