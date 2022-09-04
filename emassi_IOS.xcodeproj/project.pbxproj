@@ -31,6 +31,10 @@
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
 		114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformerCategory.swift */; };
+		11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */; };
+		11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */; };
+		11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */; };
+		11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +83,10 @@
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
 		114E810928C3C6AE0028F39B /* PerformerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerCategory.swift; sourceTree = "<group>"; };
+		11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerInfoViewController.swift; sourceTree = "<group>"; };
+		11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
+		11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelBordered.swift; sourceTree = "<group>"; };
+		11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +137,7 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				11CBB7BE28C4B1F700FED8D5 /* PerformerInfoView */,
 				114E810428C39F5A0028F39B /* PerformersCategories */,
 				114E80F828C24EDA0028F39B /* CustomViews */,
 				114E80F528C24E770028F39B /* RegisterView */,
@@ -179,6 +188,7 @@
 				114E80EC28C12F510028F39B /* UIColorExtension.swift */,
 				114E80F328C242250028F39B /* UIViewExtension.swift */,
 				114E80FE28C254700028F39B /* UITextFieldExtension.swift */,
+				11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -206,6 +216,8 @@
 				114E80FC28C253D60028F39B /* UITextFieldEmassi.swift */,
 				114E810028C28AA90028F39B /* UISeparatorWithView.swift */,
 				114E810228C37E760028F39B /* UICheckBoxEmassi.swift */,
+				11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */,
+				11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -218,6 +230,14 @@
 				114E810928C3C6AE0028F39B /* PerformerCategory.swift */,
 			);
 			path = PerformersCategories;
+			sourceTree = "<group>";
+		};
+		11CBB7BE28C4B1F700FED8D5 /* PerformerInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */,
+			);
+			path = PerformerInfoView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -360,14 +380,18 @@
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
+				11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */,
 				114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */,
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
+				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
+				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
+				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
