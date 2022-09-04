@@ -271,11 +271,13 @@ reghertghertgretgregregregregreg
         guard let profileRatingView = profileRatingView else {
             return
         }
+        let trailingConstraint = label.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        trailingConstraint.priority = .defaultHigh
         
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: profileRatingView.trailingAnchor, constant: 5),
             label.centerYAnchor.constraint(equalTo: profileRatingView.centerYAnchor),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            trailingConstraint
         ])
     }
     
@@ -292,8 +294,7 @@ reghertghertgretgregregregregreg
         
         NSLayoutConstraint.activate([
             ratingView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
-            ratingView.firstBaselineAnchor.constraint(equalTo: profileImageView.firstBaselineAnchor),
-            ratingView.heightAnchor.constraint(equalToConstant: 25)
+            ratingView.firstBaselineAnchor.constraint(equalTo: profileImageView.firstBaselineAnchor)
         ])
     }
     
