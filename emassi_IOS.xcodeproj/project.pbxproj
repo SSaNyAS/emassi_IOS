@@ -30,11 +30,13 @@
 		114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810228C37E760028F39B /* UICheckBoxEmassi.swift */; };
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
-		114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformerCategory.swift */; };
+		114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersCategory.swift */; };
 		11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */; };
 		11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */; };
 		11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */; };
 		11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */; };
+		11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */; };
+		11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,11 +84,13 @@
 		114E810228C37E760028F39B /* UICheckBoxEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckBoxEmassi.swift; sourceTree = "<group>"; };
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
-		114E810928C3C6AE0028F39B /* PerformerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerCategory.swift; sourceTree = "<group>"; };
+		114E810928C3C6AE0028F39B /* PerformersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategory.swift; sourceTree = "<group>"; };
 		11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerInfoViewController.swift; sourceTree = "<group>"; };
 		11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelBordered.swift; sourceTree = "<group>"; };
 		11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRatingView.swift; sourceTree = "<group>"; };
+		11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerReviewsTableVIewDataSource.swift; sourceTree = "<group>"; };
+		11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesTableViewDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,7 +231,8 @@
 			children = (
 				114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */,
 				114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */,
-				114E810928C3C6AE0028F39B /* PerformerCategory.swift */,
+				114E810928C3C6AE0028F39B /* PerformersCategory.swift */,
+				11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */,
 			);
 			path = PerformersCategories;
 			sourceTree = "<group>";
@@ -236,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */,
+				11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */,
 			);
 			path = PerformerInfoView;
 			sourceTree = "<group>";
@@ -378,6 +384,7 @@
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
+				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
 				11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */,
@@ -387,7 +394,8 @@
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
-				114E810A28C3C6AE0028F39B /* PerformerCategory.swift in Sources */,
+				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
+				114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,

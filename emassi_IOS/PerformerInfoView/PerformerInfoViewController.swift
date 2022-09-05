@@ -59,6 +59,9 @@ class PerformerInfoViewController: UIViewController{
             scrollView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
         ])
         
+        // соблюдать порядок обязательно иначе не будут созданы constraints( чтобы исправить необходимо вынести инициализацию всех обьектов и установку constraints в отдельные методы
+        // так же в текущей реализации есть ограничение, что ui элементы необходимо прикреплять к 1 контейнеру ->
+        
         setupProfileImageView(attachTo: contentView)
         setupProfileRatingView(attachTo: contentView)
         setupProfileRatingLabel(attachTo: contentView)

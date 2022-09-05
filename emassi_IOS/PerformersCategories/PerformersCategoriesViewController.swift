@@ -10,17 +10,49 @@ import UIKit
 class PerformersCategoriesViewController: UIViewController{
     weak var tableView: UITableView?
     weak var searchBar: UISearchBar?
-    var performerCategories: [PerformerCategory] = [
-        PerformerCategory(name: "Преподаватели",value: "cat1", imageAddress: "category1"),
-        PerformerCategory(name: "Дизайнеры",value: "cat2", imageAddress: "category2"),
-        PerformerCategory(name: "Программисты",value: "cat3", imageAddress: "category3"),
-        PerformerCategory(name: "Персональные тренера",value: "cat4", imageAddress: "category4"),
-    ]
-    
+    var performersCategoriesDataSourceDelegate: PerformersCategoriesTableViewDataSourceDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        let dataSource = PerformersCategoriesTableViewDataSourceDelegate()
+        dataSource.performersCategories = [
+            PerformersCategory(name: "Преподаватели",value: "cat1", imageAddress: "category1", subCategories: [
+                .init(name: "Репетитор по математике", value: "mathRepetitor"),
+                .init(name: "Репетитор по истории", value: "historyRepetitor"),
+                .init(name: "Репетитор по Географии", value: "geographyRepetitor"),
+            ]),
+            
+            PerformersCategory(name: "Дизайнеры",value: "cat2", imageAddress: "category2",subCategories: [
+                .init(name: "Графический дизайнер", value: "graphicsDesigner"),
+                .init(name: "Дизайнер интерьеров", value: "interierDesigner")
+            ]),
+            
+            PerformersCategory(name: "Программисты",value: "cat3", imageAddress: "category3", subCategories: [
+                .init(name: "Front-end разработчик", value: "frontEndDeveloper"),
+                .init(name: "Back-end Developer", value: "backEndDeveloper"),
+                .init(name: "Full-stack разработчик", value: "fullStackDeveloper"),
+                .init(name: "Game Developer", value: "gameDeveloper"),
+                .init(name: "Android разработчик", value: "androidDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+                .init(name: "IOS разработчик", value: "iosDeveloper"),
+            ]),
+            
+            PerformersCategory(name: "Персональные тренера",value: "cat4", imageAddress: "category4", subCategories: [
+                .init(name: "Персональный тренер", value: "personalTrainer")
+            ]),
+        ]
+        self.performersCategoriesDataSourceDelegate = dataSource
         setupViews()
     }
     
@@ -68,57 +100,25 @@ class PerformersCategoriesViewController: UIViewController{
     func setupTableView(){
         let tableView = UITableView()
         tableView.register(PerformersCategoryTableViewCell.self, forCellReuseIdentifier: PerformersCategoryTableViewCell.identifire)
-        tableView.dataSource = self
-        tableView.delegate = self
+        
+        tableView.dataSource = performersCategoriesDataSourceDelegate
+        tableView.delegate = performersCategoriesDataSourceDelegate
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         
-        tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        tableView.isScrollEnabled = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.alwaysBounceVertical = false
         
         view.addSubview(tableView)
         self.tableView = tableView
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
         ])
     }
-}
-
-
-extension PerformersCategoriesViewController: UITableViewDataSource, UITableViewDelegate{
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return performerCategories.count
-    }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PerformersCategoryTableViewCell.identifire, for: indexPath)
-        if let cell = cell as? PerformersCategoryTableViewCell{
-            let category = performerCategories[indexPath.section]
-            cell.setText(text: category.name)
-            
-            if let image = UIImage(named: category.imageAddress){
-                cell.setImage(image: image)
-            }
-        }
-        return cell
-    }
-    
-    
 }
