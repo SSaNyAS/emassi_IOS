@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114012FE28C7CE5C00B14D5A /* MenuAction.swift */; };
+		1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130028C7E1E600B14D5A /* MenuNavigationViewController.swift */; };
+		1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130228C90E9500B14D5A /* OnBoardingItem.swift */; };
+		1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130528C9AD6C00B14D5A /* AuthorizationViewsData.swift */; };
+		1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130728CA1AF300B14D5A /* LoginPresenter.swift */; };
+		1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130928CA1B8800B14D5A /* LoginInteractor.swift */; };
+		1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130B28CA1C9F00B14D5A /* StringExtension.swift */; };
+		1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */; };
 		114E80B628C108B70028F39B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B528C108B70028F39B /* AppDelegate.swift */; };
 		114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B728C108B70028F39B /* SceneDelegate.swift */; };
 		114E80BA28C108B70028F39B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B928C108B70028F39B /* ViewController.swift */; };
@@ -37,6 +45,7 @@
 		11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */; };
 		11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */; };
 		11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */; };
+		11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7CC28C79F1800FED8D5 /* MenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +66,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		114012FE28C7CE5C00B14D5A /* MenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAction.swift; sourceTree = "<group>"; };
+		1140130028C7E1E600B14D5A /* MenuNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationViewController.swift; sourceTree = "<group>"; };
+		1140130228C90E9500B14D5A /* OnBoardingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingItem.swift; sourceTree = "<group>"; };
+		1140130528C9AD6C00B14D5A /* AuthorizationViewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewsData.swift; sourceTree = "<group>"; };
+		1140130728CA1AF300B14D5A /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
+		1140130928CA1B8800B14D5A /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
+		1140130B28CA1C9F00B14D5A /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiApiDelegate.swift; sourceTree = "<group>"; };
 		114E80B228C108B70028F39B /* emassi_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emassi_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		114E80B528C108B70028F39B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		114E80B728C108B70028F39B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +108,7 @@
 		11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRatingView.swift; sourceTree = "<group>"; };
 		11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerReviewsTableVIewDataSource.swift; sourceTree = "<group>"; };
 		11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesTableViewDataSource.swift; sourceTree = "<group>"; };
+		11CBB7CC28C79F1800FED8D5 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +136,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1140130428C9AD3100B14D5A /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				114E80E828C10B050028F39B /* OnboardingView */,
+				114E80F528C24E770028F39B /* RegisterView */,
+				114E80F028C219470028F39B /* LoginView */,
+				1140130528C9AD6C00B14D5A /* AuthorizationViewsData.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
+		1140130D28CA3FF400B14D5A /* EmassiApi */ = {
+			isa = PBXGroup;
+			children = (
+				1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */,
+			);
+			path = EmassiApi;
+			sourceTree = "<group>";
+		};
 		114E80A928C108B70028F39B = {
 			isa = PBXGroup;
 			children = (
@@ -141,13 +178,14 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				1140130D28CA3FF400B14D5A /* EmassiApi */,
+				11CBB7CE28C7B82E00FED8D5 /* CustomClasses */,
+				11CBB7CB28C79EF200FED8D5 /* MenuView */,
 				11CBB7BE28C4B1F700FED8D5 /* PerformerInfoView */,
 				114E810428C39F5A0028F39B /* PerformersCategories */,
 				114E80F828C24EDA0028F39B /* CustomViews */,
-				114E80F528C24E770028F39B /* RegisterView */,
-				114E80F028C219470028F39B /* LoginView */,
+				1140130428C9AD3100B14D5A /* Authorization */,
 				114E80EB28C12F3A0028F39B /* Extensions */,
-				114E80E828C10B050028F39B /* OnboardingView */,
 				114E80B528C108B70028F39B /* AppDelegate.swift */,
 				114E80B728C108B70028F39B /* SceneDelegate.swift */,
 				114E80B928C108B70028F39B /* ViewController.swift */,
@@ -182,6 +220,7 @@
 			children = (
 				114E80E928C12AD60028F39B /* OnboardingViewController.swift */,
 				114E80EE28C2022F0028F39B /* OnboardingCollectionViewCell.swift */,
+				1140130228C90E9500B14D5A /* OnBoardingItem.swift */,
 			);
 			path = OnboardingView;
 			sourceTree = "<group>";
@@ -193,6 +232,7 @@
 				114E80F328C242250028F39B /* UIViewExtension.swift */,
 				114E80FE28C254700028F39B /* UITextFieldExtension.swift */,
 				11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */,
+				1140130B28CA1C9F00B14D5A /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -201,6 +241,8 @@
 			isa = PBXGroup;
 			children = (
 				114E80F128C219630028F39B /* LoginViewController.swift */,
+				1140130728CA1AF300B14D5A /* LoginPresenter.swift */,
+				1140130928CA1B8800B14D5A /* LoginInteractor.swift */,
 			);
 			path = LoginView;
 			sourceTree = "<group>";
@@ -244,6 +286,23 @@
 				11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */,
 			);
 			path = PerformerInfoView;
+			sourceTree = "<group>";
+		};
+		11CBB7CB28C79EF200FED8D5 /* MenuView */ = {
+			isa = PBXGroup;
+			children = (
+				114012FE28C7CE5C00B14D5A /* MenuAction.swift */,
+				11CBB7CC28C79F1800FED8D5 /* MenuViewController.swift */,
+				1140130028C7E1E600B14D5A /* MenuNavigationViewController.swift */,
+			);
+			path = MenuView;
+			sourceTree = "<group>";
+		};
+		11CBB7CE28C7B82E00FED8D5 /* CustomClasses */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -381,8 +440,10 @@
 				114E80BA28C108B70028F39B /* ViewController.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
 				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
+				1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
+				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
@@ -393,12 +454,19 @@
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
+				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
+				1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */,
 				114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */,
+				1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
+				1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
+				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
+				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
 			);

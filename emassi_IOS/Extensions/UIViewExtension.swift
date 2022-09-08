@@ -13,8 +13,14 @@ extension UIView{
         self.layer.cornerRadius = value
         self.setNeedsLayout()
     }
+    
     func setBorder(){
         self.layer.borderColor = UIColor.placeholderText.cgColor
         self.layer.borderWidth = 2
+    }
+    
+    func setupConstraint(constraints: [NSLayoutConstraint]){
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(constraints)
     }
 }

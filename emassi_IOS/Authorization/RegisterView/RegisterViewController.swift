@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import Combine
+
 class RegisterViewController: UIViewController{
     weak var welcomeLabel: UILabel?
     weak var messageLabel: UILabel?
@@ -20,6 +22,14 @@ class RegisterViewController: UIViewController{
     weak var facebookLoginButton: UIButton?
     weak var googleLoginButton: UIButton?
     weak var dontNeedRegisterButton: UIButton?
+    weak var authorizationView: AuthorizationViewsData?
+    var disposeBag: Set<AnyCancellable> = []
+    deinit{
+        disposeBag.forEach({
+            $0.cancel()
+        })
+        disposeBag.removeAll()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,8 +69,13 @@ class RegisterViewController: UIViewController{
         }
         
         dontNeedRegisterButton?.setTitle("У меня уже есть аккаунт Emassi", for: .normal)
+        dontNeedRegisterButton?.addTarget(self, action: #selector(goLoginView), for: .touchUpInside)
     }
-    
+    @objc func goLoginView(){
+        if let loginVC = authorizationView?.getLoginViewController(){
+            self.present(loginVC, animated: true)
+        }
+    }
     func setupDontNeedRegisterButton(){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -240,6 +255,8 @@ class RegisterViewController: UIViewController{
     
     func setupPasswordConfirmationTextField(){
         let textField = UITextFieldEmassi()
+        textField.isSecureTextEntry = true
+        textField.passwordRules = nil
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)
@@ -259,6 +276,8 @@ class RegisterViewController: UIViewController{
     
     func setupPasswordTextField(){
         let textField = UITextFieldEmassi()
+        textField.isSecureTextEntry = true
+        textField.passwordRules = nil
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)

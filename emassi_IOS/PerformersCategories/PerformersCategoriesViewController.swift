@@ -15,6 +15,9 @@ class PerformersCategoriesViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationItem.title = "Category"
+        navigationItem.largeTitleDisplayMode = .always
+        
         let dataSource = PerformersCategoriesTableViewDataSourceDelegate()
         dataSource.performersCategories = [
             PerformersCategory(name: "Преподаватели",value: "cat1", imageAddress: "category1", subCategories: [
@@ -82,19 +85,17 @@ class PerformersCategoriesViewController: UIViewController{
         
         view.addSubview(searchBar)
         self.searchBar = searchBar
-        
-        guard let tableView = tableView else {
-            return
-        }
-            let bottomConstraint = searchBar.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 30)
-        bottomConstraint.priority = .defaultHigh
-        
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 10),
-            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -12),
-            bottomConstraint
-        ])
+
+        navigationItem.titleView = searchBar
+//            let bottomConstraint = searchBar.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+//        bottomConstraint.priority = .defaultHigh
+//
+//        NSLayoutConstraint.activate([
+//            searchBar.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 10),
+//            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
+//            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -12),
+//            bottomConstraint
+//        ])
     }
     
     func setupTableView(){
@@ -106,7 +107,7 @@ class PerformersCategoriesViewController: UIViewController{
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 44
+        //tableView.estimatedRowHeight = 44
         
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
@@ -114,11 +115,14 @@ class PerformersCategoriesViewController: UIViewController{
         
         view.addSubview(tableView)
         self.tableView = tableView
-        
+        let buttomConstraint = tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+        buttomConstraint.priority = .sceneSizeStayPut
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            buttomConstraint
+            
         ])
     }
 }

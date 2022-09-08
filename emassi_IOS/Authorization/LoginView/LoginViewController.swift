@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import Combine
+
 class LoginViewController: UIViewController{
     weak var welcomeLabel: UILabel?
     weak var messageLabel: UILabel?
@@ -16,6 +18,16 @@ class LoginViewController: UIViewController{
     weak var loginButton: UIButton?
     weak var goRegisterButton: UIButton?
     weak var resetPasswordLabel: UILabel?
+    weak var authorizationViews: AuthorizationViewsData?
+    var presenter: LoginPresenterProtocol?
+    var disposeBag: Set<AnyCancellable> = []
+    
+    deinit{
+        disposeBag.forEach({
+            $0.cancel()
+        })
+        disposeBag.removeAll()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +51,25 @@ class LoginViewController: UIViewController{
         passwordTextField?.placeholder = "Пароль"
         
         loginButton?.setTitle("Войти", for: .normal)
+        loginButton?.addTarget(self, action: #selector(loginButtonClick), for: .touchUpInside)
+        
         goRegisterButton?.setTitle("Зарегистрироваться в Emassi", for: .normal)
+        goRegisterButton?.addTarget(self, action: #selector(goRegisterButtonClick), for: .touchUpInside)
         resetPasswordLabel?.attributedText = NSAttributedString(string: "Забыли пароль?", attributes: [.attachment:"GGGGG"])
         
     }
+    
+    @objc func goRegisterButtonClick(){
+        if let registerVC = authorizationViews?.getRegisterViewController(){
+            self.present(registerVC, animated: true)
+        }
+    }
+    
+    @objc func loginButtonClick(){
+        guard let login = loginTextField?.text, let password = passwordTextField?.text else {return}
+        presenter?.login(login: login, password: password)
+    }
+    
     func setupResetPasswordLabel(){
         let label = UILabel()
         label.textColor = .lightGray
@@ -107,7 +134,10 @@ class LoginViewController: UIViewController{
     }
     
     func setupRememberPasswordChecker(){
-        let checker = UISwitch()
+        let checker = UICheckBoxEmassi()
+        checker.textFromImagePadding = 5
+        checker.textView?.text = "Запомнить пароль"
+        checker.textView?.font = .systemFont(ofSize: 16)
         checker.isOn = false
         checker.translatesAutoresizingMaskIntoConstraints = false
         
@@ -127,6 +157,8 @@ class LoginViewController: UIViewController{
     
     func setupPasswordTextField(){
         let textField = UITextFieldEmassi()
+        textField.isSecureTextEntry = true
+        textField.passwordRules = nil
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)

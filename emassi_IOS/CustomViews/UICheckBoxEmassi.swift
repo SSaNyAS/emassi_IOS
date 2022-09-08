@@ -12,7 +12,14 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     
     public weak var imageView: UIImageView?
     public weak var textView: UITextView?
+    private weak var textPaddingConstraint: NSLayoutConstraint?
     
+    @MainActor
+    public var textFromImagePadding: CGFloat = 1{
+        didSet{
+            self.setNeedsUpdateConstraints()
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupDefaultSettings()
@@ -22,9 +29,11 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         super.init(coder: coder)
         setupDefaultSettings()
     }
+    
     func textViewDidChangeSelection(_ textView: UITextView) {
         textView.selectedTextRange = nil
     }
+    
     func setupDefaultSettings(){
         onImage = UIImage(named: "checkboxOn")
         offImage = UIImage(named: "checkboxOff")
@@ -52,13 +61,14 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         label.automaticallyAdjustsScrollIndicatorInsets = false
         addSubview(label)
         self.textView = label
-        
+        let textPaddingConstraint = label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: textFromImagePadding)
+        self.textPaddingConstraint = textPaddingConstraint
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: 20),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
-            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 1),
+            textPaddingConstraint,
             label.topAnchor.constraint(equalTo: topAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -86,6 +96,11 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         DispatchQueue.main.async { [weak self] in
             self?.setNeedsLayout()
         }
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+        self.textPaddingConstraint?.constant = textFromImagePadding
     }
     
     override func layoutSubviews() {

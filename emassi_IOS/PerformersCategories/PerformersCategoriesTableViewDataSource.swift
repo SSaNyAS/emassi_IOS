@@ -19,6 +19,7 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
         }
         return 1
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         guard indexPath.row == 0 else {
@@ -37,12 +38,40 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
         } else {
             tableView.deleteRows(at: indexPaths, with: .top)
         }
-        tableView.endUpdates()
         
-        DispatchQueue.main.async { [weak tableView] in
-            tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
+        tableView.endUpdates()
+        tableView.layoutIfNeeded()
+        self.animatedScrollToIndexPath(indexPath: indexPath)
+    }
+
+    func animatedScrollToIndexPath(indexPath: IndexPath){
+        if let rect = self.tableView?.rectForRow(at: indexPath){
+            guard let tableView = self.tableView else {
+                return
+            }
+            
+            let needPos = rect.minY
+            let tableViewHeight = tableView.frame.height
+            let contentHeight = tableView.contentSize.height
+            var maxPosToScroll = contentHeight - tableViewHeight
+            if contentHeight > tableViewHeight {
+                if maxPosToScroll < 0 {
+                    maxPosToScroll *= -1
+                }
+            } else{
+                maxPosToScroll = 0
+            }
+            UIView.animate(withDuration: 0.4, delay: 0.1, options: [.beginFromCurrentState,.curveLinear]) {
+                if needPos > maxPosToScroll{
+                    tableView.contentOffset = .init(x: 0, y: maxPosToScroll)
+                } else {
+                    tableView.contentOffset = .init(x: 0, y: needPos)
+                }
+                tableView.layoutIfNeeded()
+            }
         }
     }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         self.tableView = tableView
         return performersCategories.count
