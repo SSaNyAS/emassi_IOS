@@ -15,7 +15,6 @@ class PerformersCategoriesViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.title = "Category"
         navigationItem.largeTitleDisplayMode = .always
         
         let dataSource = PerformersCategoriesTableViewDataSourceDelegate()

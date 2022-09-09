@@ -15,9 +15,10 @@
 		1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130928CA1B8800B14D5A /* LoginInteractor.swift */; };
 		1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130B28CA1C9F00B14D5A /* StringExtension.swift */; };
 		1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */; };
+		1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131028CAB66000B14D5A /* URLRequestExtension.swift */; };
+		1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131228CB742200B14D5A /* EmassiURLSession.swift */; };
 		114E80B628C108B70028F39B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B528C108B70028F39B /* AppDelegate.swift */; };
 		114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B728C108B70028F39B /* SceneDelegate.swift */; };
-		114E80BA28C108B70028F39B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B928C108B70028F39B /* ViewController.swift */; };
 		114E80BD28C108B70028F39B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 114E80BB28C108B70028F39B /* Main.storyboard */; };
 		114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 114E80BE28C108B70028F39B /* emassi_IOS.xcdatamodeld */; };
 		114E80C228C108B80028F39B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 114E80C128C108B80028F39B /* Assets.xcassets */; };
@@ -74,10 +75,11 @@
 		1140130928CA1B8800B14D5A /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
 		1140130B28CA1C9F00B14D5A /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiApiDelegate.swift; sourceTree = "<group>"; };
+		1140131028CAB66000B14D5A /* URLRequestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
+		1140131228CB742200B14D5A /* EmassiURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiURLSession.swift; sourceTree = "<group>"; };
 		114E80B228C108B70028F39B /* emassi_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emassi_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		114E80B528C108B70028F39B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		114E80B728C108B70028F39B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		114E80B928C108B70028F39B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		114E80BC28C108B70028F39B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		114E80BF28C108B70028F39B /* emassi_IOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = emassi_IOS.xcdatamodel; sourceTree = "<group>"; };
 		114E80C128C108B80028F39B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */,
+				1140131228CB742200B14D5A /* EmassiURLSession.swift */,
 			);
 			path = EmassiApi;
 			sourceTree = "<group>";
@@ -188,7 +191,6 @@
 				114E80EB28C12F3A0028F39B /* Extensions */,
 				114E80B528C108B70028F39B /* AppDelegate.swift */,
 				114E80B728C108B70028F39B /* SceneDelegate.swift */,
-				114E80B928C108B70028F39B /* ViewController.swift */,
 				114E80BB28C108B70028F39B /* Main.storyboard */,
 				114E80C128C108B80028F39B /* Assets.xcassets */,
 				114E80C328C108B80028F39B /* LaunchScreen.storyboard */,
@@ -233,6 +235,7 @@
 				114E80FE28C254700028F39B /* UITextFieldExtension.swift */,
 				11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */,
 				1140130B28CA1C9F00B14D5A /* StringExtension.swift */,
+				1140131028CAB66000B14D5A /* URLRequestExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -437,7 +440,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */,
-				114E80BA28C108B70028F39B /* ViewController.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
 				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
 				1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */,
@@ -445,6 +447,7 @@
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
+				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
@@ -469,6 +472,7 @@
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
+				1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

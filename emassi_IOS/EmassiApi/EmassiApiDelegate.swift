@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import Network
+import CryptoKit
+
 protocol EmassiApiDelegate{
     
     func getAccoutToken(email: String, password: String)
@@ -51,6 +54,60 @@ protocol EmassiApiDelegate{
     func deletePhotoFromWork(workId: String, photoId: String)
     func sendCustomerFeedBackForWork(workId: String, rating: Int, text: String)
     func sendPerformerFeedBackForWork(workId: String, rating: Int, text: String)
-    
 }
 
+protocol EmassiApiAuthorizationDelegate{
+    var apiKey: String { get }
+    static var token: String { get }
+    
+    func getAccountToken(email: String, password: String, completion: (Result<String,Error>)->Void)
+    func computeSign(email:String, password:String) -> String
+}
+
+class EmassiApi: EmassiApiFetcher{
+    let hostUrl = URL(string: "https://test.emassi.app")
+    
+    lazy var getAccountToken: EmassiRequestInfo = {
+        EmassiRequestInfo(address: "/api/v1/account", method: .get, attachHttpHeaders: ["apiKey": apiKey])
+    }()
+    let createAccount = EmassiRequestInfo(address: "/api/v1/account", method: .post)
+    
+    override init(apiKey: String,skey: String) {
+        super.init(apiKey: apiKey,skey: skey)
+        
+    }
+    
+    func getAccountToken(email: String, password: String, completion: @escaping (Data?,URLResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account", relativeTo: hostUrl) else {return}
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
+        request.httpMethod = URLRequest.HTTPMethod.get.rawValue
+        let sign = computeSign(email: email, password: password)
+        request.addValue(sign, forHTTPHeaderField: "sign")
+        dataFetchURLSession.dataTask(with: request, completionHandler: completion).resume()
+    }
+    
+    func baseDataRequest(requestInfo: EmassiRequestInfo, completion: @escaping (Data?, URLResponse?, Error?)-> Void){
+        guard let url = URL(string: requestInfo.address,relativeTo: hostUrl) else {return}
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
+        urlRequest.httpMethod = getAccountToken.method.rawValue
+        
+        let dataTask = dataFetchURLSession.dataTask(with: urlRequest, completionHandler: completion)
+        dataTask.resume()
+    }
+    func computeSign(email: String, password: String) -> String{
+        let codingString = email.trimmingCharacters(in: .whitespacesAndNewlines)+password.trimmingCharacters(in: .whitespacesAndNewlines)
+        let sha256 = codingString.sha256()
+        guard let sha256Data = sha256.data(using: .utf8) else {return ""}
+        guard let sKeyData = skey.data(using: .utf8) else {return ""}
+        let hmac = HMAC<SHA256>.authenticationCode(for: sha256Data, using: .init(data: sKeyData))
+        return hmac.description
+    }
+}
+
+struct EmassiRequestInfo {
+    let address: String
+    let method: URLRequest.HTTPMethod
+    var attachHttpHeaders: [String:String]?
+    var queryParams: [URLQueryItem]?
+    var httpBody: Data?
+}

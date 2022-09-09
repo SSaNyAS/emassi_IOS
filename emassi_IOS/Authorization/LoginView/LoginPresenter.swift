@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol LoginPresenterProtocol: NSObject{
     func login(login: String, password: String)
 }
