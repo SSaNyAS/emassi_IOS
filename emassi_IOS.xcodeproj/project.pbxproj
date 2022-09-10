@@ -17,6 +17,8 @@
 		1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */; };
 		1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131028CAB66000B14D5A /* URLRequestExtension.swift */; };
 		1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131228CB742200B14D5A /* EmassiURLSession.swift */; };
+		1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131528CBB07A00B14D5A /* PerformersListViewController.swift */; };
+		1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131728CBB40A00B14D5A /* PerformerTableViewCell.swift */; };
 		114E80B628C108B70028F39B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B528C108B70028F39B /* AppDelegate.swift */; };
 		114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B728C108B70028F39B /* SceneDelegate.swift */; };
 		114E80BD28C108B70028F39B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 114E80BB28C108B70028F39B /* Main.storyboard */; };
@@ -77,6 +79,8 @@
 		1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiApiDelegate.swift; sourceTree = "<group>"; };
 		1140131028CAB66000B14D5A /* URLRequestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
 		1140131228CB742200B14D5A /* EmassiURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiURLSession.swift; sourceTree = "<group>"; };
+		1140131528CBB07A00B14D5A /* PerformersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersListViewController.swift; sourceTree = "<group>"; };
+		1140131728CBB40A00B14D5A /* PerformerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerTableViewCell.swift; sourceTree = "<group>"; };
 		114E80B228C108B70028F39B /* emassi_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emassi_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		114E80B528C108B70028F39B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		114E80B728C108B70028F39B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -158,6 +162,15 @@
 			path = EmassiApi;
 			sourceTree = "<group>";
 		};
+		1140131428CBAE5600B14D5A /* PerformersList */ = {
+			isa = PBXGroup;
+			children = (
+				1140131528CBB07A00B14D5A /* PerformersListViewController.swift */,
+				1140131728CBB40A00B14D5A /* PerformerTableViewCell.swift */,
+			);
+			path = PerformersList;
+			sourceTree = "<group>";
+		};
 		114E80A928C108B70028F39B = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +194,7 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				1140131428CBAE5600B14D5A /* PerformersList */,
 				1140130D28CA3FF400B14D5A /* EmassiApi */,
 				11CBB7CE28C7B82E00FED8D5 /* CustomClasses */,
 				11CBB7CB28C79EF200FED8D5 /* MenuView */,
@@ -454,10 +468,12 @@
 				11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */,
 				114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */,
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
+				1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
+				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,

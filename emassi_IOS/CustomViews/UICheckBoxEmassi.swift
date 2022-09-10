@@ -15,11 +15,12 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     private weak var textPaddingConstraint: NSLayoutConstraint?
     
     @MainActor
-    public var textFromImagePadding: CGFloat = 1{
+    public var textFromImagePadding: CGFloat = 0{
         didSet{
             self.setNeedsUpdateConstraints()
         }
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupDefaultSettings()
@@ -35,14 +36,15 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     }
     
     func setupDefaultSettings(){
-        onImage = UIImage(named: "checkboxOn")
-        offImage = UIImage(named: "checkboxOff")
+        onImage = UIImage(systemName: "checkmark.circle.fill")
+        offImage = UIImage(systemName: "circle")
         
         self.subviews.forEach { $0.removeFromSuperview() }
         
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .center
+        imageView.tintColor = .placeholderText
+        imageView.contentMode = .scaleToFill
         addSubview(imageView)
         self.imageView = imageView
         
@@ -60,16 +62,29 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         label.insetsLayoutMarginsFromSafeArea = false
         label.automaticallyAdjustsScrollIndicatorInsets = false
         addSubview(label)
+        
         self.textView = label
+        
         let textPaddingConstraint = label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: textFromImagePadding)
         self.textPaddingConstraint = textPaddingConstraint
+        let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: 25)
+        heightConstraint.priority = .defaultHigh
+        
+        let imageToBottomConstraint = imageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        imageToBottomConstraint.priority = .defaultHigh
+        
+        let imageToTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        imageToTrailingConstraint.priority = .defaultHigh
+        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 20),
+            heightConstraint,
+            imageToBottomConstraint,
+            imageToTrailingConstraint,
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             textPaddingConstraint,
-            label.topAnchor.constraint(equalTo: topAnchor),
+            label.topAnchor.constraint(equalTo: imageView.lastBaselineAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
@@ -87,14 +102,21 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         isUserInteractionEnabled = true
         textView?.isUserInteractionEnabled = true
         imageView?.addGestureRecognizer(tapGesture)
-        
-        
-        
+  
     }
+    
     @objc func tapChecker(){
         setOn(!isOn, animated: true)
         DispatchQueue.main.async { [weak self] in
             self?.setNeedsLayout()
+        }
+    }
+    override func setOn(_ on: Bool, animated: Bool) {
+        super.setOn(on, animated: animated)
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else {return}
+            self.imageView?.image = self.isOn ? self.onImage : self.offImage
+            self.imageView?.tintColor = self.isOn ? .baseAppColor : .placeholderText
         }
     }
     
@@ -103,11 +125,4 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         self.textPaddingConstraint?.constant = textFromImagePadding
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            guard let self = self else {return}
-            self.imageView?.image = self.isOn ? self.onImage : self.offImage
-        }
-    }
 }

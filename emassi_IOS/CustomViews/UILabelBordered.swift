@@ -14,6 +14,23 @@ class UILabelBordered: UILabel{
             invalidateIntrinsicContentSize()
         }
     }
+    public var cornerRadius: CGFloat = 12{
+        didSet{
+            layer.cornerRadius = cornerRadius
+            setNeedsLayout()
+        }
+    }
+    public var borderWidth: CGFloat = 2 {
+        didSet{
+            layer.borderWidth = borderWidth
+            setNeedsLayout()
+        }
+    }
+    public var isUseBorder: Bool = true{
+        didSet{
+            borderWidth =  isUseBorder ? borderWidth : 0
+        }
+    }
     init(){
         super.init(frame: .zero)
         setupDefaultSetting()
@@ -40,12 +57,7 @@ class UILabelBordered: UILabel{
     
     func setupDefaultSetting(){
         font = .systemFont(ofSize: 16)
-        setCornerRadius(value: 12)
-        setBorder()
+        layer.masksToBounds = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
 }
