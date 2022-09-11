@@ -19,6 +19,7 @@
 		1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131228CB742200B14D5A /* EmassiURLSession.swift */; };
 		1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131528CBB07A00B14D5A /* PerformersListViewController.swift */; };
 		1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131728CBB40A00B14D5A /* PerformerTableViewCell.swift */; };
+		1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1140131A28CD07D300B14D5A /* DocumentTableViewCell.swift */; };
 		114E80B628C108B70028F39B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B528C108B70028F39B /* AppDelegate.swift */; };
 		114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E80B728C108B70028F39B /* SceneDelegate.swift */; };
 		114E80BD28C108B70028F39B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 114E80BB28C108B70028F39B /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
 		114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersCategory.swift */; };
+		1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15428CE79F100BAF84B /* DocumentsViewController.swift */; };
 		11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */; };
 		11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */; };
 		11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */; };
@@ -81,6 +83,7 @@
 		1140131228CB742200B14D5A /* EmassiURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiURLSession.swift; sourceTree = "<group>"; };
 		1140131528CBB07A00B14D5A /* PerformersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersListViewController.swift; sourceTree = "<group>"; };
 		1140131728CBB40A00B14D5A /* PerformerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerTableViewCell.swift; sourceTree = "<group>"; };
+		1140131A28CD07D300B14D5A /* DocumentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTableViewCell.swift; sourceTree = "<group>"; };
 		114E80B228C108B70028F39B /* emassi_IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emassi_IOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		114E80B528C108B70028F39B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		114E80B728C108B70028F39B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
 		114E810928C3C6AE0028F39B /* PerformersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategory.swift; sourceTree = "<group>"; };
+		1194A15428CE79F100BAF84B /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerInfoViewController.swift; sourceTree = "<group>"; };
 		11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelBordered.swift; sourceTree = "<group>"; };
@@ -171,6 +175,15 @@
 			path = PerformersList;
 			sourceTree = "<group>";
 		};
+		1140131928CD07B500B14D5A /* DocumentsView */ = {
+			isa = PBXGroup;
+			children = (
+				1140131A28CD07D300B14D5A /* DocumentTableViewCell.swift */,
+				1194A15428CE79F100BAF84B /* DocumentsViewController.swift */,
+			);
+			path = DocumentsView;
+			sourceTree = "<group>";
+		};
 		114E80A928C108B70028F39B = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +207,7 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				1140131928CD07B500B14D5A /* DocumentsView */,
 				1140131428CBAE5600B14D5A /* PerformersList */,
 				1140130D28CA3FF400B14D5A /* EmassiApi */,
 				11CBB7CE28C7B82E00FED8D5 /* CustomClasses */,
@@ -472,6 +486,7 @@
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
 				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
@@ -485,6 +500,7 @@
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
 				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
+				1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */,
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,

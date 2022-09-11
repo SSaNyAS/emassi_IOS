@@ -14,6 +14,11 @@ class UILabelBordered: UILabel{
             invalidateIntrinsicContentSize()
         }
     }
+    
+    deinit{
+        print("label with text: \"\(text?.prefix(10) ?? "")\" deinited")
+    }
+    
     public var cornerRadius: CGFloat = 12{
         didSet{
             layer.cornerRadius = cornerRadius

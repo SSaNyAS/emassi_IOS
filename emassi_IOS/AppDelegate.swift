@@ -18,9 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         emassiApi = EmassiApi(apiKey: apiKey, skey: skey)
         emassiApi?.getAccountToken(email: "user1@email.com", password: "mypassword", completion: { data, _, err in
-            print(err)
-            print(data)
-            print(String(data: data!, encoding: .utf8))
+            print(err ?? "no errors")
+            print(data ?? "data is NIL")
+            if let data = data{
+                print(String(data: data, encoding: .utf8) ?? "")
+            }
         })
         return true
     }

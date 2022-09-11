@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 class PerformerTableViewCell: UITableViewCell{
     public static var identifire: String = "PerformerTableViewCell"
-    
+    weak var contentViewSecond: UIView!
     weak var photoImageView: UIImageView?
     weak var nameLabel: UILabel?
     weak var categoryLabel: UILabel?
@@ -20,26 +20,38 @@ class PerformerTableViewCell: UITableViewCell{
     weak var reviewLabel: UILabel?
     weak var showPerformerInfoButton: UIButton?
     weak var selectorView: UISwitch?
+    
     var sendMessageButtonAction: (() ->Void)?
     var callButtonAction: (() ->Void)?
     var acceptButtonAction: (() ->Void)?
     private weak var buttonsContainer: UIStackView?
-    
+    private var isSetuppedConstraints: Bool = false
     public var isSelectingEnabled = false{
         didSet{
             if isSelectingEnabled{
-                setupSelectorView()
-                setupSelectorViewConstraints()
+                if selectorView == nil {
+                    setupSelectorView()
+                    setupSelectorViewConstraints()
+                } else {
+                    NSLayoutConstraint.deactivate(selectorView?.constraints ?? [])
+                    selectorView?.removeFromSuperview()
+                    selectorView = nil
+                    setupSelectorView()
+                    setupSelectorViewConstraints()
+                }
             }
             else {
                 NSLayoutConstraint.deactivate(selectorView?.constraints ?? [])
                 selectorView?.removeFromSuperview()
+                selectorView = nil
             }
             selectorView?.isHidden = !isSelectingEnabled
+            layoutIfNeeded()
         }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: false)
         if isSelectingEnabled{
             selectorView?.setOn(selected, animated: true)
         }
@@ -55,13 +67,13 @@ class PerformerTableViewCell: UITableViewCell{
         setupDefaultSettings()
     }
     
-    @objc func sendMessageButtonClick(){
+    @objc private func sendMessageButtonClick(){
         sendMessageButtonAction?()
     }
-    @objc func callButtonClick(){
+    @objc private func callButtonClick(){
         callButtonAction?()
     }
-    @objc func acceptButtonClick(){
+    @objc private func acceptButtonClick(){
         acceptButtonAction?()
     }
     
@@ -103,24 +115,69 @@ class PerformerTableViewCell: UITableViewCell{
         acceptButtonAction = action
     }
     
-    func setupDefaultSettings(){
-        setCornerRadius(value: 12)
-        backgroundColor = .baseAppColor.withAlphaComponent(0.2)
-        setupPhotoImageView()
-        setupNameLabel()
-        setupCategoryLabel()
-        setupRatingView()
-        setupButtonsCointainer()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isSelectingEnabled = false
         
-        setupPhotoImageViewConstraints()
-        setupNameLabelConstraints()
-        setupCategoryLabelConstraints()
-        setupRatingViewConstraints()
-        setupButtonContainerConstraints()
+        sendMessageButton?.removeTarget(self, action: #selector(sendMessageButtonClick), for: .touchUpInside)
+        sendMessageButton?.removeFromSuperview()
+        sendMessageButton = nil
+        
+        callButton?.removeTarget(self, action: #selector(callButtonClick), for: .touchUpInside)
+        callButton?.removeFromSuperview()
+        callButton = nil
+        
+        acceptButton?.removeTarget(self, action: #selector(acceptButtonClick), for: .touchUpInside)
+        acceptButton?.removeFromSuperview()
+        acceptButton = nil
+        
+        reviewLabel?.removeFromSuperview()
+        reviewLabel = nil
+        
+        sendMessageButtonAction = nil
+        callButtonAction = nil
+        acceptButtonAction = nil
+    }
+    
+    private func setupDefaultSettings(){
+        
+        if !isSetuppedConstraints{
+            let contentViewSecond = UIView()
+            contentViewSecond.isUserInteractionEnabled = true
+            contentViewSecond.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(contentViewSecond)
+            self.contentViewSecond = contentViewSecond
+            
+            NSLayoutConstraint.activate([
+                contentViewSecond.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                contentViewSecond.topAnchor.constraint(equalTo: contentView.topAnchor),
+                contentViewSecond.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                contentViewSecond.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+                contentViewSecond.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            ])
+            
+            contentViewSecond.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+            contentViewSecond.setCornerRadius(value: 12)
+            
+            selectionStyle = .none
+
+            setupPhotoImageView()
+            setupNameLabel()
+            setupCategoryLabel()
+            setupRatingView()
+            setupButtonsCointainer()
+            
+            setupPhotoImageViewConstraints()
+            setupNameLabelConstraints()
+            setupCategoryLabelConstraints()
+            setupRatingViewConstraints()
+            setupButtonContainerConstraints()
+            isSetuppedConstraints = true
+        }
         layoutIfNeeded()
     }
     
-    func setupSelectorViewConstraints(){
+    private func setupSelectorViewConstraints(){
         guard let selectorView = selectorView else {
             return
         }
@@ -129,51 +186,58 @@ class PerformerTableViewCell: UITableViewCell{
         categoryLabel?.trailingAnchor.constraint(lessThanOrEqualTo: selectorView.leadingAnchor, constant: -5).isActive = true
         ratingView?.trailingAnchor.constraint(lessThanOrEqualTo: selectorView.leadingAnchor, constant: -5).isActive = true
         buttonsContainer?.trailingAnchor.constraint(equalTo: selectorView.leadingAnchor, constant: -5).isActive = true
-        reviewLabel?.trailingAnchor.constraint(equalTo: selectorView.leadingAnchor, constant: -5).isActive = true
+        
+        if let reviewLabel = reviewLabel {
+            if !(reviewLabel.constraints.contains(where: {$0.secondItem === selectorView}) ){
+                reviewLabel.trailingAnchor.constraint(equalTo: selectorView.leadingAnchor, constant: -5).isActive = true
+            }
+        }
         
         NSLayoutConstraint.activate([
-            selectorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            selectorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            selectorView.centerYAnchor.constraint(equalTo: contentViewSecond.centerYAnchor),
+            selectorView.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10),
         ])
     }
     
-    func setupSelectorView(){
+    private func setupSelectorView(){
         let selector = UICheckBoxEmassi()
         selector.isHidden = true
         selector.isUserInteractionEnabled = false
         selector.clipsToBounds = true
         selector.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(selector)
+        contentViewSecond.addSubview(selector)
         selectorView = selector
     }
     
-    func setupReviewLabelConstraints(){
+    private func setupReviewLabelConstraints(){
         guard let reviewLabel = reviewLabel, let photoImageView = photoImageView else {
             return
         }
-        let trailingConstraint = reviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-        trailingConstraint.priority = .required
-        
+        let trailingConstraint = reviewLabel.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
+        trailingConstraint.priority = .defaultHigh
+        if let selectorView = selectorView {
+            reviewLabel.trailingAnchor.constraint(equalTo: selectorView.leadingAnchor, constant: -5).isActive = true
+        }
         NSLayoutConstraint.activate([
-            reviewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            reviewLabel.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor, constant: 10),
             reviewLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 10),
             trailingConstraint,
-            reviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            reviewLabel.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -5),
         ])
     }
     
-    func setupReviewLabel(){
+    private func setupReviewLabel(){
         let label = UILabelBordered()
         label.backgroundColor = .white
         label.isUseBorder = false
         label.cornerRadius = 12
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
+        contentViewSecond.addSubview(label)
         reviewLabel = label
     }
     
-    func setupAcceptButton(){
+    private func setupAcceptButton(){
         let button = UIButtonEmassi()
         button.setTitle("Принять", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -182,7 +246,7 @@ class PerformerTableViewCell: UITableViewCell{
         acceptButton = button
     }
     
-    func setupCallButton(){
+    private func setupCallButton(){
         let button = UIButtonEmassi()
         button.setTitle("Вызов", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -191,7 +255,7 @@ class PerformerTableViewCell: UITableViewCell{
         callButton = button
     }
     
-    func setupSendMessageButton(){
+    private func setupSendMessageButton(){
         let button = UIButtonEmassi()
         button.setTitle("Написать", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -200,7 +264,7 @@ class PerformerTableViewCell: UITableViewCell{
         sendMessageButton = button
     }
     
-    func setupButtonContainerConstraints(){
+    private func setupButtonContainerConstraints(){
         guard let buttonsContainer = buttonsContainer, let photoImageView = photoImageView, let ratingView = ratingView else {
             return
         }
@@ -209,7 +273,7 @@ class PerformerTableViewCell: UITableViewCell{
         
         topConstraint.priority = .defaultHigh
         
-        let trailingConstraint = buttonsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+        let trailingConstraint = buttonsContainer.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
                 
         NSLayoutConstraint.activate([
@@ -220,22 +284,22 @@ class PerformerTableViewCell: UITableViewCell{
         ])
     }
     
-    func setupButtonsCointainer(){
+    private func setupButtonsCointainer(){
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.contentMode = .scaleToFill
         stackView.distribution = .fillEqually
         stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(stackView)
+        contentViewSecond.addSubview(stackView)
         buttonsContainer = stackView
     }
-    
-    func setupRatingViewConstraints(){
+
+    private func setupRatingViewConstraints(){
         guard let ratingView = ratingView, let photoImageView = photoImageView, let categoryLabel = categoryLabel else {
             return
         }
-        let trailingConstraint = ratingView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -10)
+        let trailingConstraint = ratingView.trailingAnchor.constraint(lessThanOrEqualTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
         
         NSLayoutConstraint.activate([
@@ -245,19 +309,19 @@ class PerformerTableViewCell: UITableViewCell{
         ])
     }
     
-    func setupRatingView(){
+    private func setupRatingView(){
         let ratingView = UIRatingView()
         ratingView.translatesAutoresizingMaskIntoConstraints = false
         ratingView.rating = 0
-        contentView.addSubview(ratingView)
+        contentViewSecond.addSubview(ratingView)
         self.ratingView = ratingView
     }
     
-    func setupCategoryLabelConstraints(){
+    private func setupCategoryLabelConstraints(){
         guard let categoryLabel = categoryLabel, let nameLabel = nameLabel, let photoImageView = photoImageView else {
             return
         }
-        let trailingConstraint = categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -10)
+        let trailingConstraint = categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewSecond.trailingAnchor, constant: -10)
 
         trailingConstraint.priority = .defaultHigh
         
@@ -268,20 +332,20 @@ class PerformerTableViewCell: UITableViewCell{
         ])
     }
     
-    func setupCategoryLabel(){
+    private func setupCategoryLabel(){
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
+        contentViewSecond.addSubview(label)
         categoryLabel = label
     }
     
-    func setupNameLabelConstraints(){
+    private func setupNameLabelConstraints(){
         guard let nameLabel = nameLabel, let photoImageView = photoImageView else {
             return
         }
-        let trailingConstraint = nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -10)
+        let trailingConstraint = nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
         
         NSLayoutConstraint.activate([
@@ -291,34 +355,35 @@ class PerformerTableViewCell: UITableViewCell{
         ])
     }
     
-    func setupNameLabel(){
+    private func setupNameLabel(){
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16,weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
+        contentViewSecond.addSubview(label)
         nameLabel = label
     }
     
-    func setupPhotoImageViewConstraints(){
+    private func setupPhotoImageViewConstraints(){
         guard let photoImageView = photoImageView else {
             return
         }
-        let bottomConstraint = photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+        let bottomConstraint = photoImageView.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -10)
         bottomConstraint.priority = .defaultLow
         NSLayoutConstraint.activate([
-            photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            photoImageView.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor, constant: 10),
+            photoImageView.topAnchor.constraint(equalTo: contentViewSecond.topAnchor, constant: 5),
             photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 1.2),
             bottomConstraint
         ])
     }
     
-    func setupPhotoImageView(){
+    private func setupPhotoImageView(){
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(imageView)
+        contentViewSecond.addSubview(imageView)
         self.photoImageView = imageView
     }
+
 }

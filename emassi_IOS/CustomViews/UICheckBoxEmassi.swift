@@ -14,6 +14,10 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     public weak var textView: UITextView?
     private weak var textPaddingConstraint: NSLayoutConstraint?
     
+    deinit{
+        print("deinit CheckBoxEmassi with text \"\(textView?.text ?? "")\" and checkedValue: \(isOn)")
+    }
+    
     @MainActor
     public var textFromImagePadding: CGFloat = 0{
         didSet{
@@ -44,7 +48,7 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .placeholderText
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         self.imageView = imageView
         

@@ -49,7 +49,7 @@ class PerformersListViewController: UIViewController{
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorInset = .init(top: 20, left: 0, bottom: 5, right: 0)
+        tableView.separatorStyle = .none
         tableView.register(PerformerTableViewCell.self, forCellReuseIdentifier: PerformerTableViewCell.identifire)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ class PerformersListViewController: UIViewController{
 
 extension PerformersListViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 7
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -75,12 +75,17 @@ extension PerformersListViewController: UITableViewDataSource, UITableViewDelega
             cell.addSendMessageButton {
                 print("sendMEssage")
             }
-            cell.isSelectingEnabled = true
+            cell.isSelectingEnabled = false
             cell.nameLabel?.text = "gfdgdfgdf"
             cell.photoImageView?.image = UIImage(named: "nophotouser")
             cell.ratingView?.rating = 3
-            cell.setReviewText(text: "href4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjweb")
+            
             cell.categoryLabel?.text = "gfdgfdgfdg"
+            if indexPath.row % 2 == 0 {
+                cell.isSelectingEnabled = true
+            } else {
+                cell.setReviewText(text: "href4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjweb")
+            }
         }
         return cell
     }
