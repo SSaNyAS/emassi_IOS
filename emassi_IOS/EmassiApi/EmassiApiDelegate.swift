@@ -56,51 +56,126 @@ protocol EmassiApiDelegate{
     func sendPerformerFeedBackForWork(workId: String, rating: Int, text: String)
 }
 
-protocol EmassiApiAuthorizationDelegate{
-    var apiKey: String { get }
-    static var token: String { get }
-    
-    func getAccountToken(email: String, password: String, completion: (Result<String,Error>)->Void)
-    func computeSign(email:String, password:String) -> String
-}
-
 class EmassiApi: EmassiApiFetcher{
     let hostUrl = URL(string: "https://test.emassi.app")
+    private let tokenKey = "Token"
+
+    var token: String?{
+        get{
+            UserDefaults.standard.string(forKey: tokenKey)
+        }
+        set{
+            UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+        }
+    }
     
-    lazy var getAccountToken: EmassiRequestInfo = {
-        EmassiRequestInfo(address: "/api/v1/account", method: .get, attachHttpHeaders: ["apiKey": apiKey])
+    private lazy var jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.secondsSince1970
+        return decoder
     }()
-    let createAccount = EmassiRequestInfo(address: "/api/v1/account", method: .post)
     
     override init(apiKey: String,skey: String) {
         super.init(apiKey: apiKey,skey: skey)
-        
     }
     
-    func getAccountToken(email: String, password: String, completion: @escaping (Data?,URLResponse?,Error?) -> Void){
-        guard let url = URL(string: "/api/v1/account", relativeTo: hostUrl) else {return}
+    func registerAndGetToken(email: String, password: String, lang: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        
+        guard let url = URL(string: "/api/v1/account", relativeTo: hostUrl) else {
+            completion(nil, nil)
+            return
+        }
+        
+        let bodyString = """
+            {
+                "email": "\(email)",
+                "password": "\(password)",
+                "lang": "\(lang)"
+            }
+        """
+        
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
-        request.httpMethod = URLRequest.HTTPMethod.get.rawValue
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
         let sign = computeSign(email: email, password: password)
-        request.addValue(sign, forHTTPHeaderField: "sign")
-        dataFetchURLSession.dataTask(with: request, completionHandler: completion).resume()
+        
+        request.addValue(sign.description, forHTTPHeaderField: "sign")
+        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data,response, error in
+            if let data = data{
+                print(String(data: data, encoding: .utf8) ?? "")
+                if let apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
+                    
+                    if let responseData = apiResponse.data{
+                        if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
+                            self?.token = dataWithToken["token"]
+                        }
+                    }
+                    completion(apiResponse,error)
+                    return
+                }
+            }
+            completion(nil,error)
+        }
+        let task = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
+        task.resume()
+    }
+    
+    func getAccountToken(email: String, password: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account", relativeTo: hostUrl)?.appending(queryItems: [
+            .init(name: "email", value: email),
+            .init(name: "password", value: password)
+        ]) else {return}
+        
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
+        request.httpMethod = "GET"
+        
+        let sign = computeSign(email: email, password: password)
+        request.addValue(sign.description, forHTTPHeaderField: "sign")
+        
+        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data,response, error in
+            if let data = data{
+                print(String(data: data, encoding: .utf8) ?? "")
+                if let apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
+                    
+                    if let responseData = apiResponse.data{
+                        if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
+                            self?.token = dataWithToken["token"]
+                        }
+                    }
+                    completion(apiResponse,error)
+                    return
+                }
+            }
+            completion(nil,error)
+        }
+        
+        let task = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
+        task.resume()
     }
     
     func baseDataRequest(requestInfo: EmassiRequestInfo, completion: @escaping (Data?, URLResponse?, Error?)-> Void){
         guard let url = URL(string: requestInfo.address,relativeTo: hostUrl) else {return}
-        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 30)
-        urlRequest.httpMethod = getAccountToken.method.rawValue
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "GET"
         
         let dataTask = dataFetchURLSession.dataTask(with: urlRequest, completionHandler: completion)
         dataTask.resume()
     }
+    
     func computeSign(email: String, password: String) -> String{
         let codingString = email.trimmingCharacters(in: .whitespacesAndNewlines)+password.trimmingCharacters(in: .whitespacesAndNewlines)
         let sha256 = codingString.sha256()
         guard let sha256Data = sha256.data(using: .utf8) else {return ""}
         guard let sKeyData = skey.data(using: .utf8) else {return ""}
         let hmac = HMAC<SHA256>.authenticationCode(for: sha256Data, using: .init(data: sKeyData))
-        return hmac.description
+        let hmacString = hmac.description
+        var firstIndexOfDoubleDot: String.Index? = hmacString.firstIndex(of: ":")
+        if let dotsIndex = firstIndexOfDoubleDot{
+            firstIndexOfDoubleDot = hmacString.index(dotsIndex, offsetBy: 1)
+        }
+        let resultedString = hmacString[(firstIndexOfDoubleDot ?? hmacString.startIndex)...]
+        return resultedString.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

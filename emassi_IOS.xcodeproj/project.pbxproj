@@ -45,6 +45,12 @@
 		114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersCategory.swift */; };
 		1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15428CE79F100BAF84B /* DocumentsViewController.swift */; };
 		1194A15828CE7EEB00BAF84B /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */; };
+		1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15928CF482F00BAF84B /* URLExtension.swift */; };
+		1194A15D28CF718A00BAF84B /* EmassiApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15C28CF718A00BAF84B /* EmassiApiResponse.swift */; };
+		1194A15F28CF7DED00BAF84B /* EmassiRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15E28CF7DEC00BAF84B /* EmassiRouter.swift */; };
+		1194A16128CFA70E00BAF84B /* RegisterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A16028CFA70E00BAF84B /* RegisterPresenter.swift */; };
+		1194A16328CFA7C000BAF84B /* RegisterInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A16228CFA7C000BAF84B /* RegisterInteractor.swift */; };
+		1194A16528CFB3A600BAF84B /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A16428CFB3A600BAF84B /* UIViewControllerExtension.swift */; };
 		11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */; };
 		11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */; };
 		11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */; };
@@ -114,6 +120,12 @@
 		114E810928C3C6AE0028F39B /* PerformersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategory.swift; sourceTree = "<group>"; };
 		1194A15428CE79F100BAF84B /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
+		1194A15928CF482F00BAF84B /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
+		1194A15C28CF718A00BAF84B /* EmassiApiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiApiResponse.swift; sourceTree = "<group>"; };
+		1194A15E28CF7DEC00BAF84B /* EmassiRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmassiRouter.swift; sourceTree = "<group>"; };
+		1194A16028CFA70E00BAF84B /* RegisterPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPresenter.swift; sourceTree = "<group>"; };
+		1194A16228CFA7C000BAF84B /* RegisterInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInteractor.swift; sourceTree = "<group>"; };
+		1194A16428CFB3A600BAF84B /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		11CBB7BF28C4B22900FED8D5 /* PerformerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerInfoViewController.swift; sourceTree = "<group>"; };
 		11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelBordered.swift; sourceTree = "<group>"; };
@@ -162,6 +174,7 @@
 		1140130D28CA3FF400B14D5A /* EmassiApi */ = {
 			isa = PBXGroup;
 			children = (
+				1194A15B28CF716900BAF84B /* Models */,
 				1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */,
 				1140131228CB742200B14D5A /* EmassiURLSession.swift */,
 			);
@@ -227,6 +240,7 @@
 				114E80C328C108B80028F39B /* LaunchScreen.storyboard */,
 				114E80C628C108B80028F39B /* Info.plist */,
 				114E80BE28C108B70028F39B /* emassi_IOS.xcdatamodeld */,
+				1194A15E28CF7DEC00BAF84B /* EmassiRouter.swift */,
 			);
 			path = emassi_IOS;
 			sourceTree = "<group>";
@@ -267,6 +281,8 @@
 				11CBB7C128C4F03F00FED8D5 /* UILabelExtension.swift */,
 				1140130B28CA1C9F00B14D5A /* StringExtension.swift */,
 				1140131028CAB66000B14D5A /* URLRequestExtension.swift */,
+				1194A15928CF482F00BAF84B /* URLExtension.swift */,
+				1194A16428CFB3A600BAF84B /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -285,6 +301,8 @@
 			isa = PBXGroup;
 			children = (
 				114E80F628C24E890028F39B /* RegisterViewController.swift */,
+				1194A16028CFA70E00BAF84B /* RegisterPresenter.swift */,
+				1194A16228CFA7C000BAF84B /* RegisterInteractor.swift */,
 			);
 			path = RegisterView;
 			sourceTree = "<group>";
@@ -319,6 +337,14 @@
 				1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */,
 			);
 			path = FavoriteView;
+			sourceTree = "<group>";
+		};
+		1194A15B28CF716900BAF84B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1194A15C28CF718A00BAF84B /* EmassiApiResponse.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		11CBB7BE28C4B1F700FED8D5 /* PerformerInfoView */ = {
@@ -480,11 +506,15 @@
 			files = (
 				114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
+				1194A16528CFB3A600BAF84B /* UIViewControllerExtension.swift in Sources */,
 				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
 				1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */,
+				1194A15F28CF7DED00BAF84B /* EmassiRouter.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
+				1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
+				1194A15D28CF718A00BAF84B /* EmassiApiResponse.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
@@ -494,6 +524,8 @@
 				114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */,
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
 				1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */,
+				1194A16328CFA7C000BAF84B /* RegisterInteractor.swift in Sources */,
+				1194A16128CFA70E00BAF84B /* RegisterPresenter.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,

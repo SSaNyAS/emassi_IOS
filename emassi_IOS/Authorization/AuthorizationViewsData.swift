@@ -7,13 +7,14 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class AuthorizationViewsData{
     var login: CurrentValueSubject<String?,Never> = .init("")
     var password: CurrentValueSubject<String?,Never> = .init("")
     
-    public func getLoginViewController(login: String? = nil,password: String? = nil) -> LoginViewController{
-        let loginVC = LoginViewController()
+    public func setupLoginViewController(loginVC: LoginViewController, login: String? = nil,password: String? = nil){
+        
         loginVC.loadViewIfNeeded()
         
         if let loginExist = login {
@@ -60,11 +61,9 @@ class AuthorizationViewsData{
         }
         
         loginVC.authorizationViews = self
-        return loginVC
     }
     
-    public func getRegisterViewController(login: String? = nil,password: String? = nil) -> RegisterViewController{
-        let registerVC = RegisterViewController()
+    public func setupRegisterViewController(registerVC: RegisterViewController, login: String? = nil,password: String? = nil){
         registerVC.loadViewIfNeeded()
         
         if let loginExist = login {
@@ -111,6 +110,5 @@ class AuthorizationViewsData{
         }
         
         registerVC.authorizationView = self
-        return registerVC
     }
 }

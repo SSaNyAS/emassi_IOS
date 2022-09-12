@@ -10,20 +10,8 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let apiKey = "api_c21c39e97c8c58d2909c4b6fbdb7d3c9"
-    let skey = "skey_f19da651f0c2f96afb46b37f6e80a939"
-    
-    var emassiApi: EmassiApi?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        emassiApi = EmassiApi(apiKey: apiKey, skey: skey)
-        emassiApi?.getAccountToken(email: "user1@email.com", password: "mypassword", completion: { data, _, err in
-            print(err ?? "no errors")
-            print(data ?? "data is NIL")
-            if let data = data{
-                print(String(data: data, encoding: .utf8) ?? "")
-            }
-        })
         return true
     }
 

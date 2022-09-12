@@ -14,7 +14,7 @@ class OnboardingViewController: UIViewController{
     weak var collectionView: UICollectionView?
     weak var loginButton: UIButton?
     weak var registerButton: UIButton?
-    var authorizationViews: AuthorizationViewsData? = AuthorizationViewsData()
+    weak var router: RouterDelegate?
     
     var items: [OnBoardingItem] = [
         .init(title: "Emassi", image: "onboard1", description: ""),
@@ -47,15 +47,11 @@ class OnboardingViewController: UIViewController{
     }
     
     @objc func registerButtonClick(){
-        if let registerVC = authorizationViews?.getRegisterViewController(){
-            self.present(registerVC, animated: true)
-        }
+        router?.goToViewController(from: self, to: .register, presentationMode: .present)
     }
     
     @objc func loginButtonClick(){
-        if let loginVC = authorizationViews?.getLoginViewController(){
-            self.present(loginVC, animated: true)
-        }
+        router?.goToViewController(from: self, to: .login, presentationMode: .present)
     }
     
     @objc func showButtons(){

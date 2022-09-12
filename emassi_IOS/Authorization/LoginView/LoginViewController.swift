@@ -8,8 +8,18 @@
 import Foundation
 import UIKit
 import Combine
+protocol LoginViewDelegate: NSObject{
+    func showMessage(message: String)
+    func getViewController() -> UIViewController
+}
 
-class LoginViewController: UIViewController{
+class LoginViewController: UIViewController, LoginViewDelegate{
+    
+    func getViewController() -> UIViewController {
+        return self
+    }
+    
+    
     weak var welcomeLabel: UILabel?
     weak var messageLabel: UILabel?
     weak var loginTextField: UITextField?
@@ -60,14 +70,11 @@ class LoginViewController: UIViewController{
     }
     
     @objc func goRegisterButtonClick(){
-        if let registerVC = authorizationViews?.getRegisterViewController(){
-            self.present(registerVC, animated: true)
-        }
+        presenter?.goToRegister()
     }
     
     @objc func loginButtonClick(){
-        guard let login = loginTextField?.text, let password = passwordTextField?.text else {return}
-        presenter?.login(login: login, password: password)
+        presenter?.login(login: loginTextField?.text, password: passwordTextField?.text)
     }
     
     func setupResetPasswordLabel(){

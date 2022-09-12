@@ -13,6 +13,8 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     public weak var imageView: UIImageView?
     public weak var textView: UITextView?
     private weak var textPaddingConstraint: NSLayoutConstraint?
+    private weak var imageBottomConstraint: NSLayoutConstraint?
+    private weak var imageTrailingConstraint: NSLayoutConstraint?
     
     deinit{
         print("deinit CheckBoxEmassi with text \"\(textView?.text ?? "")\" and checkedValue: \(isOn)")
@@ -62,35 +64,38 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         label.textColor = .placeholderText
         
         label.textContainer.lineFragmentPadding = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.insetsLayoutMarginsFromSafeArea = false
         label.automaticallyAdjustsScrollIndicatorInsets = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
         
         self.textView = label
         
         let textPaddingConstraint = label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: textFromImagePadding)
+        textPaddingConstraint.priority = .required
+        
         self.textPaddingConstraint = textPaddingConstraint
         let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: 25)
-        heightConstraint.priority = .defaultHigh
+        heightConstraint.priority = .required
         
         let imageToBottomConstraint = imageView.bottomAnchor.constraint(equalTo: bottomAnchor)
         imageToBottomConstraint.priority = .defaultHigh
-        
+        self.imageBottomConstraint = imageToBottomConstraint
         let imageToTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: trailingAnchor)
         imageToTrailingConstraint.priority = .defaultHigh
+        self.imageTrailingConstraint = imageToTrailingConstraint
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             heightConstraint,
-            imageToBottomConstraint,
-            imageToTrailingConstraint,
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+            
             textPaddingConstraint,
-            label.topAnchor.constraint(equalTo: imageView.lastBaselineAnchor),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor)
+            label.topAnchor.constraint(equalTo: topAnchor,constant: 5),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ])
         
         setupTapGesture()
@@ -126,6 +131,13 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     override func layoutSubviews() {
         super.layoutSubviews()
         setOn(isOn, animated: true)
+        if textView?.text.isEmpty ?? true{
+            imageBottomConstraint?.isActive = true
+            imageTrailingConstraint?.isActive = true
+        } else {
+            imageBottomConstraint?.isActive = false
+            imageTrailingConstraint?.isActive = false
+        }
     }
     override func updateConstraints() {
         super.updateConstraints()

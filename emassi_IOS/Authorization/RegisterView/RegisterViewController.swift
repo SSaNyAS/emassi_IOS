@@ -9,7 +9,17 @@ import Foundation
 import UIKit
 import Combine
 
-class RegisterViewController: UIViewController{
+protocol RegisterViewDelegate: NSObject{
+    func getViewController() -> UIViewController
+    func showMessage(message: String)
+}
+
+class RegisterViewController: UIViewController, RegisterViewDelegate{
+    
+    func getViewController() -> UIViewController {
+        return self
+    }
+    
     weak var welcomeLabel: UILabel?
     weak var messageLabel: UILabel?
     weak var loginTextField: UITextField?
@@ -24,6 +34,7 @@ class RegisterViewController: UIViewController{
     weak var dontNeedRegisterButton: UIButton?
     weak var authorizationView: AuthorizationViewsData?
     var disposeBag: Set<AnyCancellable> = []
+    var presenter: RegisterPresenterProtocol?
     deinit{
         disposeBag.forEach({
             $0.cancel()
@@ -37,7 +48,15 @@ class RegisterViewController: UIViewController{
         setupViews()
     }
     
-    func setupViews(){
+    @objc private func registerButtonClick(){
+        presenter?.register(email: loginTextField?.text, password: passwordTextField?.text, passwordConfirmation: passwordConfirmationTextField?.text, eulaAccept: eulaAcceptChecker?.isOn ?? false, sendNews: sendNewsChecker?.isOn ?? false)
+    }
+    
+    @objc private func goLoginView(){
+        presenter?.goToLogin()
+    }
+    
+    private func setupViews(){
         setupWelcomeLabel()
         setupMessageLabel()
         setupLoginTextField()
@@ -56,7 +75,9 @@ class RegisterViewController: UIViewController{
         loginTextField?.placeholder = "Электронная почта или телефон"
         passwordTextField?.placeholder = "Пароль"
         passwordConfirmationTextField?.placeholder = "Повторите пароль"
+        
         registerButton?.setTitle("Зарегистрироваться в Emassi", for: .normal)
+        registerButton?.addTarget(self, action: #selector(registerButtonClick), for: .touchUpInside)
         
         facebookLoginButton?.setTitle("Войти через Facebook", for: .normal)
         if let image = UIImage(named: "facebook"){
@@ -71,12 +92,8 @@ class RegisterViewController: UIViewController{
         dontNeedRegisterButton?.setTitle("У меня уже есть аккаунт Emassi", for: .normal)
         dontNeedRegisterButton?.addTarget(self, action: #selector(goLoginView), for: .touchUpInside)
     }
-    @objc func goLoginView(){
-        if let loginVC = authorizationView?.getLoginViewController(){
-            self.present(loginVC, animated: true)
-        }
-    }
-    func setupDontNeedRegisterButton(){
+    
+    private func setupDontNeedRegisterButton(){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -99,7 +116,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupGoogleLoginButton(){
+    private func setupGoogleLoginButton(){
         let button = UIButtonEmassi()
         button.backgroundColor = .link
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +148,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupFacebookLoginButton(){
+    private func setupFacebookLoginButton(){
         let button = UIButtonEmassi()
         button.backgroundColor = .blue
         
@@ -164,7 +181,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupOrSeparatorLabel(){
+    private func setupOrSeparatorLabel(){
         let label = UILabel()
         label.textColor = .baseAppColor
         label.font = .systemFont(ofSize: 16)
@@ -188,7 +205,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupSendNewsChecker(){
+    private func setupSendNewsChecker(){
         let checker = UICheckBoxEmassi()
         let text = "Периодически всем пользователям сервиса мы присылаем письма с новостями Emassi и интересными объявлениями. Если вы хотите быть в курсе того, что происходит с Emassi, подтвердите свое согласие."
         checker.textView?.text = text
@@ -209,7 +226,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupEulaAcceptChecker(){
+    private func setupEulaAcceptChecker(){
         let checker = UICheckBoxEmassi()
         let text = "Я соглашаюсь с правилами пользования сервиса, также с передачей и обработкой моих данных в Emassi. Я подтверждаю свое совершеннолетие и ответственность за размещение объявления."
         let attrString = NSMutableAttributedString(string: text)
@@ -234,7 +251,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupRegisterButton(){
+    private func setupRegisterButton(){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -253,7 +270,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupPasswordConfirmationTextField(){
+    private func setupPasswordConfirmationTextField(){
         let textField = UITextFieldEmassi()
         textField.isSecureTextEntry = true
         textField.passwordRules = nil
@@ -274,7 +291,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupPasswordTextField(){
+    private func setupPasswordTextField(){
         let textField = UITextFieldEmassi()
         textField.isSecureTextEntry = true
         textField.passwordRules = nil
@@ -295,7 +312,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupLoginTextField(){
+    private func setupLoginTextField(){
         let textField = UITextFieldEmassi()
         textField.translatesAutoresizingMaskIntoConstraints = false
         
@@ -314,7 +331,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupMessageLabel(){
+    private func setupMessageLabel(){
         let label = UILabel()
         label.textColor = .baseAppColor
         label.font = .systemFont(ofSize: 16)
@@ -334,7 +351,7 @@ class RegisterViewController: UIViewController{
         ])
     }
     
-    func setupWelcomeLabel(){
+    private func setupWelcomeLabel(){
         let label = UILabel()
         label.textColor = .baseAppColor
         label.font = .systemFont(ofSize: 24, weight: .medium)
