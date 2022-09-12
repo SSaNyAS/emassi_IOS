@@ -46,7 +46,18 @@ class PerformerTableViewCell: UITableViewCell{
                 selectorView = nil
             }
             selectorView?.isHidden = !isSelectingEnabled
-            layoutIfNeeded()
+            setNeedsLayout()
+        }
+    }
+    
+    override var isSelected: Bool{
+        get{
+            return selectorView?.isOn ?? false
+        }
+        set{
+            if isSelectingEnabled{
+                selectorView?.setOn(newValue, animated: true)
+            }
         }
     }
     
@@ -275,9 +286,11 @@ class PerformerTableViewCell: UITableViewCell{
         
         let trailingConstraint = buttonsContainer.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
-                
+        
         NSLayoutConstraint.activate([
+            topConstraint,
             buttonsContainer.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 5),
+            
             buttonsContainer.heightAnchor.constraint(equalToConstant: 32),
             buttonsContainer.bottomAnchor.constraint(equalTo: photoImageView.lastBaselineAnchor),
             trailingConstraint,
@@ -345,7 +358,7 @@ class PerformerTableViewCell: UITableViewCell{
         guard let nameLabel = nameLabel, let photoImageView = photoImageView else {
             return
         }
-        let trailingConstraint = nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewSecond.trailingAnchor, constant: -10)
+        let trailingConstraint = nameLabel.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
         
         NSLayoutConstraint.activate([

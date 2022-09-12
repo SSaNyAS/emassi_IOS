@@ -123,7 +123,10 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
             self.imageView?.tintColor = self.isOn ? .baseAppColor : .placeholderText
         }
     }
-    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setOn(isOn, animated: true)
+    }
     override func updateConstraints() {
         super.updateConstraints()
         self.textPaddingConstraint?.constant = textFromImagePadding
