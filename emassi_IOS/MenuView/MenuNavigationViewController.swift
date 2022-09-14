@@ -9,9 +9,13 @@ import Foundation
 import UIKit
 
 class MenuNavigationViewController: UINavigationController {
-    
+    weak var router: RouterDelegate?{
+        didSet{
+            menuViewController?.router = router
+        }
+    }
     public var menuAnimationDuration = 0.7
-    private var menuViewController: UIViewController?
+    private var menuViewController: MenuViewController?
     private var isOpenedMenu: Bool = false
     
     override func viewDidLoad() {
@@ -28,6 +32,26 @@ class MenuNavigationViewController: UINavigationController {
         setupMenuViewController()
     }
     
+    override func popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
+        if isOpenedMenu {
+            toggleMenu()
+        }
+        return super.popToViewController(viewController, animated: animated)
+    }
+    override func popToRootViewController(animated: Bool) -> [UIViewController]? {
+        if isOpenedMenu {
+            toggleMenu()
+        }
+        return super.popToRootViewController(animated: animated)
+    }
+    
+    override func popViewController(animated: Bool) -> UIViewController? {
+        if isOpenedMenu {
+            toggleMenu()
+        }
+        return super.popViewController(animated: animated)
+    }
+    
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         let backImage = UIImage(systemName: "chevron.left")
         let goBackBarButton = UIBarButtonItem(image: backImage, style: .done, target: self, action: #selector(goBack))
@@ -39,15 +63,22 @@ class MenuNavigationViewController: UINavigationController {
         
         viewController.navigationItem.leftBarButtonItem = goBackBarButton
         viewController.navigationItem.rightBarButtonItem = openMenuBarButton
-        
+        if isOpenedMenu {
+            toggleMenu()
+        }
         super.pushViewController(viewController, animated: animated)
     }
+    
     @objc func goBack(){
         popViewController(animated: true)
     }
     
     @objc func toggleMenu(){
         isOpenedMenu.toggle()
+        changeMenu()
+    }
+    
+    private func changeMenu(){
         guard let menuView = menuViewController?.view else { return }
         guard let currentView = topViewController?.view else {return}
         
@@ -69,8 +100,6 @@ class MenuNavigationViewController: UINavigationController {
         UIView.animate(withDuration: menuAnimationDuration) { [weak self] in
             guard let self = self else {return}
             menuView.frame.origin = self.isOpenedMenu ? CGPoint.init(x: menuEndXposition, y: 0) : CGPoint.init(x: menuStartXposition, y: 0)
-        } completion: { isSuccess in
-            
         }
     }
     
@@ -96,6 +125,8 @@ class MenuNavigationViewController: UINavigationController {
     
     func getMenuViewController() -> MenuViewController{
         let menuViewController: MenuViewController = MenuViewController()
+        menuViewController.menuNavigationController = self
+        menuViewController.router = router
         return menuViewController
     }
 

@@ -40,7 +40,7 @@ class LoginPresenter:NSObject, LoginPresenterProtocol{
         interactor.login(email: login, password: password) { [weak self] isSuccess, message  in
             if isSuccess{
                 if let viewController = self?.loginView?.getViewController(){
-                    self?.router?.goToViewController(from: viewController, to: .categories, presentationMode: .present)
+                    self?.router?.goToViewController(from: viewController, to: .categories, presentationMode: .presentFullScreen)
                 }
             } else{
                 self?.loginView?.showMessage(message: message)

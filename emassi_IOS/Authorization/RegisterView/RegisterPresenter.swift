@@ -49,7 +49,7 @@ class RegisterPresenter:NSObject, RegisterPresenterProtocol{
         interactor.register(email: email, password: password, passwordConfirmation: passwordConfirmation, eulaAccept: eulaAccept, sendNews: sendNews) { [weak self] isSuccess, message in
             if isSuccess{
                 if let registerVC = self?.registerView?.getViewController(){
-                    self?.router?.goToViewController(from: registerVC, to: .categories, presentationMode: .custom(.fullScreen, .coverVertical))
+                    self?.router?.goToViewController(from: registerVC, to: .categories, presentationMode: .presentFullScreen)
                 }
             } else{
                 self?.registerView?.showMessage(message: message)

@@ -9,7 +9,15 @@ import Foundation
 import UIKit
 class UIButtonEmassi: UIButton{
     static let defaultHeight: CGFloat = 46
+    override var intrinsicContentSize: CGSize {
+           get {
+               let baseSize = super.intrinsicContentSize
+               return CGSize(width: baseSize.width + 20,//ex: padding 20
+                             height: baseSize.height)
+               }
+        }
     
+    private var touchUpInsideActions: [()->Void] = []
     deinit{
         print("button with title \"\(title(for: .normal) ?? "")\" deinited ")
     }
@@ -35,13 +43,25 @@ class UIButtonEmassi: UIButton{
         titleLabel?.textColor = .white
         setCornerRadius(value: 12)
     }
+    
+    public func addTouchUpInsideAction(action: @escaping ()->Void){
+        self.touchUpInsideActions.append(action)
+    }
+    
+    @objc private func touchUpInside(){
+        touchUpInsideActions.forEach({
+            $0()
+        })
+    }
+    
     override func didMoveToSuperview() {
         if superview != nil {
             addTarget(self, action: #selector(pressAnim), for: .touchDown)
+            addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
         }
         super.didMoveToSuperview()
     }
-
+    
     override func removeFromSuperview() {
         removeTarget(self, action: #selector(pressAnim), for: .touchDown)
         super.removeFromSuperview()

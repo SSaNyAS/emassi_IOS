@@ -11,37 +11,19 @@ class MenuViewController: UIViewController{
     weak var profileImageView: UIImageView?
     weak var nameLabel: UILabel?
     weak var menuTableView: UITableView?
-    var commands: [MenuAction] = [
-        .init(title: "Категории", image: "rectangle.stack.fill"){
-            print("Категории")
-        },
-        .init(title: "Активные заявки", image: "clock.badge.checkmark.fill"){
-            print("Активные заявки")
-        },
-        .init(title: "Чат", image: "message.fill"){
-            
-        },
-        .init(title: "Избранное", image: "star.fill"){
-            
-        },
-        .init(title: "Архив заявок", image: "folder.fill"){
-            
-        },
-        .init(title: "Профиль", image: "person.fill"){
-            
-        },
-        .init(title: "Регистрация специалиста", image: "person.fill.badge.plus"){
-            
-        },
-        .init(title: "Помощь", image: "questionmark.circle"){
-            
-        },
-        .init(title: "Настройки", image: "gear"){
-            
-        },
-    ]
+    weak var menuNavigationController: UINavigationController?
+    weak var router: RouterDelegate? {
+        didSet{
+            setCommands()
+        }
+    }
+    
+    var commands: [MenuAction] = []
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setCommands()
+        
         view.backgroundColor = .systemGray5
         setupViews()
         
@@ -59,6 +41,46 @@ class MenuViewController: UIViewController{
         setupMenuTableViewConstraints(to: view)
     }
     
+    @MainActor
+    func setCommands(){
+        commands = [
+            .init(title: "Категории", image: "rectangle.stack.fill"){ [weak menuNavigationController, weak router] in
+                print("Категории")
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .categories, presentationMode: .popToRoot)
+                }
+            },
+            .init(title: "Активные заявки", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .workOrders, presentationMode: .push)
+                }
+            },
+            .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
+                
+            },
+            .init(title: "Избранное", image: "star.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .favorites, presentationMode: .push)
+                }
+            },
+            .init(title: "Архив заявок", image: "folder.fill"){ [weak menuNavigationController, weak router] in
+                
+            },
+            .init(title: "Профиль", image: "person.fill"){ [weak menuNavigationController, weak router] in
+                
+            },
+            .init(title: "Регистрация специалиста", image: "person.fill.badge.plus"){ [weak menuNavigationController, weak router] in
+                
+            },
+            .init(title: "Помощь", image: "questionmark.circle"){ [weak menuNavigationController, weak router] in
+                
+            },
+            .init(title: "Настройки", image: "gear"){ [weak menuNavigationController, weak router] in
+                
+            },
+        ]
+        menuTableView?.reloadData()
+    }
     func setupMenuTableViewConstraints(to view: UIView){
         guard let menuTableView = menuTableView, let profileImageView = profileImageView else {
             return

@@ -58,6 +58,9 @@
 		11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */; };
 		11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */; };
 		11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CBB7CC28C79F1800FED8D5 /* MenuViewController.swift */; };
+		11DCADEA28D08CC400568D16 /* WorkOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADE928D08CC400568D16 /* WorkOrdersViewController.swift */; };
+		11DCADEC28D1FD6F00568D16 /* WorkOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */; };
+		11DCADEE28D20FED00568D16 /* UIControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADED28D20FED00568D16 /* UIControlExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +136,9 @@
 		11CBB7C728C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerReviewsTableVIewDataSource.swift; sourceTree = "<group>"; };
 		11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesTableViewDataSource.swift; sourceTree = "<group>"; };
 		11CBB7CC28C79F1800FED8D5 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		11DCADE928D08CC400568D16 /* WorkOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrdersViewController.swift; sourceTree = "<group>"; };
+		11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrderTableViewCell.swift; sourceTree = "<group>"; };
+		11DCADED28D20FED00568D16 /* UIControlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +228,8 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				11DCADE828D08B7A00568D16 /* WorkOrders */,
+				11DCADE728CFD35A00568D16 /* SettingsView */,
 				1194A15628CE7ED000BAF84B /* FavoriteView */,
 				1140131928CD07B500B14D5A /* DocumentsView */,
 				1140131428CBAE5600B14D5A /* PerformersList */,
@@ -283,6 +291,7 @@
 				1140131028CAB66000B14D5A /* URLRequestExtension.swift */,
 				1194A15928CF482F00BAF84B /* URLExtension.swift */,
 				1194A16428CFB3A600BAF84B /* UIViewControllerExtension.swift */,
+				11DCADED28D20FED00568D16 /* UIControlExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -371,6 +380,22 @@
 			children = (
 			);
 			path = CustomClasses;
+			sourceTree = "<group>";
+		};
+		11DCADE728CFD35A00568D16 /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SettingsView;
+			sourceTree = "<group>";
+		};
+		11DCADE828D08B7A00568D16 /* WorkOrders */ = {
+			isa = PBXGroup;
+			children = (
+				11DCADE928D08CC400568D16 /* WorkOrdersViewController.swift */,
+				11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */,
+			);
+			path = WorkOrders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -535,6 +560,7 @@
 				1194A15828CE7EEB00BAF84B /* FavoriteViewController.swift in Sources */,
 				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
+				11DCADEE28D20FED00568D16 /* UIControlExtension.swift in Sources */,
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
 				1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */,
 				114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */,
@@ -542,12 +568,14 @@
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
+				11DCADEC28D1FD6F00568D16 /* WorkOrderTableViewCell.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
 				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
 				1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */,
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
+				11DCADEA28D08CC400568D16 /* WorkOrdersViewController.swift in Sources */,
 				1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

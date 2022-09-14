@@ -14,6 +14,7 @@ protocol RouterDelegate: NSObject{
 }
 
 public class EmassiRouter:NSObject, RouterDelegate{
+    
     static var instance: EmassiRouter?{
         return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.router
     }
@@ -47,6 +48,13 @@ public class EmassiRouter:NSObject, RouterDelegate{
             viewController.present(presentedViewController, animated: true)
         case .push:
             viewController.navigationController?.pushViewController(presentedViewController, animated: true)
+        case .popToRoot:
+            viewController.navigationController?.popToRootViewController(animated: true)
+        case .pop:
+            viewController.navigationController?.popViewController(animated: true)
+        case .presentFullScreen:
+            presentedViewController.modalPresentationStyle = .fullScreen
+            viewController.present(presentedViewController, animated: true)
         case .modal:
             viewController.present(presentedViewController, animated: true)
         case .custom(let modalPresentationStyle, let modalTransitionStyle):
@@ -64,6 +72,7 @@ enum EmassiRoutedViews{
     case categories
     case favorites
     case documents
+    case workOrders
     
     public var viewController: UIViewController{
         let router = EmassiRouter.instance
@@ -106,6 +115,7 @@ enum EmassiRoutedViews{
         case .categories:
             let categoriesVC = PerformersCategoriesViewController()
             let menuNavigationController = MenuNavigationViewController(rootViewController: categoriesVC)
+            menuNavigationController.router = router
             return menuNavigationController
         case .favorites:
             let favoritesVC = FavoriteViewController()
@@ -113,6 +123,9 @@ enum EmassiRoutedViews{
         case .documents:
             let documentsVC = DocumentsViewController()
             return documentsVC
+        case .workOrders:
+            let workOrdersVC = WorkOrdersViewController()
+            return workOrdersVC
         }
         
     }
@@ -122,6 +135,9 @@ enum EmassiRoutedViews{
 enum ViewControllerPresentMode{
     case present
     case push
+    case popToRoot
+    case pop
+    case presentFullScreen
     case modal
     case custom(UIModalPresentationStyle, UIModalTransitionStyle)
 }
