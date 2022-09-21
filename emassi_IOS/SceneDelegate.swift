@@ -24,10 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         emassiApi = api
         
         router = EmassiRouter(emassiApi: api)
-        router?.setRootViewController(for: window, routedView: .categories)
-//        window?.makeKeyAndVisible()
-//        window?.rootViewController = FavoriteViewController()
-        //MenuNavigationViewController(rootViewController: PerformersCategoriesViewController())
+        if (api.isValidToken){
+            router?.setRootViewController(for: window, routedView: .categories)
+        } else {
+            router?.setRootViewController(for: window, routedView: .onboarding)
+        }
     }
 }
 

@@ -19,18 +19,27 @@ class UIRatingView: UIView{
         }
     }
     
+    @MainActor
+    override var isUserInteractionEnabled: Bool{
+        didSet{
+            reDrawStars()
+        }
+    }
+    @MainActor
     public var starSpacing: CGFloat = 5{
         didSet{
             stackView?.spacing = starSpacing
+            setNeedsLayout()
         }
     }
-    
+    @MainActor
     public var starImage = UIImage(systemName: "star.fill"){
         didSet{
             reDrawStars()
         }
     }
     
+    @MainActor
     public var filledStarColor: UIColor = .systemYellow{
         didSet{
             setRating(rating)
@@ -44,7 +53,7 @@ class UIRatingView: UIView{
     }
 
     
-    public var rating: Float = 3.0{
+    public var rating: Float = 0.0{
         didSet{
             setRating(rating)
         }
@@ -65,6 +74,7 @@ class UIRatingView: UIView{
         setupDefaultSettings()
     }
     
+    @MainActor
     private func setRating(_ rating: Float){
         for item in 0..<(stackView?.arrangedSubviews.count ?? 0){
             stackView?.arrangedSubviews[item].tintColor = item <= Int(rating)-1 ? filledStarColor : emptyStarColor
@@ -84,7 +94,25 @@ class UIRatingView: UIView{
             imageView.image = starImage
             imageView.tintColor = .placeholderText
             imageView.contentMode = .scaleAspectFit
+            if isUserInteractionEnabled{
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOnStar(sender:)))
+                imageView.isUserInteractionEnabled = isUserInteractionEnabled
+                imageView.addGestureRecognizer(tapGesture)
+            }
             stackView?.addArrangedSubview(imageView)
+        }
+    }
+    
+    @objc private func didPressOnStar(sender: UITapGestureRecognizer){
+        if let tappedView = sender.view{
+            if let tappedIndex = stackView?.arrangedSubviews.firstIndex(of: tappedView){
+                let tappedRating = Float(tappedIndex) + 1
+                if tappedRating == rating {
+                    rating = 0
+                } else {
+                    rating = tappedRating
+                }
+            }
         }
     }
     

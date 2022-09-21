@@ -43,6 +43,14 @@
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
 		114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersCategory.swift */; };
+		115BB49028D9072400686670 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB48F28D9072400686670 /* AccountInfo.swift */; };
+		115BB49228DA0C0D00686670 /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49128DA0C0D00686670 /* Offer.swift */; };
+		115BB49428DA2A0A00686670 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49328DA2A0A00686670 /* Time.swift */; };
+		115BB49628DA57D900686670 /* GeoPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49528DA57D900686670 /* GeoPosition.swift */; };
+		115BB49928DB7A8B00686670 /* ResetPasswordViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49828DB7A8B00686670 /* ResetPasswordViewContoller.swift */; };
+		115BB49B28DB80DF00686670 /* ResetPasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49A28DB80DF00686670 /* ResetPasswordPresenter.swift */; };
+		115BB49D28DB81A300686670 /* ResetPasswordInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49C28DB81A300686670 /* ResetPasswordInteractor.swift */; };
+		115BB49F28DB8D7100686670 /* SessionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49E28DB8D7100686670 /* SessionConfiguration.swift */; };
 		1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15428CE79F100BAF84B /* DocumentsViewController.swift */; };
 		1194A15828CE7EEB00BAF84B /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */; };
 		1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1194A15928CF482F00BAF84B /* URLExtension.swift */; };
@@ -61,6 +69,22 @@
 		11DCADEA28D08CC400568D16 /* WorkOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADE928D08CC400568D16 /* WorkOrdersViewController.swift */; };
 		11DCADEC28D1FD6F00568D16 /* WorkOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */; };
 		11DCADEE28D20FED00568D16 /* UIControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADED28D20FED00568D16 /* UIControlExtension.swift */; };
+		11DCADF028D24D9E00568D16 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADEF28D24D9E00568D16 /* SettingsViewController.swift */; };
+		11DCADF228D24E1000568D16 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADF128D24E1000568D16 /* SettingTableViewCell.swift */; };
+		11DCADF528D34C7900568D16 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADF428D34C7900568D16 /* FeedbackViewController.swift */; };
+		11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADF628D3537A00568D16 /* UITextViewEmassi.swift */; };
+		11DCADF928D3580500568D16 /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADF828D3580500568D16 /* Performer.swift */; };
+		11DCADFB28D35B3300568D16 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADFA28D35B3300568D16 /* Review.swift */; };
+		11DCADFD28D35B4C00568D16 /* Username.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADFC28D35B4C00568D16 /* Username.swift */; };
+		11DCADFF28D35B7100568D16 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCADFE28D35B7100568D16 /* Photo.swift */; };
+		11DCAE0128D35B9800568D16 /* Phone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0028D35B9800568D16 /* Phone.swift */; };
+		11DCAE0328D3613B00568D16 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0228D3613B00568D16 /* Customer.swift */; };
+		11DCAE0528D3619B00568D16 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0428D3619B00568D16 /* Address.swift */; };
+		11DCAE0728D364B100568D16 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0628D364B100568D16 /* Location.swift */; };
+		11DCAE0928D3669100568D16 /* Work.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0828D3669100568D16 /* Work.swift */; };
+		11DCAE0B28D3673B00568D16 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0A28D3673B00568D16 /* Category.swift */; };
+		11DCAE0D28D3691B00568D16 /* DateStartEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */; };
+		11DCAE1028D5EC8300568D16 /* CreateOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +145,14 @@
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
 		114E810928C3C6AE0028F39B /* PerformersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategory.swift; sourceTree = "<group>"; };
+		115BB48F28D9072400686670 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		115BB49128DA0C0D00686670 /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
+		115BB49328DA2A0A00686670 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		115BB49528DA57D900686670 /* GeoPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPosition.swift; sourceTree = "<group>"; };
+		115BB49828DB7A8B00686670 /* ResetPasswordViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewContoller.swift; sourceTree = "<group>"; };
+		115BB49A28DB80DF00686670 /* ResetPasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordPresenter.swift; sourceTree = "<group>"; };
+		115BB49C28DB81A300686670 /* ResetPasswordInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordInteractor.swift; sourceTree = "<group>"; };
+		115BB49E28DB8D7100686670 /* SessionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionConfiguration.swift; sourceTree = "<group>"; };
 		1194A15428CE79F100BAF84B /* DocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsViewController.swift; sourceTree = "<group>"; };
 		1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		1194A15928CF482F00BAF84B /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
@@ -139,6 +171,22 @@
 		11DCADE928D08CC400568D16 /* WorkOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrdersViewController.swift; sourceTree = "<group>"; };
 		11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOrderTableViewCell.swift; sourceTree = "<group>"; };
 		11DCADED28D20FED00568D16 /* UIControlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlExtension.swift; sourceTree = "<group>"; };
+		11DCADEF28D24D9E00568D16 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		11DCADF128D24E1000568D16 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		11DCADF428D34C7900568D16 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		11DCADF628D3537A00568D16 /* UITextViewEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewEmassi.swift; sourceTree = "<group>"; };
+		11DCADF828D3580500568D16 /* Performer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performer.swift; sourceTree = "<group>"; };
+		11DCADFA28D35B3300568D16 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		11DCADFC28D35B4C00568D16 /* Username.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Username.swift; sourceTree = "<group>"; };
+		11DCADFE28D35B7100568D16 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		11DCAE0028D35B9800568D16 /* Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phone.swift; sourceTree = "<group>"; };
+		11DCAE0228D3613B00568D16 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		11DCAE0428D3619B00568D16 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		11DCAE0628D364B100568D16 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		11DCAE0828D3669100568D16 /* Work.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Work.swift; sourceTree = "<group>"; };
+		11DCAE0A28D3673B00568D16 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStartEnd.swift; sourceTree = "<group>"; };
+		11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrderViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +217,7 @@
 		1140130428C9AD3100B14D5A /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
+				115BB49728DB7A6F00686670 /* ResetPasswordView */,
 				114E80E828C10B050028F39B /* OnboardingView */,
 				114E80F528C24E770028F39B /* RegisterView */,
 				114E80F028C219470028F39B /* LoginView */,
@@ -183,6 +232,7 @@
 				1194A15B28CF716900BAF84B /* Models */,
 				1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */,
 				1140131228CB742200B14D5A /* EmassiURLSession.swift */,
+				115BB49E28DB8D7100686670 /* SessionConfiguration.swift */,
 			);
 			path = EmassiApi;
 			sourceTree = "<group>";
@@ -228,6 +278,8 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				11DCAE0E28D5EC6E00568D16 /* CreateOrderView */,
+				11DCADF328D34C6900568D16 /* FeedbackView */,
 				11DCADE828D08B7A00568D16 /* WorkOrders */,
 				11DCADE728CFD35A00568D16 /* SettingsView */,
 				1194A15628CE7ED000BAF84B /* FavoriteView */,
@@ -325,6 +377,7 @@
 				114E810228C37E760028F39B /* UICheckBoxEmassi.swift */,
 				11CBB7C328C4F23900FED8D5 /* UILabelBordered.swift */,
 				11CBB7C528C4FDD700FED8D5 /* UIRatingView.swift */,
+				11DCADF628D3537A00568D16 /* UITextViewEmassi.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -340,6 +393,16 @@
 			path = PerformersCategories;
 			sourceTree = "<group>";
 		};
+		115BB49728DB7A6F00686670 /* ResetPasswordView */ = {
+			isa = PBXGroup;
+			children = (
+				115BB49828DB7A8B00686670 /* ResetPasswordViewContoller.swift */,
+				115BB49A28DB80DF00686670 /* ResetPasswordPresenter.swift */,
+				115BB49C28DB81A300686670 /* ResetPasswordInteractor.swift */,
+			);
+			path = ResetPasswordView;
+			sourceTree = "<group>";
+		};
 		1194A15628CE7ED000BAF84B /* FavoriteView */ = {
 			isa = PBXGroup;
 			children = (
@@ -352,6 +415,21 @@
 			isa = PBXGroup;
 			children = (
 				1194A15C28CF718A00BAF84B /* EmassiApiResponse.swift */,
+				11DCADF828D3580500568D16 /* Performer.swift */,
+				11DCADFA28D35B3300568D16 /* Review.swift */,
+				11DCADFC28D35B4C00568D16 /* Username.swift */,
+				11DCADFE28D35B7100568D16 /* Photo.swift */,
+				11DCAE0028D35B9800568D16 /* Phone.swift */,
+				11DCAE0228D3613B00568D16 /* Customer.swift */,
+				11DCAE0428D3619B00568D16 /* Address.swift */,
+				11DCAE0628D364B100568D16 /* Location.swift */,
+				11DCAE0828D3669100568D16 /* Work.swift */,
+				11DCAE0A28D3673B00568D16 /* Category.swift */,
+				11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */,
+				115BB48F28D9072400686670 /* AccountInfo.swift */,
+				115BB49128DA0C0D00686670 /* Offer.swift */,
+				115BB49328DA2A0A00686670 /* Time.swift */,
+				115BB49528DA57D900686670 /* GeoPosition.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -385,6 +463,8 @@
 		11DCADE728CFD35A00568D16 /* SettingsView */ = {
 			isa = PBXGroup;
 			children = (
+				11DCADEF28D24D9E00568D16 /* SettingsViewController.swift */,
+				11DCADF128D24E1000568D16 /* SettingTableViewCell.swift */,
 			);
 			path = SettingsView;
 			sourceTree = "<group>";
@@ -396,6 +476,22 @@
 				11DCADEB28D1FD6F00568D16 /* WorkOrderTableViewCell.swift */,
 			);
 			path = WorkOrders;
+			sourceTree = "<group>";
+		};
+		11DCADF328D34C6900568D16 /* FeedbackView */ = {
+			isa = PBXGroup;
+			children = (
+				11DCADF428D34C7900568D16 /* FeedbackViewController.swift */,
+			);
+			path = FeedbackView;
+			sourceTree = "<group>";
+		};
+		11DCAE0E28D5EC6E00568D16 /* CreateOrderView */ = {
+			isa = PBXGroup;
+			children = (
+				11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */,
+			);
+			path = CreateOrderView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -529,36 +625,55 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				115BB49428DA2A0A00686670 /* Time.swift in Sources */,
+				11DCADFF28D35B7100568D16 /* Photo.swift in Sources */,
+				11DCAE0D28D3691B00568D16 /* DateStartEnd.swift in Sources */,
+				115BB49B28DB80DF00686670 /* ResetPasswordPresenter.swift in Sources */,
 				114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */,
 				114E80F728C24E890028F39B /* RegisterViewController.swift in Sources */,
+				11DCAE0B28D3673B00568D16 /* Category.swift in Sources */,
 				1194A16528CFB3A600BAF84B /* UIViewControllerExtension.swift in Sources */,
 				114E810128C28AA90028F39B /* UISeparatorWithView.swift in Sources */,
+				11DCAE0328D3613B00568D16 /* Customer.swift in Sources */,
 				1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */,
+				11DCAE1028D5EC8300568D16 /* CreateOrderViewController.swift in Sources */,
 				1194A15F28CF7DED00BAF84B /* EmassiRouter.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
 				1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */,
+				11DCAE0528D3619B00568D16 /* Address.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
 				1194A15D28CF718A00BAF84B /* EmassiApiResponse.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
+				115BB49228DA0C0D00686670 /* Offer.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
+				115BB49F28DB8D7100686670 /* SessionConfiguration.swift in Sources */,
+				11DCADFD28D35B4C00568D16 /* Username.swift in Sources */,
 				11CBB7C628C4FDD700FED8D5 /* UIRatingView.swift in Sources */,
 				114E80FF28C254700028F39B /* UITextFieldExtension.swift in Sources */,
+				11DCAE0728D364B100568D16 /* Location.swift in Sources */,
+				115BB49928DB7A8B00686670 /* ResetPasswordViewContoller.swift in Sources */,
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
+				115BB49028D9072400686670 /* AccountInfo.swift in Sources */,
+				11DCADF528D34C7900568D16 /* FeedbackViewController.swift in Sources */,
 				1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */,
 				1194A16328CFA7C000BAF84B /* RegisterInteractor.swift in Sources */,
+				11DCADF928D3580500568D16 /* Performer.swift in Sources */,
 				1194A16128CFA70E00BAF84B /* RegisterPresenter.swift in Sources */,
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
+				11DCADF228D24E1000568D16 /* SettingTableViewCell.swift in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
 				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				1194A15828CE7EEB00BAF84B /* FavoriteViewController.swift in Sources */,
 				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
+				115BB49628DA57D900686670 /* GeoPosition.swift in Sources */,
+				11DCADF028D24D9E00568D16 /* SettingsViewController.swift in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				11DCADEE28D20FED00568D16 /* UIControlExtension.swift in Sources */,
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
@@ -572,11 +687,16 @@
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
 				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
 				1194A15528CE79F100BAF84B /* DocumentsViewController.swift in Sources */,
+				115BB49D28DB81A300686670 /* ResetPasswordInteractor.swift in Sources */,
+				11DCADFB28D35B3300568D16 /* Review.swift in Sources */,
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
+				11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */,
 				11DCADEA28D08CC400568D16 /* WorkOrdersViewController.swift in Sources */,
+				11DCAE0128D35B9800568D16 /* Phone.swift in Sources */,
 				1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */,
+				11DCAE0928D3669100568D16 /* Work.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@ protocol LoginPresenterProtocol: NSObject{
     func login(login: String?, password: String?)
     func setError(message: String)
     func goToRegister()
+    func goToResetPassword()
 }
 
 class LoginPresenter:NSObject, LoginPresenterProtocol{
@@ -51,6 +52,12 @@ class LoginPresenter:NSObject, LoginPresenterProtocol{
     func goToRegister() {
         if let viewController = loginView?.getViewController(){
                 router?.goToViewController(from: viewController, to: .register, presentationMode: .present)
+        }
+    }
+    
+    func goToResetPassword() {
+        if let viewController = loginView?.getViewController(){
+                router?.goToViewController(from: viewController, to: .resetPassword, presentationMode: .present)
         }
     }
     

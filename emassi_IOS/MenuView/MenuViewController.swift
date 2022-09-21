@@ -58,6 +58,16 @@ class MenuViewController: UIViewController{
             .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
                 
             },
+            .init(title: "Отзыв", image: "star.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .feedback, presentationMode: .push)
+                }
+            },
+            .init(title: "Создать заявку", image: "star.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .createOrder, presentationMode: .push)
+                }
+            },
             .init(title: "Избранное", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
                     router?.goToViewController(from: currentVC, to: .favorites, presentationMode: .push)
@@ -76,11 +86,14 @@ class MenuViewController: UIViewController{
                 
             },
             .init(title: "Настройки", image: "gear"){ [weak menuNavigationController, weak router] in
-                
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .settings, presentationMode: .push)
+                }
             },
         ]
         menuTableView?.reloadData()
     }
+    
     func setupMenuTableViewConstraints(to view: UIView){
         guard let menuTableView = menuTableView, let profileImageView = profileImageView else {
             return
@@ -114,7 +127,7 @@ class MenuViewController: UIViewController{
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-
+            profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor, multiplier: 1.2),
         ])
     }
     

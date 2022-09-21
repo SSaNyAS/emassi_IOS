@@ -25,7 +25,7 @@ class LoginInteractor: LoginInteractorProtocol{
     
     func login(email: String, password: String, completion: @escaping (Bool, String) -> Void) {
         api.getAccountToken(email: email, password: password) { apiResponse, error in
-            if apiResponse?.statusMessage == .NO_ERRORS {
+            if !(apiResponse?.isErrored ?? true) {
                 completion(true,"")
                 return
             }

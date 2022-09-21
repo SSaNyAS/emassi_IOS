@@ -20,7 +20,6 @@ class WorkOrdersViewController: UIViewController{
         view.backgroundColor = .white
         createOrdersTableView()
         setupTableViewConstraints()
-        
     }
     
     private func setupTableViewConstraints(){

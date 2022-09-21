@@ -8,13 +8,34 @@
 import Foundation
 struct EmassiApiResponse: Codable{
     let status: Int
-    let message: String
+    let message: String?
     let data: Data?
     
     enum CodingKeys: CodingKey{
         case status
         case message
         case data
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.status = try container.decode(Int.self, forKey: .status)
+        self.message = try? container.decode(String.self, forKey: .message)
+        self.data = try? container.decodeIfPresent(Data.self, forKey: .data)
+    }
+    
+    init(status: Int,message: String?, data: Data? = nil){
+        self.status = status
+        self.message = message
+        self.data = data
+    }
+    
+    public var isErrored: Bool{
+        return statusMessage != .NO_ERRORS
+    }
+    
+    public func appendingData(data: Data?) -> EmassiApiResponse{
+        return EmassiApiResponse(status: status, message: message, data: data)
     }
     
     var statusMessage: EmassiApiStatus?{

@@ -70,13 +70,15 @@ class MenuNavigationViewController: UINavigationController {
     }
     
     @objc func goBack(){
-        popViewController(animated: true)
+        _ = popViewController(animated: true)
     }
     
     @objc func toggleMenu(){
         isOpenedMenu.toggle()
         changeMenu()
     }
+    
+    
     
     private func changeMenu(){
         guard let menuView = menuViewController?.view else { return }
@@ -96,10 +98,27 @@ class MenuNavigationViewController: UINavigationController {
             currentView.isUserInteractionEnabled = true
             currentView.mask = nil
         }
-        
+        updateMenuViewController()
         UIView.animate(withDuration: menuAnimationDuration) { [weak self] in
             guard let self = self else {return}
             menuView.frame.origin = self.isOpenedMenu ? CGPoint.init(x: menuEndXposition, y: 0) : CGPoint.init(x: menuStartXposition, y: 0)
+        }
+    }
+    
+    private func updateMenuViewController(){
+        if let router = router as? EmassiRouter{
+            router.emassiApi.getAccountInfo { [weak menuViewController] accountinfo, apiResponse, error in
+                DispatchQueue.main.async {
+                    menuViewController?.nameLabel?.text = accountinfo?.username.common
+                    menuViewController?.profileImageView?.image
+                }
+            }
+            router.emassiApi.getCustomerProfile { profile, apiResponse, error in
+                print(profile)
+            }
+            router.emassiApi.getPerformerProfile { profile, apiResponse, error in
+                print(profile)
+            }
         }
     }
     

@@ -27,7 +27,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     weak var rememberPasswordChecker: UISwitch?
     weak var loginButton: UIButton?
     weak var goRegisterButton: UIButton?
-    weak var resetPasswordLabel: UILabel?
+    weak var resetPasswordButton: UIButton?
     weak var authorizationViews: AuthorizationViewsData?
     var presenter: LoginPresenterProtocol?
     var disposeBag: Set<AnyCancellable> = []
@@ -65,8 +65,19 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         
         goRegisterButton?.setTitle("Зарегистрироваться в Emassi", for: .normal)
         goRegisterButton?.addTarget(self, action: #selector(goRegisterButtonClick), for: .touchUpInside)
-        resetPasswordLabel?.attributedText = NSAttributedString(string: "Забыли пароль?", attributes: [.attachment:"GGGGG"])
         
+        resetPasswordButton?.setTitle("Забыли пароль?", for: .normal)
+        resetPasswordButton?.addTarget(self, action: #selector(goResetPassword), for: .touchUpInside)
+        
+        rememberPasswordChecker?.addTarget(self, action: #selector(savePasswordChanged), for: .touchUpInside)
+    }
+    
+    @objc func savePasswordChanged(){
+        SessionConfiguration.saveAuthorization = rememberPasswordChecker?.isOn ?? false
+    }
+    
+    @objc func goResetPassword(){
+        presenter?.goToResetPassword()
     }
     
     @objc func goRegisterButtonClick(){
@@ -78,26 +89,27 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     }
     
     func setupResetPasswordLabel(){
-        let label = UILabel()
-        label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.tintColor = .clear
+        button.setTitleColor(.lightGray, for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(label)
-        resetPasswordLabel = label
+        view.addSubview(button)
+        resetPasswordButton = button
         
         guard let goRegisterButton = goRegisterButton else {
             return
         }
         
-        let bottomConstraint = label.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
+        let bottomConstraint = button.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
         bottomConstraint.priority = .defaultLow
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: goRegisterButton.bottomAnchor, constant: 10),
-            label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            button.topAnchor.constraint(equalTo: goRegisterButton.bottomAnchor, constant: 10),
+            button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             bottomConstraint
         ])
     }

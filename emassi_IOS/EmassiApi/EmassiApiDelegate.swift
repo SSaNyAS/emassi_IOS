@@ -58,15 +58,18 @@ protocol EmassiApiDelegate{
 
 class EmassiApi: EmassiApiFetcher{
     let hostUrl = URL(string: "https://test.emassi.app")
-    private let tokenKey = "Token"
 
     var token: String?{
         get{
-            UserDefaults.standard.string(forKey: tokenKey)
+            SessionConfiguration.Token
         }
         set{
-            UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+            SessionConfiguration.Token = newValue
         }
+    }
+    
+    public var isValidToken: Bool{
+        return token != nil && (token?.isEmpty ?? true) == false
     }
     
     private lazy var jsonDecoder: JSONDecoder = {
@@ -75,8 +78,473 @@ class EmassiApi: EmassiApiFetcher{
         return decoder
     }()
     
+    private lazy var jsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = JSONEncoder.DateEncodingStrategy.secondsSince1970
+        return encoder
+    }()
+    
     override init(apiKey: String,skey: String) {
         super.init(apiKey: apiKey,skey: skey)
+    }
+    
+    func updateDeviceToken(deviceToken: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account/\(token ?? "")/device",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        let bodyString = """
+            {
+                "device_token": "\(deviceToken)"
+            }
+        """
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func getGeoIPLocation(completion: @escaping (Location?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account/geoip",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                let geoPos = try? self?.jsonDecoder.decode(Location.self, from: data)
+                completion(geoPos,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func sendOffer(workId: String, text: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)/offer",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        let bodyString = """
+            {
+                "text": "\(text)"
+            }
+        """
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func sendCustomerFeedback(workId: String, rating: Float, text: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work/\(workId)/feedback",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        let bodyString = """
+            {
+                "rating": "\(rating)",
+                "text": "\(text)"
+            }
+        """
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func deleteCompletedWorkPerformer(workId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func acceptPerformerForWork(workId: String, performerId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        let bodyString = "{ \"id_performer\": \"\(performerId)\" }"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func changeWorkStatus(workId: String, action: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        let bodyString = "{ \"action\": \"\(action)\" }"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func getWork(workId: String,  completion: @escaping (WorkRequest?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                let work = try? self?.jsonDecoder.decode(WorkRequest.self, from: data)
+                completion(work,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func getAllWorks(active: Bool, type: String, startDate: Date? = nil, completion: @escaping ([AllWork]?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        let startDateIntervalEncoded = try? jsonEncoder.encode(startDate)
+        let startDateInterval = startDateIntervalEncoded == nil ? "0" : String(data: startDateIntervalEncoded!, encoding: .utf8) ?? "0"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("\(active)", forHTTPHeaderField: "active")
+        request.addValue(type, forHTTPHeaderField: "type")
+        request.addValue("\(startDateInterval)", forHTTPHeaderField: "dt_start")
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                let performerProfile = try? self?.jsonDecoder.decode([AllWork].self, from: data)
+                completion(performerProfile,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func getPerformerProfile(completion: @escaping (PerformerProfile?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                let performerProfile = try? self?.jsonDecoder.decode(PerformerProfile.self, from: data)
+                completion(performerProfile,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func deleteWork(workId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue(token ?? "", forHTTPHeaderField: "id_token_customer")
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func uploadWorkPhoto(workId: String, photoJpeg: Data, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/work/\(workId)/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        // проверка размера изображения
+        // проверка формата изображения
+        
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.httpBody = photoJpeg
+        request.addValue(token ?? "", forHTTPHeaderField: "id_token_customer")
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+
+    
+    func deleteCompletedWorkCustomer(workId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func getPerformersForWork(workId: String, completion: @escaping (_ performers: [PerformerForWork],EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion([],nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let performers = try? self?.jsonDecoder.decode([PerformerForWork].self, from: data)
+                completion(performers ?? [], apiResponse, error)
+                return
+            }
+            completion([],apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func getWorks(active: Bool, completion: @escaping (_ works: [Work],EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work",relativeTo: hostUrl) else{
+            completion([],nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue(active.description, forHTTPHeaderField: "active")
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let works = try? self?.jsonDecoder.decode([Work].self, from: data)
+                completion(works ?? [], apiResponse, error)
+                return
+            }
+            completion([],apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func getMyActiveWorks(active: Bool, completion: @escaping (_ activeWorks: [WorkActive],EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work",relativeTo: hostUrl) else{
+            completion([],nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue(active.description, forHTTPHeaderField: "active")
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let activeWorks = try? self?.jsonDecoder.decode([WorkActive].self, from: data)
+                completion(activeWorks ?? [], apiResponse, error)
+                return
+            }
+            completion([],apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func addNewWork(work: Work, completion: @escaping (_ workId: String?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        let bodyData = try? jsonEncoder.encode(work)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.httpBody = bodyData
+        
+        let task = baseDataRequest(request: request){ apiResponse,error in
+            if let data = apiResponse?.data{
+                if let dataJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+                    let workId = dataJson["id"] as? String
+                    completion(workId,apiResponse,error)
+                    return
+                }
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func updatePerformerProfile(profile: PerformerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        let bodyData = try? jsonEncoder.encode(profile)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyData
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func getPerformerProfileByIdPublic(performerId: String, completion: @escaping (PerformerInfo?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/performer/\(performerId)",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request) {[weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let performer = try? self?.jsonDecoder.decode(PerformerInfo.self, from: data)
+                completion(performer,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func uploadCustomerPhoto(photoJpeg: Data, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        // проверка размера изображения
+        // проверка формата изображения
+        
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = photoJpeg
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func updateCustomerProfile(profile: CustomerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        let bodyData = try? jsonEncoder.encode(profile)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = bodyData
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func getCustomerProfile(completion: @escaping (CustomerProfile?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let customerProfile = try? self?.jsonDecoder.decode(CustomerProfile.self, from: data)
+                completion(customerProfile,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func getPerformersListByCategory(category: String, completion: @escaping ([Performer],EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/performers",relativeTo: hostUrl) else{
+            completion([],nil,nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue(category, forHTTPHeaderField: "category")
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
+            if let data = apiResponse?.data{
+                let performersList = try? self?.jsonDecoder.decode([Performer].self, from: data)
+                completion(performersList ?? [],apiResponse,error)
+                return
+            }
+            completion([],apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func restorePassword(email: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account/password",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue(email, forHTTPHeaderField: "email")
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func getAccountInfo(completion: @escaping (AccountInfoModel?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/account/\(token ?? "")",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request) {[weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                let accountInfo = try? self?.jsonDecoder.decode(AccountInfo.self, from: data)
+                completion(accountInfo,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
     }
     
     func registerAndGetToken(email: String, password: String, lang: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
@@ -100,24 +568,9 @@ class EmassiApi: EmassiApiFetcher{
         
         let sign = computeSign(email: email, password: password)
         
-        request.addValue(sign.description, forHTTPHeaderField: "sign")
-        let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data,response, error in
-            if let data = data{
-                print(String(data: data, encoding: .utf8) ?? "")
-                if let apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
-                    
-                    if let responseData = apiResponse.data{
-                        if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
-                            self?.token = dataWithToken["token"]
-                        }
-                    }
-                    completion(apiResponse,error)
-                    return
-                }
-            }
-            completion(nil,error)
-        }
-        let task = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
+        request.addValue(sign, forHTTPHeaderField: "sign")
+        
+        let task = baseDataRequest(request: request, completion: completion)
         task.resume()
     }
     
@@ -131,13 +584,27 @@ class EmassiApi: EmassiApiFetcher{
         request.httpMethod = "GET"
         
         let sign = computeSign(email: email, password: password)
-        request.addValue(sign.description, forHTTPHeaderField: "sign")
+        request.addValue(sign, forHTTPHeaderField: "sign")
+        request.addValue(email, forHTTPHeaderField: "email")
+        request.addValue(password, forHTTPHeaderField: "password")
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func baseDataRequest(request: URLRequest, completion: @escaping (EmassiApiResponse?, Error?)-> Void) -> URLSessionDataTask{
         
         let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data,response, error in
             if let data = data{
-                print(String(data: data, encoding: .utf8) ?? "")
-                if let apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
-                    
+                print("\n____RESPONSE____\n \(String(data: data, encoding: .utf8) ?? "")\n____END____\n")
+                
+                if var apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
+                    if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+                        if let dataJson = json["data"]{
+                            let dataObj = try? JSONSerialization.data(withJSONObject: dataJson)
+                            apiResponse = apiResponse.appendingData(data: dataObj)
+                        }
+                    }
                     if let responseData = apiResponse.data{
                         if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
                             self?.token = dataWithToken["token"]
@@ -149,18 +616,8 @@ class EmassiApi: EmassiApiFetcher{
             }
             completion(nil,error)
         }
-        
-        let task = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
-        task.resume()
-    }
-    
-    func baseDataRequest(requestInfo: EmassiRequestInfo, completion: @escaping (Data?, URLResponse?, Error?)-> Void){
-        guard let url = URL(string: requestInfo.address,relativeTo: hostUrl) else {return}
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "GET"
-        
-        let dataTask = dataFetchURLSession.dataTask(with: urlRequest, completionHandler: completion)
-        dataTask.resume()
+        let dataTask = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
+        return dataTask
     }
     
     func computeSign(email: String, password: String) -> String{
