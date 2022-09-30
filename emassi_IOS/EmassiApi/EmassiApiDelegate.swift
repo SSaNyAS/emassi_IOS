@@ -81,6 +81,7 @@ class EmassiApi: EmassiApiFetcher{
     private lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = JSONEncoder.DateEncodingStrategy.secondsSince1970
+        encoder.outputFormatting = [.withoutEscapingSlashes]
         return encoder
     }()
     
@@ -106,6 +107,25 @@ class EmassiApi: EmassiApiFetcher{
         
         let task = baseDataRequest(request: request, completion: completion)
         task.resume()
+    }
+    
+    func getAllPerformersSubCategories(completion: @escaping ([PerformersSubCategory], EmassiApiResponse?, Error?) -> Void){
+        let allSubCategoriesArray = categories.map({$0.subCategories})
+        var temp: [String:PerformersSubCategory] = [:]
+        
+        for subCategories in allSubCategoriesArray{
+            subCategories.forEach({
+                temp.updateValue($0, forKey: $0.value)
+            })
+        }
+        let allSubCategories = temp.values.sorted(by: {
+            $0.value < $1.value
+        })
+        completion(allSubCategories,nil,nil)
+    }
+    
+    func getPerformersCategories(completion: @escaping ([PerformersCategory], EmassiApiResponse?, Error?) -> Void){
+        completion(categories,nil,nil)
     }
     
     func getGeoIPLocation(completion: @escaping (Location?,EmassiApiResponse?,Error?) -> Void){
@@ -343,7 +363,7 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func getWorks(active: Bool, completion: @escaping (_ works: [Work],EmassiApiResponse?,Error?) -> Void){
+    func getMyWorksRequests(active: Bool, completion: @escaping (_ works: [Work],EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work",relativeTo: hostUrl) else{
             completion([],nil,nil)
             return
@@ -385,7 +405,7 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func addNewWork(work: Work, completion: @escaping (_ workId: String?,EmassiApiResponse?,Error?) -> Void){
+    func addNewWork(work: WorkCreate, completion: @escaping (_ workId: String?,EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/customer/\(token ?? "")/work",relativeTo: hostUrl) else{
             completion(nil,nil,nil)
             return
@@ -409,13 +429,142 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func updatePerformerProfile(profile: PerformerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+    func downloadWorkPhoto(workId: String, photoId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        guard let url = URL(string: "/api/v1/work/\(workId)/photo/\(photoId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = imageDownloadURLSession.dataTask(with: request) { [weak self] data, _, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            guard error == nil else {
+                completion(nil,apiResponse)
+                return
+            }
+            
+            completion(data,apiResponse)
+        }
+        task.resume()
+    }
+    
+    func downloadCustomerPhotoPublic(customerId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/customer/\(customerId)/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = imageDownloadURLSession.dataTask(with: request) { [weak self] data, _, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            guard error == nil else {
+                completion(nil,apiResponse)
+                return
+            }
+            
+            completion(data,apiResponse)
+        }
+        task.resume()
+    }
+    
+    func downloadPerformerPhotoPublic(performerId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/performer/\(performerId)/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = imageDownloadURLSession.dataTask(with: request) {[weak self] data, _, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            guard error == nil else {
+                completion(nil,apiResponse)
+                return
+            }
+            
+            completion(data,apiResponse)
+        }
+        task.resume()
+    }
+    
+    func downloadPerformerPhotoPublic(completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = imageDownloadURLSession.dataTask(with: request) { [weak self] data, _, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            guard error == nil else {
+                completion(nil,apiResponse)
+                return
+            }
+            
+            completion(data,apiResponse)
+        }
+        task.resume()
+    }
+    
+    func downloadCustomerPhotoPublic(completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = imageDownloadURLSession.dataTask(with: request) { [weak self] data, _, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            guard error == nil else {
+                completion(nil,apiResponse)
+                return
+            }
+            
+            completion(data,apiResponse)
+        }
+        task.resume()
+    }
+    
+    func updatePerformerProfile(profile: RequestPerformerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")",relativeTo: hostUrl) else{
             completion(nil,nil)
             return
         }
-        let bodyData = try? jsonEncoder.encode(profile)
         
+        let bodyData = """
+            {
+                "username": {
+                    "firstname":"Даниил",
+                    "common":"Шандыба Даниил Евгеньевич",
+                    "lastname":"Шандыба"
+                },
+                "category":[],
+                "comments":"",
+                "phonenumber":"",
+                "location":[],
+                "address":{
+                    "line2":"",
+                    "country":"",
+                    "state":"",
+                    "city":"",
+                    "zip":"",
+                    "line1":""
+                }
+            }
+        """.data(using: .utf8, allowLossyConversion: false)
+        
+        var str = String(data: bodyData ?? Data(), encoding: .utf8)
+        print(str)
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = bodyData
@@ -444,8 +593,8 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func uploadCustomerPhoto(photoJpeg: Data, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
-        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+    func uploadPerformerDocs(photoJpeg: Data, documentType: DocumentType, documentName: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/docs",relativeTo: hostUrl) else{
             completion(nil,nil)
             return
         }
@@ -453,16 +602,102 @@ class EmassiApi: EmassiApiFetcher{
         // проверка размера изображения
         // проверка формата изображения
         
-        
+        let boundary = "---------------------------\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.httpBody = photoJpeg
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var form = createMultipartFormFor(parameterName: "file", contentType: "image/jpeg", fileName: "\(token ?? "f")_\(documentName).jpeg", data: photoJpeg, boundary: boundary)
+        
+        if let documentTypeData = documentType.rawValue.data(using: .utf8){
+            form += createMultipartFormFor(parameterName: "type", contentType: "text", data: documentTypeData, boundary: boundary)
+        }
+        if let nameData = documentName.data(using: .utf8){
+            form += createMultipartFormFor(parameterName: "name", contentType: "text", data: nameData, boundary: boundary)
+        }
+        form += "--\(boundary)--\r\n"
+        request.httpBody = form.data(using: .utf8)
         
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
     }
     
-    func updateCustomerProfile(profile: CustomerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+    func deletePerformerDocs(docId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/docs/\(docId)",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
+    func getPerformerDocs(docId: String, completion: @escaping (Data?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/docs/\(docId)",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        let task = imageDownloadURLSession.dataTask(with: request) {[weak self] data, response, error in
+            let apiResponse = self?.getApiResponse(data: data ?? Data())
+            
+            guard error == nil else {
+                completion(data,apiResponse,error)
+                return
+            }
+        
+            completion(data,apiResponse,error)
+        }
+        task.resume()
+    }
+    
+    func uploadPerformerPhoto(photoJpeg: Data, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        // проверка размера изображения
+        let boundary = "---------------------------\(UUID().uuidString)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "performer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
+        photoForm += "--\(boundary)--\r\n"
+        request.httpBody = photoForm.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func uploadCustomerPhoto(photoJpeg: Data, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/customer/\(token ?? "")/photo",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        // проверка размера изображения
+        let boundary = "---------------------------\(UUID().uuidString)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "customer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
+        photoForm += "--\(boundary)--\r\n"
+        request.httpBody = photoForm.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request,completion: completion)
+        task.resume()
+    }
+    
+    func updateCustomerProfile(profile: RequestCustomerProfile, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/customer/\(token ?? "")",relativeTo: hostUrl) else{
             completion(nil,nil)
             return
@@ -495,7 +730,7 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func getPerformersListByCategory(category: String, completion: @escaping ([Performer],EmassiApiResponse?,Error?) -> Void){
+    func getPerformersListByCategory(category: String, completion: @escaping ([PerformerForList],EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/customer/\(token ?? "")/performers",relativeTo: hostUrl) else{
             completion([],nil,nil)
             return
@@ -506,7 +741,7 @@ class EmassiApi: EmassiApiFetcher{
         
         let task = baseDataRequest(request: request){ [weak self] apiResponse,error in
             if let data = apiResponse?.data{
-                let performersList = try? self?.jsonDecoder.decode([Performer].self, from: data)
+                let performersList = try? self?.jsonDecoder.decode([PerformerForList].self, from: data)
                 completion(performersList ?? [],apiResponse,error)
                 return
             }
@@ -569,6 +804,10 @@ class EmassiApi: EmassiApiFetcher{
         let sign = computeSign(email: email, password: password)
         
         request.addValue(sign, forHTTPHeaderField: "sign")
+        request.addValue(email, forHTTPHeaderField: "email")
+        request.addValue(password, forHTTPHeaderField: "password")
+        request.addValue(lang, forHTTPHeaderField: "lang")
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         
         let task = baseDataRequest(request: request, completion: completion)
         task.resume()
@@ -598,13 +837,7 @@ class EmassiApi: EmassiApiFetcher{
             if let data = data{
                 print("\n____RESPONSE____\n \(String(data: data, encoding: .utf8) ?? "")\n____END____\n")
                 
-                if var apiResponse = try? self?.jsonDecoder.decode(EmassiApiResponse.self, from: data){
-                    if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
-                        if let dataJson = json["data"]{
-                            let dataObj = try? JSONSerialization.data(withJSONObject: dataJson)
-                            apiResponse = apiResponse.appendingData(data: dataObj)
-                        }
-                    }
+                if let apiResponse = self?.getApiResponse(data: data){
                     if let responseData = apiResponse.data{
                         if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
                             self?.token = dataWithToken["token"]
@@ -618,6 +851,53 @@ class EmassiApi: EmassiApiFetcher{
         }
         let dataTask = dataFetchURLSession.dataTask(with: request, completionHandler: completionHandler)
         return dataTask
+    }
+    
+    func getApiResponse(data: Data) -> EmassiApiResponse?{
+        var apiResponse: EmassiApiResponse?
+        
+        apiResponse = try? jsonDecoder.decode(EmassiApiResponse.self, from: data)
+        if apiResponse == nil {
+            if let errorObj = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+                if let jsonError = errorObj["error"]{
+                    if let jsonErrorData = try? JSONSerialization.data(withJSONObject: jsonError){
+                        apiResponse = try? jsonDecoder.decode(EmassiApiResponse.self, from: jsonErrorData)
+                    }
+                }
+            }
+        }
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+            if let dataJson = json["data"]{
+                let dataObj = try? JSONSerialization.data(withJSONObject: dataJson)
+                apiResponse = apiResponse?.appendingData(data: dataObj)
+            }
+        }
+        return apiResponse
+    }
+    
+    func createMultipartFormFor(parameterName: String, contentType: String,fileName: String? = nil, data: Data, boundary: String) -> String{
+        var bodyString = ""
+        bodyString += "--\(boundary)\r\n"
+        bodyString += "Content-Disposition:form-data; name=\"\(parameterName)\""
+        if fileName != nil {
+            bodyString += "; filename=\"\(fileName!)\""
+        }
+        
+        bodyString += "\r\n\r\n"
+        if contentType.hasPrefix("text"){
+            bodyString += String(data: data, encoding: .utf8) ?? ""
+        } else if contentType.hasPrefix("file"){
+            let src = String(data: data, encoding: .utf8)
+            if let url = URL(string: src ?? ""){
+                if let fileData = try? Data(contentsOf: url){
+                    bodyString +=  String.init(data: fileData, encoding: .utf8) ?? ""
+                }
+            }
+        } else if contentType.hasPrefix("image"){
+            bodyString += data.base64EncodedString()
+        }
+        bodyString += "\r\n\r\n"
+        return bodyString
     }
     
     func computeSign(email: String, password: String) -> String{
@@ -634,6 +914,69 @@ class EmassiApi: EmassiApiFetcher{
         let resultedString = hmacString[(firstIndexOfDoubleDot ?? hmacString.startIndex)...]
         return resultedString.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+    
+    let categories = [
+        PerformersCategory(name: "Перевозки и курьерские услуги", value: "0100", imageAddress: "",subCategories: [
+            .init(name: "Перевозка вещей во время переезда", value: "0101"),
+            .init(name: "Грузоперевозки", value: "0102"),
+            .init(name: "Пассажирские перевозки", value: "0103"),
+            .init(name: "Услуги грузчиков", value: "0104"),
+            .init(name: "Манипуляторы и подъемные краны", value: "0105"),
+            .init(name: "Услуги пешего курьера", value: "0106"),
+            .init(name: "Услуги курьера на авто", value: "0107"),
+            .init(name: "Доставка товара из интернет-магазина", value: "0108"),
+            .init(name: "Доставка цветов", value: "0109"),
+            .init(name: "Доставка продуктов и еды из ресторанов", value: "0110"),
+            .init(name: "Доставка лекарств", value: "0111"),
+            .init(name: "Курьерская доставка", value: "0112"),
+            .init(name: "Аренда склада", value: "0113"),
+            .init(name: "Услуги такси", value: "0114"),
+            .init(name: "Услуга трезвый водитель", value: "0115"),
+            .init(name: "Международные или междугородние перевозки", value: "0116"),
+            .init(name: "Эвакуация транспорта", value: "0117"),
+            .init(name: "Другое", value: "0118")
+        ]),
+        
+        PerformersCategory(name: "Строительство и ремонтные работы", value: "0200", imageAddress: "",subCategories: [
+            
+        ]),
+        PerformersCategory(name: "Быт и клининговые услуги", value: "0300", imageAddress: "",subCategories: [
+            
+        ]),
+        PerformersCategory(name: "Перевод и копирайтинг", value: "0400", imageAddress: "",subCategories: [
+            
+        ]),
+        
+        PerformersCategory(name: "Преподаватели",value: "cat1", imageAddress: "category1", subCategories: [
+            .init(name: "Репетитор по математике", value: "cat1"),
+            .init(name: "Репетитор по истории", value: "cat2"),
+            .init(name: "Репетитор по Географии", value: "cat3"),
+        ]),
+        
+        PerformersCategory(name: "Дизайнеры",value: "cat6", imageAddress: "category2",subCategories: [
+            .init(name: "Графический дизайнер", value: "cat4"),
+            .init(name: "Дизайнер интерьеров", value: "cat5")
+        ]),
+        
+        PerformersCategory(name: "Разработка и поддержка ПО",value: "0501", imageAddress: "category3", subCategories: [
+            .init(name: "Разработка и поддержка ПО", value: "0501"),
+            .init(name: "Разработка и поддержка приложений для iOS", value: "0502"),
+            .init(name: "Разработка и поддержка приложений для Android", value: "0503"),
+            .init(name: "Создание сайта под ключ", value: "0504"),
+            .init(name: "Дизайн сайта и приложений", value: "0505"),
+            .init(name: "Верстка", value: "0506"),
+            .init(name: "Поддержка и доработка сайтов", value: "0507"),
+            .init(name: "Тестирование ПО", value: "0508"),
+            .init(name: "Администрирование серверов", value: "0509"),
+            .init(name: "Разработка и внедрение CRM систем", value: "0510"),
+            .init(name: "Внедрение 1С", value: "0511"),
+            .init(name: "Другое", value: "0512"),
+        ]),
+        
+        PerformersCategory(name: "Персональные тренера",value: "cat4", imageAddress: "category4", subCategories: [
+            .init(name: "Персональный тренер", value: "personalTrainer")
+        ]),
+    ]
 }
 
 struct EmassiRequestInfo {
@@ -642,4 +985,23 @@ struct EmassiRequestInfo {
     var attachHttpHeaders: [String:String]?
     var queryParams: [URLQueryItem]?
     var httpBody: Data?
+}
+
+struct MultipartData: Codable{
+    let parameterName: String
+    let dataType: String
+    let data: Data
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.parameterName, forKey: .parameterName)
+        try container.encode(self.dataType, forKey: .dataType)
+        try container.encode(self.data, forKey: .data)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case parameterName = "key"
+        case dataType = "type"
+        case data = "value"
+    }
 }

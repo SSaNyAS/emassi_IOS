@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 class UITextFieldEmassi: UITextField{
-    static let defaultHeight: CGFloat = 46
+    static let defaultHeight: CGFloat = 40
     
     init(){
         super.init(frame: .zero)

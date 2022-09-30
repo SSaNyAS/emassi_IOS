@@ -29,7 +29,12 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     weak var goRegisterButton: UIButton?
     weak var resetPasswordButton: UIButton?
     weak var authorizationViews: AuthorizationViewsData?
-    var presenter: LoginPresenterProtocol?
+    var presenter: LoginPresenterProtocol?{
+        didSet{
+            presenter?.loginView = self
+            presenter?.didInit()
+        }
+    }
     var disposeBag: Set<AnyCancellable> = []
     
     deinit{
@@ -40,7 +45,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad() 
         view.backgroundColor = .white
         setupViews()
     }
@@ -68,12 +73,6 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         
         resetPasswordButton?.setTitle("Забыли пароль?", for: .normal)
         resetPasswordButton?.addTarget(self, action: #selector(goResetPassword), for: .touchUpInside)
-        
-        rememberPasswordChecker?.addTarget(self, action: #selector(savePasswordChanged), for: .touchUpInside)
-    }
-    
-    @objc func savePasswordChanged(){
-        SessionConfiguration.saveAuthorization = rememberPasswordChecker?.isOn ?? false
     }
     
     @objc func goResetPassword(){
@@ -86,6 +85,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     
     @objc func loginButtonClick(){
         presenter?.login(login: loginTextField?.text, password: passwordTextField?.text)
+        SessionConfiguration.saveAuthorization = rememberPasswordChecker?.isOn ?? false
     }
     
     func setupResetPasswordLabel(){

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 class UIButtonEmassi: UIButton{
-    static let defaultHeight: CGFloat = 46
+    static let defaultHeight: CGFloat = 40
     override var intrinsicContentSize: CGSize {
            get {
                let baseSize = super.intrinsicContentSize

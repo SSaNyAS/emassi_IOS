@@ -12,6 +12,11 @@ struct GeoPosition: Codable{
     let lastUpdateDate: Date
     let coordinate: CLLocationCoordinate2D
     
+    init(currentCoordinates: CLLocationCoordinate2D){
+        self.lastUpdateDate = Date()
+        self.coordinate = currentCoordinates
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.lastUpdateDate = try container.decode(Date.self, forKey: .lastUpdateDate)

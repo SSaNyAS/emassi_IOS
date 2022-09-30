@@ -10,6 +10,7 @@ import UIKit
 class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewDataSource, UITableViewDelegate{
     public var performersCategories: [PerformersCategory] = []
     weak var tableView: UITableView?
+    public var didSelectCategoryAction: ((_ category: String) -> Void)?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let category = performersCategories[section]
@@ -23,6 +24,8 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         guard indexPath.row == 0 else {
+            let category = performersCategories[indexPath.section].subCategories[indexPath.row-1]
+            didSelectCategoryAction?(category.value)
             return
         }
         tableView.beginUpdates()
@@ -93,9 +96,12 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
             if let cell = cell as? PerformersCategoryTableViewCell{
                 let category = performersCategories[indexPath.section]
                 cell.setText(text: category.name)
-                cell.setImage(image: UIImage(named: category.imageAddress))
+                if let image = UIImage(named: category.imageAddress){
+                    cell.setImage(image: image)
+                }
             }
-            
+            cell.separatorInset = .init(top: 0, left: tableView.frame.width*2, bottom: 0, right: 0)
+            cell.selectionStyle = .none
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)

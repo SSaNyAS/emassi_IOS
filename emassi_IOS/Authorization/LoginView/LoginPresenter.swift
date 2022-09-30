@@ -8,6 +8,8 @@
 import Foundation
 
 protocol LoginPresenterProtocol: NSObject{
+    var loginView: LoginViewDelegate?{get set}
+    func didInit()
     func login(login: String?, password: String?)
     func setError(message: String)
     func goToRegister()
@@ -19,8 +21,9 @@ class LoginPresenter:NSObject, LoginPresenterProtocol{
     weak var loginView: LoginViewDelegate?
     weak var router: RouterDelegate?
     
-    init(interactor: LoginInteractorProtocol){
+    init(interactor: LoginInteractorProtocol,router: RouterDelegate?){
         self.interactor = interactor
+        self.router = router
     }
     
     func login(login: String?, password: String?) {
@@ -58,6 +61,13 @@ class LoginPresenter:NSObject, LoginPresenterProtocol{
     func goToResetPassword() {
         if let viewController = loginView?.getViewController(){
                 router?.goToViewController(from: viewController, to: .resetPassword, presentationMode: .present)
+        }
+    }
+    func didInit() {
+        if interactor.isValidToken(){
+            if let viewController = loginView?.getViewController(){
+                router?.goToViewController(from: viewController, to: .categories, presentationMode: .presentFullScreen)
+            }
         }
     }
     

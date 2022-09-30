@@ -63,6 +63,9 @@ class UILabelBordered: UILabel{
     func setupDefaultSetting(){
         font = .systemFont(ofSize: 16)
         layer.masksToBounds = true
+        layer.borderWidth = borderWidth
+        layer.cornerRadius = cornerRadius
+        layer.borderColor = UIColor.placeholderText.cgColor
     }
     
 }

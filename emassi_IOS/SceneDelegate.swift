@@ -17,17 +17,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var emassiApi: EmassiApi?
     
+    
+    @objc private func didLogout(){
+        if (emassiApi?.isValidToken ?? true) == false {
+            if let navigationViewController = window?.rootViewController as? UINavigationController{
+                let vc = UIViewController()
+                navigationViewController.viewControllers = [EmassiRoutedViews.login.viewController]
+                navigationViewController.presentedViewController?.dismiss(animated: true)
+            }
+        }
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let api = EmassiApi(apiKey: apiKey, skey: skey)
         emassiApi = api
         
+        NotificationCenter.default.addObserver(self, selector: #selector(didLogout), name: .logoutNotification, object: nil)
+        
         router = EmassiRouter(emassiApi: api)
-        if (api.isValidToken){
-            router?.setRootViewController(for: window, routedView: .categories)
-        } else {
-            router?.setRootViewController(for: window, routedView: .onboarding)
+        let navigationController = UINavigationController()
+        navigationController.isToolbarHidden = true
+        navigationController.isNavigationBarHidden = true
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
+        
+        if SessionConfiguration.isDontNeedShowOnboarding == false {
+            navigationController.viewControllers = [EmassiRoutedViews.onboarding.viewController]
+        }
+        else {
+            navigationController.viewControllers = [EmassiRoutedViews.login.viewController]
         }
     }
 }

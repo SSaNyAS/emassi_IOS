@@ -13,7 +13,7 @@ protocol WorkModel: Codable{
     var dateStarted: Date{get}
     var dateEnded: Date{get}
     var date: DateStartEnd{get}
-    var time: String{get}
+    var time: Time{get}
     var price: Int{get}
     var currency: String{get}
     var comments: String{get}
@@ -28,7 +28,7 @@ struct Work: WorkModel,Codable{
     let dateStarted: Date
     let dateEnded: Date
     let date: DateStartEnd
-    let time: String
+    let time: Time
     let price: Int
     let currency: String
     let comments: String
@@ -58,7 +58,7 @@ struct WorkActive: Codable{
     let confirmed: Bool
     let dateStarted: Date
     let date: DateStartEnd
-    let time: String
+    let time: Time
     let price: Int
     let currency: String
     let comments: String
@@ -112,6 +112,38 @@ struct AllWork: Codable{
         case currency
         case offer
         case customer
+    }
+}
+
+struct WorkCreate: Codable{
+    var performerId: String?
+    var category: Category
+    var location: Location
+    var distance: Int
+    var date: DateStartEnd?
+    var time: Time?
+    var price: Int?
+    var currency: String
+    var phonenumber: String?
+    var address: Address
+    var geopos: GeoPosition
+    var comments: String
+    var details: String?
+    
+    enum CodingKeys:String, CodingKey {
+        case performerId = "id_performer"
+        case category
+        case location
+        case distance
+        case date
+        case time
+        case price
+        case currency
+        case phonenumber
+        case address
+        case geopos
+        case comments
+        case details
     }
 }
 

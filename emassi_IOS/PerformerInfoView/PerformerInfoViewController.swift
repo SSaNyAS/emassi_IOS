@@ -7,8 +7,76 @@
 
 import Foundation
 import UIKit
+protocol PerformerInfoViewDelegate: NSObjectProtocol{
+    func setProfileImage(image: UIImage?)
+    func setProfileRating(rating: Float)
+    func setName(name: String?)
+    func setPhone(phone: String?)
+    func setDescription(description: String?)
+    func setReviewsCount(count: Int)
+    func setReviewsRating(rating: Float)
+    func setCompletedOrdersCount(count: Int)
+    func setReviewsDataSource(dataSource: UITableViewDataSource)
+}
 
-class PerformerInfoViewController: UIViewController{
+class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
+    
+    func setProfileImage(image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.profileImageView?.image = image
+        }
+    }
+    
+    func setProfileRating(rating: Float) {
+        DispatchQueue.main.async { [weak self] in
+            self?.profileRatingView?.rating = rating
+            self?.profileRatingLabel?.text = "\(rating)"
+        }
+    }
+    
+    func setName(name: String?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.nameLabel?.text = name
+        }
+    }
+    
+    func setPhone(phone: String?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.phoneLabel?.text = phone
+        }
+    }
+    
+    func setDescription(description: String?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.descriptionLabel?.text = description
+        }
+    }
+    
+    func setReviewsCount(count: Int) {
+        DispatchQueue.main.async { [weak self] in
+            self?.reviewsCountLabel?.text = "\(count)"
+        }
+    }
+    
+    func setReviewsRating(rating: Float) {
+        DispatchQueue.main.async { [weak self] in
+            self?.reviewsRatingView?.rating = rating
+        }
+    }
+    
+    func setCompletedOrdersCount(count: Int) {
+        DispatchQueue.main.async { [weak self] in
+            self?.completedOrdersLabel?.text = "Выполнено \(count) заказов"
+        }
+    }
+    
+    func setReviewsDataSource(dataSource: UITableViewDataSource) {
+        DispatchQueue.main.async { [weak self] in
+            self?.lastFiveReviewsView?.dataSource = dataSource
+            self?.lastFiveReviewsView?.reloadData()
+        }
+    }
+    
     weak var profileImageView: UIImageView?
     weak var profileRatingView: UIRatingView?
     weak var profileRatingLabel: UILabel?
@@ -22,11 +90,19 @@ class PerformerInfoViewController: UIViewController{
     weak var lastFiveReviewsView: UITableView?
     weak var allReviewsButton: UIButton?
     weak var sendMessageButton: UIButton?
+    var presenter: PerformerInfoPresenterDelegate?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        presenter?.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.getPerformerInfo()
     }
     
     func setupViews(){
@@ -157,7 +233,7 @@ class PerformerInfoViewController: UIViewController{
     func setupCompletedOrdersLabel(attachTo view: UIView){
         let label = UILabelBordered()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Выполнено 576 заказов"
+        label.text = "Выполнено 0 заказов"
         
         view.addSubview(label)
         completedOrdersLabel = label
@@ -228,10 +304,7 @@ class PerformerInfoViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.text = """
-reghertghertgretgregregregregreg
-        ergregregre
-
-        gregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregegregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregerregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregrtgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregerretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregrege
+gregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregrege
 """
         
         view.addSubview(label)
@@ -297,7 +370,7 @@ reghertghertgretgregregregregreg
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 20)
-        label.text = "3.0"
+        label.text = "0.0"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(label)
@@ -346,7 +419,7 @@ reghertghertgretgregregregregreg
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor,multiplier: 1.3)
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor,multiplier: 1.2)
         ])
     }
 }

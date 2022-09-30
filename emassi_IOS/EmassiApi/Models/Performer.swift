@@ -20,6 +20,18 @@ protocol PerformerModel: Codable{
     var reviews: [Review]{get}
 }
 
+struct PerformerForList: Codable{
+    let id: String
+    let username: Username
+    let comments: String
+    let rating: Float
+    let rating5: Float
+    let works: Int
+    let reviews: Int
+    let verified: Bool
+    let location: Location
+    let promote: Bool
+}
 
 struct Performer: Codable, PerformerModel{
     let id: String
@@ -141,4 +153,13 @@ struct PerformerForWork: Codable{
     let reviews: Int
     let verified: Bool
     let offer: Offer
+}
+
+struct RequestPerformerProfile: Codable{
+    var username: Username
+    var phonenumber: String
+    var address: Address
+    var location: [LocationPerformer]
+    var category: [String]
+    var comments: String
 }

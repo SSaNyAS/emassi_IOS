@@ -10,6 +10,19 @@ import UIKit
 
 class SettingsViewController: UIViewController{
     weak var settingsTableView: UITableView?
+    weak var router: RouterDelegate?
+    
+    var settings: [MenuAction] = [
+        .init(title: "FAQ", image: "", action: {
+            
+        }),
+        .init(title: "Уведомления", image: "", action: {
+            
+        }),
+        .init(title: "Выйти из профиля", image: "", action: {
+            SessionConfiguration.Logout()
+        })
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +51,8 @@ class SettingsViewController: UIViewController{
     private func createOrdersTableView(){
         let tableView = UITableView()
         tableView.dataSource = self
+        tableView.delegate = self
+        
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifire)
@@ -47,14 +62,24 @@ class SettingsViewController: UIViewController{
     }
 }
 
-extension SettingsViewController: UITableViewDataSource{
+extension SettingsViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return settings.count
     }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let setting = settings[indexPath.row]
+        setting.action()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifire, for: indexPath)
         if let cell = cell as? SettingTableViewCell{
-            cell.settingNameLabel?.text = "Уведомления"
+            let setting = settings[indexPath.row]
+            cell.settingNameLabel?.text = setting.title
         }
         return cell
     }

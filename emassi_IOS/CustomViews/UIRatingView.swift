@@ -132,7 +132,7 @@ class UIRatingView: UIView{
             stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        reDrawStars()
+        isUserInteractionEnabled = false
+        //reDrawStars()
     }
 }

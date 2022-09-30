@@ -8,6 +8,7 @@
 import Foundation
 protocol LoginInteractorProtocol{
     func isValidLogin(login: String) -> Bool
+    func isValidToken() -> Bool
     func login(email: String, password: String, completion: @escaping (Bool, String) -> Void)
 }
 
@@ -21,6 +22,10 @@ class LoginInteractor: LoginInteractorProtocol{
     
     func isValidLogin(login: String) -> Bool {
         return login.isEmail()
+    }
+    
+    func isValidToken() -> Bool{
+        return api.isValidToken
     }
     
     func login(email: String, password: String, completion: @escaping (Bool, String) -> Void) {

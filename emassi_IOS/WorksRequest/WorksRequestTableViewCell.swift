@@ -1,5 +1,5 @@
 //
-//  WorkOrderTableViewCell.swift
+//  WorksRequestTableViewCell.swift
 //  emassi_IOS
 //
 //  Created by Алексей Рябин on 14.09.2022.
@@ -7,8 +7,8 @@
 
 import Foundation
 import UIKit
-class WorkOrderTableViewCell: UITableViewCell{
-    static let identifire: String = "WorkOrderTableViewCell"
+class WorksRequestTableViewCell: UITableViewCell{
+    static let identifire: String = "WorksRequestTableViewCell"
     
     weak var secondContentView: UIView!
     weak var orderTypeLabel: UILabel?
@@ -22,6 +22,15 @@ class WorkOrderTableViewCell: UITableViewCell{
         return buttonsContainer?.arrangedSubviews as? [UIButton]
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        orderTypeLabel?.text = nil
+        categoryLabel?.text = nil
+        dateLabel?.text = nil
+        addressLabel?.text = nil
+        buttonsContainer?.arrangedSubviews.forEach({$0.removeFromSuperview()})
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupDefaultSettings()
@@ -33,6 +42,7 @@ class WorkOrderTableViewCell: UITableViewCell{
     }
     
     private func setupDefaultSettings(){
+        selectionStyle = .none
         let secondContentView = UIView()
         secondContentView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
         secondContentView.setCornerRadius(value: 12)

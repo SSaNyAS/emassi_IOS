@@ -45,3 +45,9 @@ struct CustomerProfile: Codable{
     var rating5: Float
     var requests: Int
 }
+
+struct RequestCustomerProfile: Codable{
+    var username: Username
+    var phonenumber: String
+    var address: Address
+}

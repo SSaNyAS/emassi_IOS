@@ -21,14 +21,9 @@ class MenuViewController: UIViewController{
     var commands: [MenuAction] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setCommands()
-        
         view.backgroundColor = .systemGray5
+        setCommands()
         setupViews()
-        
-        nameLabel?.text = "Захаренко Валентин Валентинович"
-        
     }
     
     func setupViews(){
@@ -39,6 +34,12 @@ class MenuViewController: UIViewController{
         setupImageViewConstraints(to: view)
         setupNameLabelConstraints(to: view)
         setupMenuTableViewConstraints(to: view)
+    }
+    
+    @objc func didPressOnProfileImage(){
+        if let currentVC = menuNavigationController?.topViewController{
+            router?.goToViewController(from: currentVC, to: .performerProfile, presentationMode: .push)
+        }
     }
     
     @MainActor
@@ -52,7 +53,7 @@ class MenuViewController: UIViewController{
             },
             .init(title: "Активные заявки", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
-                    router?.goToViewController(from: currentVC, to: .workOrders, presentationMode: .push)
+                    router?.goToViewController(from: currentVC, to: .activeWorks, presentationMode: .push)
                 }
             },
             .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
@@ -63,9 +64,14 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .feedback, presentationMode: .push)
                 }
             },
-            .init(title: "Создать заявку", image: "star.fill"){ [weak menuNavigationController, weak router] in
+            .init(title: "Создать вызов", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
                     router?.goToViewController(from: currentVC, to: .createOrder, presentationMode: .push)
+                }
+            },
+            .init(title: "Создать заявку", image: "star.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .createRequest(""), presentationMode: .push)
                 }
             },
             .init(title: "Избранное", image: "star.fill"){ [weak menuNavigationController, weak router] in
@@ -77,13 +83,20 @@ class MenuViewController: UIViewController{
                 
             },
             .init(title: "Профиль", image: "person.fill"){ [weak menuNavigationController, weak router] in
-                
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .performerInfo(""), presentationMode: .push)
+                }
             },
             .init(title: "Регистрация специалиста", image: "person.fill.badge.plus"){ [weak menuNavigationController, weak router] in
                 
             },
             .init(title: "Помощь", image: "questionmark.circle"){ [weak menuNavigationController, weak router] in
                 
+            },
+            .init(title: "Документы", image: "gear"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .documents, presentationMode: .push)
+                }
             },
             .init(title: "Настройки", image: "gear"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
@@ -164,6 +177,9 @@ class MenuViewController: UIViewController{
         imageView.contentMode = .scaleAspectFit
         imageView.setCornerRadius(value: 12)
         imageView.setBorder()
+        imageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didPressOnProfileImage))
+        imageView.addGestureRecognizer(tapGesture)
         
         view.addSubview(imageView)
         profileImageView = imageView

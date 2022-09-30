@@ -7,9 +7,22 @@
 
 import Foundation
 import UIKit
-class PerformersListViewController: UIViewController{
+
+protocol PerformersListViewDelegate: NSObjectProtocol{
+    func getViewController() -> UIViewController
+    func showMessage(message: String, title: String)
+    func updateTableView()
+    func setTableViewDataSource(dataSource: UITableViewDataSource)
+    func setTableViewDelegate(delegate: UITableViewDelegate)
+}
+
+class PerformersListViewController: UIViewController, PerformersListViewDelegate{
     weak var performersTableView: UITableView?
     weak var createOrderButton: UIButton?
+    weak var noItemsView: UIView?
+    weak var refreshControl: UIRefreshControl?
+    
+    var presenter: PerformersListPresenterDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,12 +30,71 @@ class PerformersListViewController: UIViewController{
         setupViews()
     }
     
+    func getViewController() -> UIViewController {
+        return self
+    }
+    
+    func setTableViewDelegate(delegate: UITableViewDelegate) {
+        DispatchQueue.main.async { [weak self] in
+            self?.performersTableView?.delegate = delegate
+        }
+    }
+    
+    func setTableViewDataSource(dataSource: UITableViewDataSource) {
+        DispatchQueue.main.async { [weak self] in
+            self?.performersTableView?.dataSource = dataSource
+        }
+    }
+    
     func setupViews(){
         setupPerformersTableView()
+        setupRefreshControl()
         setupPerformersTableViewConstraints()
-        
+
         setupCreateOrderButton()
         createOrderButton?.setTitle("Оформить заявку", for: .normal)
+    }
+    
+    @objc private func updateData(){
+        setNoItemsView(isShow: false)
+        presenter?.loadPerformers(completion: {[weak self] _ in
+            self?.updateTableView()
+        })
+    }
+    
+    func updateTableView(){
+        DispatchQueue.main.async { [weak self] in
+            self?.performersTableView?.reloadData()
+            self?.refreshControl?.endRefreshing()
+            if (self?.performersTableView?.numberOfRows(inSection: 0) == 0){
+                self?.setNoItemsView(isShow: true)
+            } else {
+                self?.setNoItemsView(isShow: false)
+            }
+        }
+    }
+    
+    func setNoItemsView(isShow: Bool = true){
+        if isShow{
+            let view = UILabel()
+            view.font = .systemFont(ofSize: 16)
+            view.textAlignment = .center
+            view.numberOfLines = 0
+            view.textColor = .placeholderText
+            view.text = "Поиск не дал результатов"
+            noItemsView = view
+            performersTableView?.backgroundView = noItemsView
+        } else {
+            noItemsView?.removeFromSuperview()
+            noItemsView = nil
+            performersTableView?.backgroundView = nil
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshControl?.beginRefreshing()
+        updateData()
     }
     
     func setupCreateOrderButton(){
@@ -45,10 +117,17 @@ class PerformersListViewController: UIViewController{
         ])
     }
     
+    // вызывать после создания таблицы
+    func setupRefreshControl(){
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = .init(string: "Обновление...",attributes: [.foregroundColor: UIColor.placeholderText])
+        refreshControl.addTarget(self, action: #selector(updateData), for: .valueChanged)
+        performersTableView?.refreshControl = refreshControl
+        self.refreshControl = refreshControl
+    }
+    
     func setupPerformersTableView(){
         let tableView = UITableView()
-        tableView.dataSource = self
-        tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.register(PerformerTableViewCell.self, forCellReuseIdentifier: PerformerTableViewCell.identifire)
         
@@ -56,39 +135,4 @@ class PerformersListViewController: UIViewController{
         view.addSubview(tableView)
         performersTableView = tableView
     }
-}
-
-extension PerformersListViewController: UITableViewDataSource, UITableViewDelegate{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PerformerTableViewCell.identifire, for: indexPath)
-        if let cell = cell as? PerformerTableViewCell{
-            cell.addCallButton {
-                print("call")
-            }
-            cell.addAcceptButton {
-                print("accept")
-            }
-            cell.addSendMessageButton {
-                print("sendMEssage")
-            }
-            cell.isSelectingEnabled = false
-            cell.nameLabel?.text = "gfdgdfgdf"
-            cell.photoImageView?.image = UIImage(named: "nophotouser")
-            cell.ratingView?.rating = 3
-            
-            cell.categoryLabel?.text = "gfdgfdgfdg"
-            if indexPath.row % 2 == 0 {
-                cell.isSelectingEnabled = true
-            } else {
-                cell.setReviewText(text: "href4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjwebhref4wf3dqdwegdwnfJSHFjhwfiwheFIWEhfiweFWefhwieBFwuhefbhwoEBFHWUEBFUWiehbfjkweBFJwebfjhwbEFJHwbehfjbweJFBjwebfejwBFJWBefjweb")
-            }
-        }
-        return cell
-    }
-    
-    
 }

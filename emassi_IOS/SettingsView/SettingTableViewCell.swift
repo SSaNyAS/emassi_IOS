@@ -11,16 +11,19 @@ class SettingTableViewCell: UITableViewCell{
     static let identifire: String = "SettingTableViewCell"
     weak var secondContentView: UIView!
     weak var settingNameLabel: UILabel?
+    
     public var imageTintColor: UIColor = .black{
         didSet{
             goSetupImageView?.tintColor = imageTintColor
         }
     }
+    
     public var goSetupImage: UIImage? = UIImage(systemName: "chevron.right") {
         didSet{
             goSetupImageView?.image = goSetupImage
         }
     }
+    
     private weak var goSetupImageView: UIImageView?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -33,22 +36,18 @@ class SettingTableViewCell: UITableViewCell{
         setupDefaultSettings()
     }
     
-    @objc private func didTapOnCell(){
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: false)
         UIView.animate(withDuration: 0.2) { [weak self] in
-            self?.transform = .init(scaleX: 0.98, y: 0.98)
-        } completion: { [weak self] _ in
-            self?.transform = .identity
+            self?.transform = selected ? .init(scaleX: 0.98, y: 0.98) : .identity
         }
     }
     
     private func setupDefaultSettings(){
-        selectionStyle = .none
+        self.selectionStyle = .none
      let secondContentView = UIView()
         secondContentView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
         secondContentView.setCornerRadius(value: 12)
-        secondContentView.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnCell))
-        secondContentView.addGestureRecognizer(tapGesture)
         secondContentView.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(secondContentView)

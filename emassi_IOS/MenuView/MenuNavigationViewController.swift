@@ -114,10 +114,10 @@ class MenuNavigationViewController: UINavigationController {
                 }
             }
             router.emassiApi.getCustomerProfile { profile, apiResponse, error in
-                print(profile)
+                print("\ncustomerProfile:\n \(profile)\n")
             }
             router.emassiApi.getPerformerProfile { profile, apiResponse, error in
-                print(profile)
+                print("\nperformerProfile:\n \(profile)\n")
             }
         }
     }

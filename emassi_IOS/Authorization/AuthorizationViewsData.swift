@@ -27,6 +27,7 @@ class AuthorizationViewsData{
         if let loginTextField = loginVC.loginTextField{
             self.login
                 .compactMap({$0})
+                .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
                 .sink(receiveValue: {[weak loginTextField] value in
                     if loginTextField?.text != value{
                         loginTextField?.text = value
@@ -34,7 +35,7 @@ class AuthorizationViewsData{
                 })
                 .store(in: &loginVC.disposeBag)
             
-            loginTextField.publisher(for: \.text, options: [.prior])
+            loginTextField.publisher(for: \.text, options: [.new])
                 .compactMap({$0})
                 .sink(receiveValue: { [weak self] value in
                     self?.login.send(value)
@@ -45,6 +46,7 @@ class AuthorizationViewsData{
         if let passwordTextField = loginVC.passwordTextField{
             self.password
                 .compactMap({$0})
+                .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
                 .sink(receiveValue: {[weak passwordTextField] value in
                     if passwordTextField?.text != value{
                         passwordTextField?.text = value
@@ -52,7 +54,7 @@ class AuthorizationViewsData{
                 })
                 .store(in: &loginVC.disposeBag)
             
-            passwordTextField.publisher(for: \.text, options: [.prior])
+            passwordTextField.publisher(for: \.text, options: [.new])
                 .compactMap({$0})
                 .sink(receiveValue: { [weak self] value in
                     self?.password.send(value)
@@ -76,6 +78,7 @@ class AuthorizationViewsData{
         if let loginTextField = registerVC.loginTextField{
             self.login
                 .compactMap({$0})
+                .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
                 .sink(receiveValue: {[weak loginTextField] value in
                     if loginTextField?.text != value{
                         loginTextField?.text = value
@@ -83,7 +86,7 @@ class AuthorizationViewsData{
                 })
                 .store(in: &registerVC.disposeBag)
             
-            loginTextField.publisher(for: \.text, options: [.prior])
+            loginTextField.publisher(for: \.text, options: [.new])
                 .compactMap({$0})
                 .sink(receiveValue: { [weak self] value in
                     self?.login.send(value)
@@ -94,6 +97,7 @@ class AuthorizationViewsData{
         if let passwordTextField = registerVC.passwordTextField{
             self.password
                 .compactMap({$0})
+                .debounce(for: .seconds(0.3), scheduler: RunLoop.main)
                 .sink(receiveValue: {[weak passwordTextField] value in
                     if passwordTextField?.text != value{
                         passwordTextField?.text = value
@@ -101,7 +105,7 @@ class AuthorizationViewsData{
                 })
                 .store(in: &registerVC.disposeBag)
             
-            passwordTextField.publisher(for: \.text, options: [.prior])
+            passwordTextField.publisher(for: \.text, options: [.new])
                 .compactMap({$0})
                 .sink(receiveValue: { [weak self] value in
                     self?.password.send(value)

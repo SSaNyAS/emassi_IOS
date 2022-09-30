@@ -7,60 +7,48 @@
 
 import Foundation
 import UIKit
-class PerformersCategoriesViewController: UIViewController{
+protocol PerformersCategoriesViewDelegate: NSObjectProtocol{
+    func showMessage(message: String)
+    func setDataSource(dataSource: UITableViewDataSource)
+    func setTableViewDelegate(delegate: UITableViewDelegate)
+    func getViewController() -> UIViewController
+}
+
+class PerformersCategoriesViewController: UIViewController, PerformersCategoriesViewDelegate{
+    
     weak var tableView: UITableView?
     weak var searchBar: UISearchBar?
-    var performersCategoriesDataSourceDelegate: PerformersCategoriesTableViewDataSourceDelegate?
+    var presenter: PerformersCategoriesPresenterDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.largeTitleDisplayMode = .always
-        
-        let dataSource = PerformersCategoriesTableViewDataSourceDelegate()
-        dataSource.performersCategories = [
-            PerformersCategory(name: "Преподаватели",value: "cat1", imageAddress: "category1", subCategories: [
-                .init(name: "Репетитор по математике", value: "mathRepetitor"),
-                .init(name: "Репетитор по истории", value: "historyRepetitor"),
-                .init(name: "Репетитор по Географии", value: "geographyRepetitor"),
-            ]),
-            
-            PerformersCategory(name: "Дизайнеры",value: "cat2", imageAddress: "category2",subCategories: [
-                .init(name: "Графический дизайнер", value: "graphicsDesigner"),
-                .init(name: "Дизайнер интерьеров", value: "interierDesigner")
-            ]),
-            
-            PerformersCategory(name: "Программисты",value: "cat3", imageAddress: "category3", subCategories: [
-                .init(name: "Front-end разработчик", value: "frontEndDeveloper"),
-                .init(name: "Back-end Developer", value: "backEndDeveloper"),
-                .init(name: "Full-stack разработчик", value: "fullStackDeveloper"),
-                .init(name: "Game Developer", value: "gameDeveloper"),
-                .init(name: "Android разработчик", value: "androidDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-                .init(name: "IOS разработчик", value: "iosDeveloper"),
-            ]),
-            
-            PerformersCategory(name: "Персональные тренера",value: "cat4", imageAddress: "category4", subCategories: [
-                .init(name: "Персональный тренер", value: "personalTrainer")
-            ]),
-        ]
-        self.performersCategoriesDataSourceDelegate = dataSource
         setupViews()
+        getCategories()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView?.reloadData()
+    func getViewController() -> UIViewController {
+        return self
+    }
+    
+    func setDataSource(dataSource: UITableViewDataSource) {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView?.dataSource = dataSource
+        }
+    }
+    
+    func setTableViewDelegate(delegate: UITableViewDelegate) {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView?.delegate = delegate
+        }
+    }
+    
+    private func getCategories(){
+        presenter?.getCategories(completion: { isSuccess in
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView?.reloadData()
+            }
+        })
     }
     
     func setupViews(){
@@ -101,10 +89,7 @@ class PerformersCategoriesViewController: UIViewController{
         let tableView = UITableView()
         tableView.register(PerformersCategoryTableViewCell.self, forCellReuseIdentifier: PerformersCategoryTableViewCell.identifire)
         
-        tableView.dataSource = performersCategoriesDataSourceDelegate
-        tableView.delegate = performersCategoriesDataSourceDelegate
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
         tableView.rowHeight = UITableView.automaticDimension
         //tableView.estimatedRowHeight = 44
         
