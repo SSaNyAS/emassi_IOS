@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-class UIPickerItemSelector<Item>: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource where Item: Hashable{
+class UIPickerItemSelector: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource{
     
-    var items: [MoreSelectorItem<Item>] = []{
+    var items: [MoreSelectorItem] = []{
         didSet{
             DispatchQueue.main.async { [weak self] in
                 self?.reloadAllComponents()
@@ -50,7 +50,7 @@ class UIPickerItemSelector<Item>: UIPickerView, UIPickerViewDelegate, UIPickerVi
         selectRow(selectedItemIndex, inComponent: 0, animated: false)
     }
     
-    var selectedItem: MoreSelectorItem<Item>?{
+    var selectedItem: MoreSelectorItem?{
         didSet{
             if selectedIndex == nil {
                 if let itemIndex = getItemIndex(item: selectedItem){
@@ -83,12 +83,12 @@ class UIPickerItemSelector<Item>: UIPickerView, UIPickerViewDelegate, UIPickerVi
     }
     
     
-    func getItemIndex(item: MoreSelectorItem<Item>?) -> Int?{
+    func getItemIndex(item: MoreSelectorItem?) -> Int?{
         if item == nil {
             return nil
         }
         let itemIndex = items.firstIndex(where: {
-            $0.value == selectedItem?.value
+            $0.value.hashValue == selectedItem?.value.hashValue
         })
         return itemIndex
     }

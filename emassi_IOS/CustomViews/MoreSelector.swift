@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-class MoreSelectorView<Item>: UIView where Item: Hashable{
-    var items: [MoreSelectorItem<Item>] = []
+class MoreSelectorView: UIView{
+    var items: [MoreSelectorItem] = []
     weak var stackView: UIStackView?
     weak var plusButton: UIButton?
     public var isTextWritable: Bool = true{
@@ -18,7 +18,7 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
                 _ = addNewField()
         }
     }
-    private var inputViews: [UIPickerItemSelector<Item>] = []
+    private var inputViews: [UIPickerItemSelector] = []
     public var enteredTexts: [String]{
         return stackView?.arrangedSubviews.compactMap({
             let text = ($0 as? UITextField)?.text
@@ -28,7 +28,7 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
             return text
         }) ?? []
     }
-    public var selectedItems: [MoreSelectorItem<Item>]{
+    public var selectedItems: [MoreSelectorItem]{
         get{
             return inputViews.compactMap({$0.selectedItem})
         }
@@ -37,7 +37,7 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
                 clearSubviews()
                 for itemId in 0..<newValue.count{
                     let newField = addNewField()
-                    if let inputView = newField.inputView as? UIPickerItemSelector<Item>{
+                    if let inputView = newField.inputView as? UIPickerItemSelector{
                         inputView.selectedItem = newValue[itemId]
                     }
                 }
@@ -56,14 +56,14 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
         inputViews = []
     }
     
-    public var selectedItemsValues: [Item]{
+    public var selectedItemsValues: [any Hashable]{
         get{
             return selectedItems.map { $0.value }
         }
         set{
                 let selectedItems = items.filter { item in
                     newValue.contains { newItem in
-                        newItem == item.value
+                        newItem.hashValue == item.value.hashValue
                     }
                 }
             self.selectedItems = selectedItems
@@ -164,8 +164,8 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
         return textField
     }
     
-    func createNewInputView() -> UIPickerItemSelector<Item>{
-        let inputView = UIPickerItemSelector<Item>()
+    func createNewInputView() -> UIPickerItemSelector{
+        let inputView = UIPickerItemSelector()
         inputViews.append(inputView)
         return inputView
     }
@@ -183,7 +183,7 @@ class MoreSelectorView<Item>: UIView where Item: Hashable{
         })
     }
     
-    func getNotSelectedItems() -> Set<MoreSelectorItem<Item>>{
+    func getNotSelectedItems() -> Set<MoreSelectorItem>{
         let selectedSet = Set(selectedItems)
         let allItemsSet = Set(items)
         
@@ -197,18 +197,17 @@ protocol MoreSelectorItemProtocol: Equatable{
     var value: ItemType{get}
 }
 
-struct MoreSelectorItem<Item>: MoreSelectorItemProtocol,Hashable, Equatable where Item: Hashable{
+struct MoreSelectorItem: Hashable, Equatable{
     
-    static func == (lhs: MoreSelectorItem<Item>, rhs: MoreSelectorItem<Item>) -> Bool {
-        lhs.value == rhs.value
+    static func == (lhs: MoreSelectorItem, rhs: MoreSelectorItem) -> Bool {
+        lhs.value.hashValue == rhs.value.hashValue
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(value)
     }
     
-    typealias Item = Item where Item: Hashable
-    var value: Item
+    var value: any Hashable
     var name: String
     
 }

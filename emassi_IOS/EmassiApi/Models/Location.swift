@@ -18,29 +18,38 @@ struct Location: LocationModel, Codable{
     let city: String
 }
 
-struct LocationPerformer: Codable{
+struct LocationPerformer: Codable, Hashable{
     var country: String
     var state: String
     var city: String
     
-    init(from string: String) throws {
-        var string = string
-        guard let countryIndex = string.firstIndex(of: ",") ?? string.firstIndex(of: " ") else {
-            throw EncodingError.invalidValue(string, .init(codingPath: [], debugDescription: ""))
+    init(from address: Address){
+        self.country = address.country
+        self.state = address.state
+        self.city = address.city
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(country)
+        hasher.combine(state)
+        hasher.combine(city)
+    }
+    
+    var common: String {
+        var string = ""
+        if !country.isEmpty{
+            
+            string.append(country + ", ")
         }
-        let country = String(string[..<countryIndex])
-        string.removeSubrange(..<countryIndex)
-        guard let cityIndex = string.firstIndex(of: ",") ?? string.firstIndex(of: " ") else {
-            throw EncodingError.invalidValue(string, .init(codingPath: [], debugDescription: ""))
+        if !state.isEmpty{
+            string.append(state + ", ")
         }
-        let city = String(string[..<cityIndex])
-        self.state = ""
-        if #available(iOS 16, *) {
-            self.country = Locale.current.language.languageCode?.identifier ?? country
-        } else {
-            self.country = Locale.current.languageCode ?? country
+        if !city.isEmpty{
+            string.append(city + ", ")
         }
-        self.city = string
-        
+        string = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        if string.last == ","{
+            string.removeLast()
+        }
+        return string
     }
 }

@@ -9,8 +9,8 @@ import Foundation
 protocol WorkCreator{
     func setPerformer(performerId: String)
     func setPhone(phone: String?)
-    func setAddress(address: String?)
-    func setCategory(category: String?)
+    func setAddress(address: Address?)
+    func setCategory(category: MoreSelectorItem?)
     func setComments(comments: String?)
     func setDetails(details: String?)
     func setPrice(price: String?)
@@ -18,7 +18,7 @@ protocol WorkCreator{
 }
 
 protocol CreateRequestInteractorDelegate: WorkCreator{
-    func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem<String>], _ message: String?) -> Void)
+    func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem], _ message: String?) -> Void)
     func createRequest(attachImages: [Data], completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void)
     func getCustomerProfile(completion: @escaping (_ profile: CustomerProfile?, _ message: String?) -> Void)
     func uploadWorkPhoto(workId: String,photoJpeg: Data, completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void)
@@ -63,7 +63,7 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
         })
     }
     
-    func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem<String>], _ message: String?) -> Void){
+    func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem], _ message: String?) -> Void){
         emassiApi?.getAllPerformersSubCategories(completion: { subCategories, apiResponse, error in
             let selectableItems = subCategories.map({
                 MoreSelectorItem(value: $0.value, name: $0.name)
@@ -83,17 +83,22 @@ extension CreateRequestInteractor: WorkCreator{
         workCreate.phonenumber = phone ?? ""
     }
     
-    func setAddress(address: String?) {
-        workCreate.address = .init(country: Locale.current.languageCode ?? "", state: "", city: "", zip: "", line1: address ?? "", line2: "")
+    func setAddress(address: Address?) {
+        if let address = address {
+            workCreate.address = address
+        }
     }
     
-    func setCategory(category: String?) {
+    func setCategory(category: MoreSelectorItem?) {
+        guard let category = category?.value as? String else {
+            return
+        }
         var superCategoryString = ""
-        let superCategoryInt = ((Int(category ?? "") ?? 0) / 1000) * 1000
+        let superCategoryInt = ((Int(category) ?? 0) / 1000) * 1000
         if superCategoryInt != 0 {
             superCategoryString = "\(superCategoryInt)"
         }
-        workCreate.category = .init(level1: superCategoryString, level2: category ?? "")
+        workCreate.category = .init(level1: superCategoryString, level2: category)
     }
     
     func setComments(comments: String?) {

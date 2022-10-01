@@ -6,10 +6,18 @@
 //
 
 import Foundation
-protocol CreateRequestPresenterDelegate: WorkCreator{
+protocol CreateRequestPresenterDelegate{
     func viewDidLoad()
     func createRequest()
     func addPhoto()
+    
+    func setPerformer(performerId: String)
+    func setPhone(phone: String?)
+    func setCategory(category: MoreSelectorItem?)
+    func setComments(comments: String?)
+    func setDetails(details: String?)
+    func setPrice(price: String?)
+    func setTime(from: Int, to: Int)
 }
 
 class CreateRequestPresenter: CreateRequestPresenterDelegate{
@@ -36,6 +44,14 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
         }
     }
     
+    func selectAddress(currentText: String?){
+        if let viewController = viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .addressSelector(currentText, { [weak self] address in
+                self?.setAddress(address: address)
+            }), presentationMode: .present)
+        }
+    }
+    
     func addPhoto() {
         if let viewController = viewDelegate?.getViewController(){
             router?.goToViewController(from: viewController, to: .imagePicker({[weak self] image in
@@ -53,7 +69,7 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
         }
         interactor.getCustomerProfile {[weak self] profile, message in
             if let profile = profile{
-                self?.viewDelegate?.setCity(city: profile.address.city)
+                self?.viewDelegate?.setAddress(address: profile.address.city)
             }
         }
         setPerformer(performerId: performerId)
@@ -69,11 +85,12 @@ extension CreateRequestPresenter: WorkCreator{
         interactor.setPhone(phone: phone)
     }
     
-    func setAddress(address: String?) {
+    func setAddress(address: Address?) {
         interactor.setAddress(address: address)
+        viewDelegate?.setAddress(address: address?.commonString ?? "")
     }
     
-    func setCategory(category: String?) {
+    func setCategory(category: MoreSelectorItem?) {
         interactor.setCategory(category: category)
     }
     

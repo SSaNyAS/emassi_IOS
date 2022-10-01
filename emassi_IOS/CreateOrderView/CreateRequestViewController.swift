@@ -12,8 +12,8 @@ import Combine
 protocol CreateRequestViewDelegate: AnyObject{
     func getViewController() -> UIViewController
     func showMessage(message: String, title: String)
-    func setCity(city: String)
-    func setSelectableCategories(categories: [MoreSelectorItem<String>])
+    func setAddress(address: String)
+    func setSelectableCategories(categories: [MoreSelectorItem])
     func addPhotoButtonClick()
     func createRequestButtonClick()
 }
@@ -22,7 +22,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     weak var scrollContentView: UIView!
     
     weak var categorySelectorLabel: UILabel?
-    weak var categorySelector: UIPickerItemSelector<String>?
+    weak var categorySelector: UIPickerItemSelector?
     weak var categoryTextField: UITextField?
     
     weak var requestLocalizationLabel: UILabel?
@@ -75,13 +75,13 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
         return self
     }
     
-    func setCity(city: String) {
+    func setAddress(address: String) {
         DispatchQueue.main.async {
-            self.requestLocalizationTextField?.text = city
+            self.requestLocalizationTextField?.text = address
         }
     }
     
-    func setSelectableCategories(categories: [MoreSelectorItem<String>]) {
+    func setSelectableCategories(categories: [MoreSelectorItem]) {
         DispatchQueue.main.async {
             self.categorySelector?.items = categories
         }
@@ -92,8 +92,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     }
     
     @objc func createRequestButtonClick(){
-        presenter?.setCategory(category: categorySelector?.selectedItem?.value)
-        presenter?.setAddress(address: addressTextField?.text)
+        presenter?.setCategory(category: categorySelector?.selectedItem)
         presenter?.setPhone(phone: phoneNumberTextField?.text)
         presenter?.setComments(comments: commentsTextView?.text)
         presenter?.setPrice(price: orderSumTextField?.text)
@@ -687,7 +686,7 @@ extension CreateRequestViewController{
     }
     
     private func createCategorySelector(){
-        let categorySelector = UIPickerItemSelector<String>()
+        let categorySelector = UIPickerItemSelector()
         categorySelector.parentTextField = categoryTextField
         categoryTextField?.inputView = categorySelector
         self.categorySelector = categorySelector

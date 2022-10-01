@@ -105,6 +105,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyString.data(using: .utf8)
         
         let task = baseDataRequest(request: request, completion: completion)
@@ -164,6 +165,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyString.data(using: .utf8)
         
         let task = baseDataRequest(request: request, completion: completion)
@@ -185,6 +187,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyString.data(using: .utf8)
         
         let task = baseDataRequest(request: request, completion: completion)
@@ -213,6 +216,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyString.data(using: .utf8)
         
         let task = baseDataRequest(request: request,completion: completion)
@@ -228,6 +232,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyString.data(using: .utf8)
         
         let task = baseDataRequest(request: request,completion: completion)
@@ -267,6 +272,7 @@ class EmassiApi: EmassiApiFetcher{
         request.addValue("\(active)", forHTTPHeaderField: "active")
         request.addValue(type, forHTTPHeaderField: "type")
         request.addValue("\(startDateInterval)", forHTTPHeaderField: "dt_start")
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         
         let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
             if let data = apiResponse?.data{
@@ -321,7 +327,7 @@ class EmassiApi: EmassiApiFetcher{
         // проверка размера изображения
         // проверка формата изображения
         
-        
+        #warning("Neeed To Implement multipart form data")
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.httpBody = photoJpeg
@@ -416,6 +422,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyData
         
         let task = baseDataRequest(request: request){ apiResponse,error in
@@ -543,9 +550,6 @@ class EmassiApi: EmassiApiFetcher{
         }
         
         let bodyData = try? self.jsonEncoder.encode(profile)
-        
-        var str = String(data: bodyData ?? Data(), encoding: .utf8)
-        print(str)
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -588,7 +592,7 @@ class EmassiApi: EmassiApiFetcher{
         let boundary = "---------------------------\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
         
         var form = createMultipartFormFor(parameterName: "file", contentType: "image/jpeg", fileName: "\(token ?? "f")_\(documentName).jpeg", data: photoJpeg, boundary: boundary)
         
@@ -650,11 +654,12 @@ class EmassiApi: EmassiApiFetcher{
         let boundary = "---------------------------\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
         
         var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "performer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
         photoForm += "--\(boundary)--\r\n"
         request.httpBody = photoForm.data(using: .utf8)
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
         
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
@@ -670,7 +675,7 @@ class EmassiApi: EmassiApiFetcher{
         let boundary = "---------------------------\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
         
         var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "customer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
         photoForm += "--\(boundary)--\r\n"
@@ -689,6 +694,7 @@ class EmassiApi: EmassiApiFetcher{
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyData
         
         let task = baseDataRequest(request: request,completion: completion)
@@ -809,6 +815,7 @@ class EmassiApi: EmassiApiFetcher{
         request.addValue(sign, forHTTPHeaderField: "sign")
         request.addValue(email, forHTTPHeaderField: "email")
         request.addValue(password, forHTTPHeaderField: "password")
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         
         let task = baseDataRequest(request: request, completion: completion)
         task.resume()

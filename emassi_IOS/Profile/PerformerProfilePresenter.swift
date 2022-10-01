@@ -14,8 +14,8 @@ protocol PerformerProfilePresenterDelegate: AnyObject{
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
     func setAddress(address: Address)
-    func setSupportRegions(supportRegions: [String])
-    func setCategories(categories: [String])
+    func setSupportRegions(supportRegions: [MoreSelectorItem])
+    func setCategories(categories: [MoreSelectorItem])
     func setAboutPerformer(aboutText: String)
     func saveClick()
 }
@@ -31,6 +31,20 @@ class PerformerProfilePresenter{
 }
 
 extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
+    func setSupportRegions(supportRegions: [MoreSelectorItem]) {
+        let supportRegionsAsLocation = supportRegions.compactMap({
+            $0.value as? LocationPerformer
+        })
+        setSupportRegions(supportRegions: supportRegionsAsLocation)
+    }
+    
+    func setCategories(categories: [MoreSelectorItem]) {
+        let categoryStringList = categories.compactMap({
+            $0.value as? String
+        })
+        self.setCategories(categories: categoryStringList)
+    }
+    
     func saveClick() {
         interactor.updateProfile {[weak self] message, isSuccess in
             self?.viewDelegate?.showMessage(message: message ?? "", title: "")
@@ -47,10 +61,12 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
     
     func setUsername(FIO: String) {
         interactor.setUsername(FIO: FIO)
+        viewDelegate?.setName(name: FIO)
     }
     
     func setPhoneNumber(phone: String) {
         interactor.setPhoneNumber(phone: phone)
+        viewDelegate?.setPhone(phone: phone)
     }
     
     func setAddress(address: Address) {
@@ -58,16 +74,22 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         viewDelegate?.setAddress(address: address.commonString)
     }
     
-    func setSupportRegions(supportRegions: [String]) {
+    func setSupportRegions(supportRegions: [LocationPerformer]) {
         interactor.setSupportRegions(supportRegions: supportRegions)
+        let mapped  = supportRegions.map({
+            MoreSelectorItem(value: $0, name: $0.common)
+        })
+        viewDelegate?.setSupportRegions(regions: mapped)
     }
     
     func setCategories(categories: [String]) {
         interactor.setCategories(categories: categories)
+        viewDelegate?.setSelectedCategoryList(categories: categories)
     }
     
     func setAboutPerformer(aboutText: String) {
         interactor.setAboutPerformer(aboutText: aboutText)
+        viewDelegate?.setAboutPeformer(aboutText: aboutText)
     }
     
     func viewDidLoad() {
@@ -78,13 +100,13 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
                 guard let profile = profile, let self = self else {
                     return
                 }
-                self.viewDelegate?.setName(name: profile.username.common)
-                self.viewDelegate?.setPhone(phone: profile.phone.number)
+                self.setUsername(FIO: profile.username.common)
+                self.setPhoneNumber(phone: profile.phone.number)
                 self.viewDelegate?.setProfileRating(rating: profile.rating)
                 self.viewDelegate?.setReviewsRating(rating: profile.rating5)
                 self.viewDelegate?.setOrdersCount(count: profile.works)
-                self.viewDelegate?.setAboutPeformer(aboutText: profile.comments)
-                
+                self.setAboutPerformer(aboutText: profile.comments)
+                self.setAddress(address: profile.address)
                 self.interactor.getPerformerPhoto { [weak self] imageData in
                     self?.viewDelegate?.setProfileImage(imageData: imageData)
                 }

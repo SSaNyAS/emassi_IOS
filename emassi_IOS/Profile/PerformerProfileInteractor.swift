@@ -17,7 +17,7 @@ protocol PerformerProfileInteractorDelegate{
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
     func setAddress(address: Address)
-    func setSupportRegions(supportRegions: [String])
+    func setSupportRegions(supportRegions: [LocationPerformer])
     func setCategories(categories: [String])
     func setAboutPerformer(aboutText: String)
 }
@@ -53,10 +53,8 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
         updatingRerformerData.address = address
     }
     
-    func setSupportRegions(supportRegions: [String]) {
-        updatingRerformerData.location = supportRegions.compactMap({
-            try? LocationPerformer.init(from: $0)
-        })
+    func setSupportRegions(supportRegions: [LocationPerformer]) {
+        updatingRerformerData.location = supportRegions
     }
     
     func setCategories(categories: [String]) {

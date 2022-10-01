@@ -112,6 +112,7 @@
 		11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */; };
 		11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */; };
 		11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062328E8896100EAEF33 /* LocationManager.swift */; };
+		11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062528E8C89000EAEF33 /* LocaleExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +242,7 @@
 		11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImageViewPaging.swift; sourceTree = "<group>"; };
 		11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewController.swift; sourceTree = "<group>"; };
 		11FF062328E8896100EAEF33 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		11FF062528E8C89000EAEF33 /* LocaleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,6 +408,7 @@
 				11DCADED28D20FED00568D16 /* UIControlExtension.swift */,
 				115BB4B928E1C26100686670 /* UIImageExtension.swift */,
 				11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */,
+				11FF062528E8C89000EAEF33 /* LocaleExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
 				11DCADF228D24E1000568D16 /* SettingTableViewCell.swift in Sources */,
+				11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */,
 				115BB4B228DF3BB000686670 /* MoreSelector.swift in Sources */,
 				115BB4BA28E1C26100686670 /* UIImageExtension.swift in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,

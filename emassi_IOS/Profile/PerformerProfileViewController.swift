@@ -22,8 +22,8 @@ protocol PerformerProfileViewDelegate: AnyObject{
     func setName(name: String?)
     func setPhone(phone: String?)
     func setAddress(address: String?)
-    func setSupportRegions(regions: [MoreSelectorItem<String>])
-    func setCategoryList(categories: [MoreSelectorItem<String>])
+    func setSupportRegions(regions: [MoreSelectorItem])
+    func setCategoryList(categories: [MoreSelectorItem])
     func setSelectedCategoryList(categories: [String])
     func setAboutPeformer(aboutText: String?)
     func setOrdersCount(count: Int)
@@ -40,8 +40,8 @@ class PerformerProfileViewController: UIViewController{
     weak var nameTextField: UITextField?
     weak var phoneTextField: UITextField?
     weak var addressTextField: UITextField?
-    weak var supportRegionSelector: MoreSelectorView<String>?
-    weak var categorySelector: MoreSelectorView<String>?
+    weak var supportRegionSelector: MoreSelectorView?
+    weak var categorySelector: MoreSelectorView?
     weak var aboutPerformer: UITextView?
     weak var ordersCountLabel: UILabel?
     weak var reviewsCountLabel: UILabel?
@@ -61,9 +61,9 @@ class PerformerProfileViewController: UIViewController{
     @objc func saveButtonClick(){
         presenter?.setAboutPerformer(aboutText: aboutPerformer?.text ?? "")
         presenter?.setUsername(FIO: nameTextField?.text ?? "")
-        presenter?.setCategories(categories: categorySelector?.selectedItemsValues ?? [])
+        presenter?.setCategories(categories: categorySelector?.selectedItems ?? [])
         presenter?.setPhoneNumber(phone: phoneTextField?.text ?? "")
-        presenter?.setSupportRegions(supportRegions: supportRegionSelector?.selectedItemsValues ?? [])
+        presenter?.setSupportRegions(supportRegions: supportRegionSelector?.selectedItems ?? [])
         presenter?.saveClick()
     }
 }
@@ -112,13 +112,13 @@ extension PerformerProfileViewController: PerformerProfileViewDelegate {
         }
     }
     
-    func setSupportRegions(regions: [MoreSelectorItem<String>]) {
+    func setSupportRegions(regions: [MoreSelectorItem]) {
         DispatchQueue.main.async { [weak self] in
             self?.supportRegionSelector?.selectedItems = regions
         }
     }
     
-    func setCategoryList(categories: [MoreSelectorItem<String>]) {
+    func setCategoryList(categories: [MoreSelectorItem]) {
         DispatchQueue.main.async { [weak self] in
             self?.categorySelector?.items = categories
         }
@@ -311,18 +311,18 @@ extension PerformerProfileViewController{
     }
     
     private func createCategorySelector(){
-        let selector = MoreSelectorView<String>()
+        let selector = MoreSelectorView()
         selector.isTextWritable = false
         selector.translatesAutoresizingMaskIntoConstraints = false
-        if let view = attachLabelToView(with: "Категория специалиста", createdView: selector) as? MoreSelectorView<String>{
+        if let view = attachLabelToView(with: "Категория специалиста", createdView: selector) as? MoreSelectorView{
             categorySelector = view
         }
     }
     
     private func createSupportRegionSelector(){
-        let selector = MoreSelectorView<String>()
+        let selector = MoreSelectorView()
         selector.translatesAutoresizingMaskIntoConstraints = false
-        if let view = attachLabelToView(with: "Регион обслуживания", createdView: selector) as? MoreSelectorView<String>{
+        if let view = attachLabelToView(with: "Регион обслуживания", createdView: selector) as? MoreSelectorView{
             supportRegionSelector = view
         }
     }
