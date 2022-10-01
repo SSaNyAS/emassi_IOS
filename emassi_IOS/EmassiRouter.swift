@@ -90,8 +90,11 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case createOrder
     case resetPassword
     case performerProfile
-    case imagePicker(_ didSelectAction: ((UIImage) -> Void)?,_ didCancelPickImage: (()->Void)?)
     case createRequest(_ performerId: String)
+    case imagePicker(_ didSelectAction: ((UIImage) -> Void)?,_ didCancelPickImage: (()->Void)?)
+    case addressSelector(_ searchText: String? = nil, _ didSelectAddressAction: ((Address) -> Void)?)
+    
+    
     
     init?(rawValue: String) {
         if rawValue == "login"{
@@ -133,10 +136,12 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "resetPassword"
         case .performerProfile:
             return "performerProfile"
-        case .imagePicker(_,_):
-            return "imagePicker"
         case .createRequest:
             return "createRequest"
+        case .imagePicker(_,_):
+            return "imagePicker"
+        case .addressSelector(_,_):
+            return "addressSelector"
         }
     }
     
@@ -280,6 +285,12 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             imagePickerVC.didCancelPickImage = didCancel
             imagePickerVC.didSelectImageAction = didSelectAction
             return imagePickerVC
+        case .addressSelector(let searchText, let didSelectAddressAction):
+            let addressSelectViewController = AddressSearchViewController()
+            addressSelectViewController.searchController.searchBar.text = searchText
+            addressSelectViewController.didSelectAddressAction = didSelectAddressAction
+            let navigationController = UINavigationController(rootViewController: addressSelectViewController)
+            return navigationController
         }
         
         

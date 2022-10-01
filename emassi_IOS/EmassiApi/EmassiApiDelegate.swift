@@ -58,7 +58,9 @@ protocol EmassiApiDelegate{
 
 class EmassiApi: EmassiApiFetcher{
     let hostUrl = URL(string: "https://test.emassi.app")
-
+    static let privacyPolicy = "https://docs.google.com/file/d/1lnTiDrJyXIwrXd21AwsqCElzB-tr5W9l/edit?usp=docslist_api&filetype=msword"
+    static let faq = "https://docs.google.com/file/d/1HFjYpoImGN0m63rHOd4jg1zclsIi4R_n/edit?usp=docslist_api&filetype=msword"
+    
     var token: String?{
         get{
             SessionConfiguration.Token
@@ -268,8 +270,8 @@ class EmassiApi: EmassiApiFetcher{
         
         let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
             if let data = apiResponse?.data{
-                let performerProfile = try? self?.jsonDecoder.decode([AllWork].self, from: data)
-                completion(performerProfile,apiResponse,error)
+                let allWorks = try? self?.jsonDecoder.decode([AllWork].self, from: data)
+                completion(allWorks,apiResponse,error)
                 return
             }
             completion(nil,apiResponse,error)
@@ -540,33 +542,14 @@ class EmassiApi: EmassiApiFetcher{
             return
         }
         
-        let bodyData = """
-            {
-                "username": {
-                    "firstname":"Даниил",
-                    "common":"Шандыба Даниил Евгеньевич",
-                    "lastname":"Шандыба"
-                },
-                "category":[],
-                "comments":"",
-                "phonenumber":"",
-                "location":[],
-                "address":{
-                    "line2":"",
-                    "country":"",
-                    "state":"",
-                    "city":"",
-                    "zip":"",
-                    "line1":""
-                }
-            }
-        """.data(using: .utf8, allowLossyConversion: false)
+        let bodyData = try? self.jsonEncoder.encode(profile)
         
         var str = String(data: bodyData ?? Data(), encoding: .utf8)
         print(str)
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         request.httpBody = bodyData
         
         let task = baseDataRequest(request: request,completion: completion)

@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc private func didLogout(){
         if (emassiApi?.isValidToken ?? true) == false {
             if let navigationViewController = window?.rootViewController as? UINavigationController{
-                let vc = UIViewController()
                 navigationViewController.viewControllers = [EmassiRoutedViews.login.viewController]
                 navigationViewController.presentedViewController?.dismiss(animated: true)
             }

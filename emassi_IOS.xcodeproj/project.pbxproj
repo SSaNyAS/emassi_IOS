@@ -109,6 +109,9 @@
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
 		11FF061A28E5C35400EAEF33 /* CreateRequestInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */; };
 		11FF061C28E6293500EAEF33 /* NotificationCenterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */; };
+		11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */; };
+		11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */; };
+		11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062328E8896100EAEF33 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +238,9 @@
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
 		11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestInteractor.swift; sourceTree = "<group>"; };
 		11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterExtension.swift; sourceTree = "<group>"; };
+		11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImageViewPaging.swift; sourceTree = "<group>"; };
+		11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewController.swift; sourceTree = "<group>"; };
+		11FF062328E8896100EAEF33 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +443,8 @@
 				115BB4B128DF3BB000686670 /* MoreSelector.swift */,
 				115BB4B328E06A6600686670 /* UIPickerItemsSelector.swift */,
 				115BB4BB28E1E3F300686670 /* ImagePickerController.swift */,
+				11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */,
+				11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -530,6 +538,7 @@
 		11CBB7CE28C7B82E00FED8D5 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
+				11FF062328E8896100EAEF33 /* LocationManager.swift */,
 			);
 			path = CustomClasses;
 			sourceTree = "<group>";
@@ -735,6 +744,7 @@
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				115BB49228DA0C0D00686670 /* Offer.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
+				11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
@@ -784,6 +794,7 @@
 				1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */,
+				11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */,
 				11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				11DCADEC28D1FD6F00568D16 /* WorksRequestTableViewCell.swift in Sources */,
@@ -797,6 +808,7 @@
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
 				11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */,
+				11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */,
 				11DCADEA28D08CC400568D16 /* WorksRequestViewController.swift in Sources */,
 				11DCAE0128D35B9800568D16 /* Phone.swift in Sources */,
 				1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */,

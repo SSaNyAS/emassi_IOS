@@ -61,7 +61,6 @@ class PerformerProfileViewController: UIViewController{
     @objc func saveButtonClick(){
         presenter?.setAboutPerformer(aboutText: aboutPerformer?.text ?? "")
         presenter?.setUsername(FIO: nameTextField?.text ?? "")
-        presenter?.setAddress(address: addressTextField?.text ?? "")
         presenter?.setCategories(categories: categorySelector?.selectedItemsValues ?? [])
         presenter?.setPhoneNumber(phone: phoneTextField?.text ?? "")
         presenter?.setSupportRegions(supportRegions: supportRegionSelector?.selectedItemsValues ?? [])
@@ -197,6 +196,9 @@ extension PerformerProfileViewController{
         createTextField(with: "ФИО", attachTo: &nameTextField)
         createTextField(with: "Номер телефона", attachTo: &phoneTextField)
         createTextField(with: "Адрес", attachTo: &addressTextField)
+        
+        addressTextField?.addTarget(self, action: #selector(openAddressSearchViewController), for: .editingDidBegin)
+
         createSupportRegionSelector()
         createCategorySelector()
         createAboutPerformerView()
@@ -224,6 +226,11 @@ extension PerformerProfileViewController{
         createSaveButtonConstraints(in: contentView)
         createGoToUserProfileButtonConstraints(in: contentView)
         
+    }
+    
+    @objc private func openAddressSearchViewController(){
+        addressTextField?.resignFirstResponder()
+        presenter?.selectAddress(currentValue: addressTextField?.text)
     }
     
     private func createGoToUserProfileButton(in view: UIView){

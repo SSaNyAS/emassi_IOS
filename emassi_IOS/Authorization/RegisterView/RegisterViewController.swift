@@ -231,7 +231,7 @@ class RegisterViewController: UIViewController, RegisterViewDelegate{
         let text = "Я соглашаюсь с правилами пользования сервиса, также с передачей и обработкой моих данных в Emassi. Я подтверждаю свое совершеннолетие и ответственность за размещение объявления."
         let attrString = NSMutableAttributedString(string: text)
         let range = attrString.mutableString.range(of: "правилами пользования")
-        attrString.addAttribute(.link, value: "https://yandex.ru", range: range)
+        attrString.addAttribute(.link, value: EmassiApi.privacyPolicy, range: range)
         attrString.addAttribute(.foregroundColor, value: UIColor.placeholderText, range: .init(location: 0, length: text.count))
         checker.textView?.attributedText = attrString
         checker.textView?.font = .systemFont(ofSize: 16)

@@ -13,11 +13,24 @@ class SettingsViewController: UIViewController{
     weak var router: RouterDelegate?
     
     var settings: [MenuAction] = [
-        .init(title: "FAQ", image: "", action: {
-            
-        }),
         .init(title: "Уведомления", image: "", action: {
             
+        }),
+        .init(title: "FAQ", image: "", action: {
+            if let url = URL(string: EmassiApi.faq){
+                if UIApplication.shared.canOpenURL(url){
+                    UIApplication.shared.open(url)
+                }
+               
+            }
+        }),
+        .init(title: "Пользовательское соглашение", image: "", action: {
+            if let url = URL(string: EmassiApi.privacyPolicy){
+                if UIApplication.shared.canOpenURL(url){
+                    UIApplication.shared.open(url)
+                }
+               
+            }
         }),
         .init(title: "Выйти из профиля", image: "", action: {
             SessionConfiguration.Logout()

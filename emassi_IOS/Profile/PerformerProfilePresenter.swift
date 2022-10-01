@@ -9,10 +9,11 @@ import Foundation
 protocol PerformerProfilePresenterDelegate: AnyObject{
     func viewDidLoad()
     func pickImage()
-    
+    func selectAddress(currentValue: String?)
+
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
-    func setAddress(address: String)
+    func setAddress(address: Address)
     func setSupportRegions(supportRegions: [String])
     func setCategories(categories: [String])
     func setAboutPerformer(aboutText: String)
@@ -35,6 +36,13 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
             self?.viewDelegate?.showMessage(message: message ?? "", title: "")
         }
     }
+    func selectAddress(currentValue: String? = nil) {
+        if let viewController = self.viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address in
+                self?.setAddress(address: address)
+            }), presentationMode: .present)
+        }
+    }
     
     
     func setUsername(FIO: String) {
@@ -45,8 +53,9 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         interactor.setPhoneNumber(phone: phone)
     }
     
-    func setAddress(address: String) {
+    func setAddress(address: Address) {
         interactor.setAddress(address: address)
+        viewDelegate?.setAddress(address: address.commonString)
     }
     
     func setSupportRegions(supportRegions: [String]) {

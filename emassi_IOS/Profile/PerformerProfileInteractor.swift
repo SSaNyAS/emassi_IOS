@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol PerformerProfileInteractorDelegate{
     func getPerformerProfile(completion: @escaping (_ profile: PerformerProfile?,_ message: String?) -> Void)
     func getCategoryList(completion: @escaping (_ categories: [PerformersSubCategory]) -> Void)
@@ -15,7 +16,7 @@ protocol PerformerProfileInteractorDelegate{
     
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
-    func setAddress(address: String)
+    func setAddress(address: Address)
     func setSupportRegions(supportRegions: [String])
     func setCategories(categories: [String])
     func setAboutPerformer(aboutText: String)
@@ -25,7 +26,7 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
     
     weak var emassiApi: EmassiApi?
     lazy var updatingRerformerData: RequestPerformerProfile = {
-        let performerProfile = RequestPerformerProfile(username: .init(common: "", firstname: "", lastname: ""), phonenumber: "", address: .init(country: "", state: "", city: "", zip: "", line1: "", line2: ""), location: [], category: [], comments: "")
+        let performerProfile = RequestPerformerProfile(username: .init(common: "", firstname: "", lastname: ""), phonenumber: "", address: .init(), location: [], category: [], comments: "")
         return performerProfile
     }()
     
@@ -48,25 +49,8 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
         updatingRerformerData.phonenumber = phoneTrimmed
     }
     
-    func setAddress(address: String) {
-        let common = address.trimmingCharacters(in: .whitespacesAndNewlines)
-        var components = common.split(separator: ",")
-        var country = updatingRerformerData.address.country
-        var city = updatingRerformerData.address.city
-        var other = updatingRerformerData.address.line1
-        if components.count > 0 {
-            country = String(components.first ?? "")
-            if components.count > 1{
-                city = String(components[1])
-            }
-            if components.count > 2 {
-                components.remove(at: 0)
-                components.remove(at: 1)
-                other = String(components.joined(separator: ", "))
-            }
-        }
-        updatingRerformerData.address = .init(country: country, state: "", city: city, zip: "", line1: other, line2: "")
-            
+    func setAddress(address: Address) {
+        updatingRerformerData.address = address
     }
     
     func setSupportRegions(supportRegions: [String]) {
