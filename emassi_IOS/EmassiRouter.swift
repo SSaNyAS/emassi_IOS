@@ -258,7 +258,11 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
         case .performerInfo(let performerId):
             let performerInfoVC = PerformerInfoViewController()
             if let api = router?.emassiApi{
-                
+                let interactor = PerformerInfoInteractor(emassiApi: api)
+                let presenter = PerformerInfoPresenter(interactor: interactor, performerId: performerId)
+                presenter.viewDelegate = performerInfoVC
+                presenter.router = router
+                performerInfoVC.presenter = presenter
             }
             return performerInfoVC
         case .performerProfile:

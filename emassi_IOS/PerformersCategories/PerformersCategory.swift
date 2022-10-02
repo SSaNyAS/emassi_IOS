@@ -19,10 +19,7 @@ struct PerformersCategory{
     }
 }
 
-struct PerformersSubCategory: Codable,Equatable, MoreSelectorItemProtocol{
+struct PerformersSubCategory: Codable,Equatable{
     let name: String
     let value: String
-    static func == (lhs: PerformersSubCategory, rhs: PerformersSubCategory) -> Bool{
-        return lhs.value == rhs.value
-    }
 }

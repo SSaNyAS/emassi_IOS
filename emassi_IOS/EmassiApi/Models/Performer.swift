@@ -159,7 +159,7 @@ struct RequestPerformerProfile: Codable{
     var username: Username
     var phonenumber: String
     var address: Address
-    var location: [LocationPerformer]
+    var location: [Location]
     var category: [String]
     var comments: String
 }

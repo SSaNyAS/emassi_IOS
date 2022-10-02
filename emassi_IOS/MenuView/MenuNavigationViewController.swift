@@ -110,14 +110,14 @@ class MenuNavigationViewController: UINavigationController {
             router.emassiApi.getAccountInfo { [weak menuViewController] accountinfo, apiResponse, error in
                 DispatchQueue.main.async {
                     menuViewController?.nameLabel?.text = accountinfo?.username.common
-                    menuViewController?.profileImageView?.image
+                    //menuViewController?.profileImageView?.image
                 }
             }
             router.emassiApi.getCustomerProfile { profile, apiResponse, error in
-                print("\ncustomerProfile:\n \(profile)\n")
+                print("\ncustomerProfile:\n \(String(describing: profile))\n")
             }
             router.emassiApi.getPerformerProfile { profile, apiResponse, error in
-                print("\nperformerProfile:\n \(profile)\n")
+                print("\nperformerProfile:\n \(String(describing: profile))\n")
             }
         }
     }

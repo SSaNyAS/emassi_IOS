@@ -10,6 +10,7 @@ protocol PerformerProfilePresenterDelegate: AnyObject{
     func viewDidLoad()
     func pickImage()
     func selectAddress(currentValue: String?)
+    func selectSupportRegion(currentValue: String?, allSelectedValues: [MoreSelectorItem])
 
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
@@ -31,13 +32,7 @@ class PerformerProfilePresenter{
 }
 
 extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
-    func setSupportRegions(supportRegions: [MoreSelectorItem]) {
-        let supportRegionsAsLocation = supportRegions.compactMap({
-            $0.value as? LocationPerformer
-        })
-        setSupportRegions(supportRegions: supportRegionsAsLocation)
-    }
-    
+
     func setCategories(categories: [MoreSelectorItem]) {
         let categoryStringList = categories.compactMap({
             $0.value as? String
@@ -58,6 +53,16 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         }
     }
     
+    func selectSupportRegion(currentValue: String?, allSelectedValues: [MoreSelectorItem]) {
+        if let viewController = self.viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address in
+                var allSelectedValues = allSelectedValues
+                let locationPerformer = Location(from: address)
+                allSelectedValues.append(.init(value: locationPerformer, name: locationPerformer.common))
+                self?.setSupportRegions(supportRegions: allSelectedValues)
+            }), presentationMode: .present)
+        }
+    }
     
     func setUsername(FIO: String) {
         interactor.setUsername(FIO: FIO)
@@ -74,12 +79,12 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         viewDelegate?.setAddress(address: address.commonString)
     }
     
-    func setSupportRegions(supportRegions: [LocationPerformer]) {
-        interactor.setSupportRegions(supportRegions: supportRegions)
-        let mapped  = supportRegions.map({
-            MoreSelectorItem(value: $0, name: $0.common)
+    func setSupportRegions(supportRegions: [MoreSelectorItem]) {
+        let locations = supportRegions.compactMap({
+            $0.value as? Location
         })
-        viewDelegate?.setSupportRegions(regions: mapped)
+        interactor.setSupportRegions(supportRegions: locations)
+        viewDelegate?.setSupportRegions(regions: supportRegions)
     }
     
     func setCategories(categories: [String]) {
@@ -112,10 +117,9 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
                 }
                 
                 let supportRegions =  profile.location.map({
-                    MoreSelectorItem(value: $0.city, name: $0.city)
+                    MoreSelectorItem(value: $0, name: $0.common)
                 })
-                
-                self.viewDelegate?.setSupportRegions(regions: supportRegions)
+                self.setSupportRegions(supportRegions: supportRegions)
                 
                 let selectedCategories = profile.category
                 

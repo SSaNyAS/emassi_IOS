@@ -218,6 +218,7 @@ extension PerformerProfileViewController{
         saveButton?.setTitle("Сохранить", for: .normal)
         saveButton?.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
         goToUserProfileButton?.setTitle("Перейти в профиль пользователя", for: .normal)
+        supportRegionSelector?.addTargetForAllTextFields(target: self, action: #selector(didSelectSupportRegion(sender:)), for: .editingDidBegin)
         
         createProfileImageViewConstraints(in: contentView)
         createLoadNewPhotoButtonConstraints(in: contentView)
@@ -231,6 +232,11 @@ extension PerformerProfileViewController{
     @objc private func openAddressSearchViewController(){
         addressTextField?.resignFirstResponder()
         presenter?.selectAddress(currentValue: addressTextField?.text)
+    }
+    
+    @objc private func didSelectSupportRegion(sender: UITextField){
+        sender.resignFirstResponder()
+        presenter?.selectSupportRegion(currentValue: sender.text, allSelectedValues: supportRegionSelector?.selectedItems ?? [])
     }
     
     private func createGoToUserProfileButton(in view: UIView){

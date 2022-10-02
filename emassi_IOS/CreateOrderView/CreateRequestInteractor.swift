@@ -31,7 +31,7 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
     
     init(emassiApi: EmassiApi) {
         self.emassiApi = emassiApi
-        workCreate = .init(category: .init(level1: "", level2: ""), location: .init(country: Locale.current.languageCode ?? "", state: "", city: ""), distance: 0, currency: Locale.current.currencyCode ?? "", address: .init(country: Locale.current.languageCode ?? "", state: "", city: "", zip: "", line1: "", line2: ""), geopos: .init(currentCoordinates: .init()), comments: "")
+        workCreate = .init(category: .init(level1: "", level2: ""), location: .init(), distance: 0, currency: Locale.current.currencyCode ?? "", address: .init(), geopos: .init(currentCoordinates: .init()), comments: "")
     }
     
     

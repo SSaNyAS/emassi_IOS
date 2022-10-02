@@ -110,8 +110,10 @@ class UIPickerItemSelector: UIPickerView, UIPickerViewDelegate, UIPickerViewData
     
     func selectItemByIndexPath(indexPath: IndexPath){
         selectedIndex = indexPath
-        selectedItem = items[indexPath.row]
-        parentTextField?.text = selectedItem?.name
+        if indexPath.row >= 0 && indexPath.row < items.count{
+            selectedItem = items[indexPath.row]
+            parentTextField?.text = selectedItem?.name
+        }
         parentTextField?.resignFirstResponder()
     }
     

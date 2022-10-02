@@ -17,7 +17,7 @@ protocol PerformerProfileInteractorDelegate{
     func setUsername(FIO: String)
     func setPhoneNumber(phone: String)
     func setAddress(address: Address)
-    func setSupportRegions(supportRegions: [LocationPerformer])
+    func setSupportRegions(supportRegions: [Location])
     func setCategories(categories: [String])
     func setAboutPerformer(aboutText: String)
 }
@@ -25,8 +25,8 @@ protocol PerformerProfileInteractorDelegate{
 class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
     
     weak var emassiApi: EmassiApi?
-    lazy var updatingRerformerData: RequestPerformerProfile = {
-        let performerProfile = RequestPerformerProfile(username: .init(common: "", firstname: "", lastname: ""), phonenumber: "", address: .init(), location: [], category: [], comments: "")
+    lazy var updatingPerformerData: RequestPerformerProfile = {
+        let performerProfile = RequestPerformerProfile(username: Username(common: "", firstname: "", lastname: ""), phonenumber: "", address: Address(), location: [], category: [], comments: "")
         return performerProfile
     }()
     
@@ -40,33 +40,33 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
         if components.count == 2 || components.count == 3{
             let firstname = String(components[1])
             let lastname = String(components[0])
-            updatingRerformerData.username = .init(common: common, firstname: firstname, lastname: lastname)
+            updatingPerformerData.username = .init(common: common, firstname: firstname, lastname: lastname)
         }
     }
     
     func setPhoneNumber(phone: String) {
         let phoneTrimmed = phone.trimmingCharacters(in: .whitespacesAndNewlines)
-        updatingRerformerData.phonenumber = phoneTrimmed
+        updatingPerformerData.phonenumber = phoneTrimmed
     }
     
     func setAddress(address: Address) {
-        updatingRerformerData.address = address
+        updatingPerformerData.address = address
     }
     
-    func setSupportRegions(supportRegions: [LocationPerformer]) {
-        updatingRerformerData.location = supportRegions
+    func setSupportRegions(supportRegions: [Location]) {
+        updatingPerformerData.location = supportRegions
     }
     
     func setCategories(categories: [String]) {
-        updatingRerformerData.category = categories
+        updatingPerformerData.category = categories
     }
     
     func setAboutPerformer(aboutText: String) {
-        updatingRerformerData.comments = aboutText
+        updatingPerformerData.comments = aboutText
     }
     
     func updateProfile(completion: @escaping (_ message: String?,_ isSuccess: Bool) -> Void){
-        emassiApi?.updatePerformerProfile(profile: updatingRerformerData, completion: { apiResponse, error in
+        emassiApi?.updatePerformerProfile(profile: updatingPerformerData, completion: { apiResponse, error in
             completion(error?.localizedDescription ?? apiResponse?.message ?? nil,!(apiResponse?.isErrored ?? true))
         })
     }
@@ -94,10 +94,10 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
             completion(profile,error?.localizedDescription ?? apiResponse?.message ?? nil)
         })
         emassiApi?.getCustomerProfile { profile, apiResponse, error in
-            print("\ncustomerProfile:\n \(profile)\n")
+            print("\ncustomerProfile:\n \(String(describing: profile))\n")
         }
         emassiApi?.getPerformerProfile { profile, apiResponse, error in
-            print("\nperformerProfile:\n \(profile)\n")
+            print("\nperformerProfile:\n \(String(describing: profile))\n")
         }
     }
     

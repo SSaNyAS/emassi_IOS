@@ -56,7 +56,7 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .activeWorks, presentationMode: .push)
                 }
             },
-            .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
+            .init(title: "Чат", image: "message.fill"){
                 
             },
             .init(title: "Отзыв", image: "star.fill"){ [weak menuNavigationController, weak router] in
@@ -79,7 +79,7 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .favorites, presentationMode: .push)
                 }
             },
-            .init(title: "Архив заявок", image: "folder.fill"){ [weak menuNavigationController, weak router] in
+            .init(title: "Архив заявок", image: "folder.fill"){
                 
             },
             .init(title: "Профиль", image: "person.fill"){ [weak menuNavigationController, weak router] in
@@ -87,10 +87,10 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .performerInfo(""), presentationMode: .push)
                 }
             },
-            .init(title: "Регистрация специалиста", image: "person.fill.badge.plus"){ [weak menuNavigationController, weak router] in
+            .init(title: "Регистрация специалиста", image: "person.fill.badge.plus"){
                 
             },
-            .init(title: "Помощь", image: "questionmark.circle"){ [weak menuNavigationController, weak router] in
+            .init(title: "Помощь", image: "questionmark.circle"){
                 
             },
             .init(title: "Документы", image: "gear"){ [weak menuNavigationController, weak router] in
