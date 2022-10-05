@@ -33,9 +33,7 @@ class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
             self.viewDelegate?.setName(name: performer?.username.common)
             self.viewDelegate?.setPhone(phone: performer?.phone.number)
             self.interactor.getPerformerPhoto(performerId: self.performerId) { [weak self] data in
-                if let data = data{
-                    self?.viewDelegate?.setProfileImage(image: UIImage(data: data))
-                }
+                self?.viewDelegate?.setProfileImage(image: UIImage(data: data ?? Data()) ?? .noPhotoUser)
             }
             self.viewDelegate?.setDescription(description: performer?.comments)
             self.viewDelegate?.setReviewsCount(count: performer?.reviews.count ?? 0)

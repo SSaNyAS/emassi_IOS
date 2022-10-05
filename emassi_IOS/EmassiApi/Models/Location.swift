@@ -13,6 +13,7 @@ protocol LocationModel:Codable{
 }
 
 struct Location: Codable, Hashable{
+    var ignore: Bool? = nil
     var country: String
     var state: String
     var city: String
@@ -52,12 +53,14 @@ struct Location: Codable, Hashable{
             self.country = countryTrimmed.capitalized
             self.countryCode = Locale.getCountryCode(for: countryTrimmed)
         }
+        self.ignore = try? container.decodeIfPresent(Bool.self, forKey: .ignore)
         self.state = try container.decode(String.self, forKey: .state).capitalized
         self.city = try container.decode(String.self, forKey: .city).capitalized
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try? container.encodeIfPresent(self.ignore, forKey: .ignore)
         if let countryCode = self.countryCode {
             try container.encode(countryCode, forKey: .country)
         } else {
@@ -86,7 +89,9 @@ struct Location: Codable, Hashable{
         }
         return string
     }
+
     enum CodingKeys: CodingKey {
+        case ignore
         case country
         case state
         case city

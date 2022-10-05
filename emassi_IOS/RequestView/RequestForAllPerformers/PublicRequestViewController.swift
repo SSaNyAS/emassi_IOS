@@ -1,5 +1,5 @@
 //
-//  CreateRequestViewController.swift
+//  CreateOrderViewController.swift
 //  emassi_IOS
 //
 //  Created by Алексей Рябин on 17.09.2022.
@@ -7,26 +7,17 @@
 
 import Foundation
 import UIKit
-import Combine
 
-protocol CreateRequestViewDelegate: AnyObject{
+protocol PublicRequestViewDelegate: AnyObject{
     func getViewController() -> UIViewController
     func showMessage(message: String, title: String)
-    func setAddress(address: String)
-    func setSelectableCategories(categories: [MoreSelectorItem])
-    func addPhotoButtonClick()
-    func createRequestButtonClick()
+    func setPhone(phone: String?)
+    func setAddress(address: String?)
+    func addPhoto(imageData: Data?)
 }
 
-class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
+class PublicRequestViewController: UIViewController, PublicRequestViewDelegate{
     weak var scrollContentView: UIView!
-    
-    weak var categorySelectorLabel: UILabel?
-    weak var categorySelector: UIPickerItemSelector?
-    weak var categoryTextField: UITextField?
-    
-    weak var requestLocalizationLabel: UILabel?
-    weak var requestLocalizationTextField: UITextField?
     
     weak var orderDateLabel: UILabel?
     weak var orderDateFromPicker: UIDatePicker?
@@ -48,20 +39,16 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     weak var commentsLabel: UILabel?
     weak var commentsTextView: UITextView?
     
-    weak var privateInfoLabel: UILabel?
-    weak var privateInfoTextView: UITextView?
-    
     weak var imageContainer: UIStackView?
     
     weak var addPhotoButton: UIButton?
     weak var createOrderButton: UIButton?
-    var presenter: CreateRequestPresenterDelegate?
+    var presenter: PublicRequestPresenterDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
-        presenter?.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -70,35 +57,36 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
             setMinimumDate()
         }
     }
-
+    
     func getViewController() -> UIViewController {
         return self
     }
     
-    func setAddress(address: String) {
-        DispatchQueue.main.async {
-            self.requestLocalizationTextField?.text = address
+    func setPhone(phone: String?) {
+        DispatchQueue.main.async { [weak phoneNumberTextField] in
+            phoneNumberTextField?.text = phone
         }
     }
     
-    func setSelectableCategories(categories: [MoreSelectorItem]) {
-        DispatchQueue.main.async {
-            self.categorySelector?.items = categories
+    func setAddress(address: String?) {
+        DispatchQueue.main.async { [weak addressTextField] in
+            addressTextField?.text = address
         }
     }
     
-    @objc func addPhotoButtonClick(){
+    func addPhoto(imageData: Data?) {
+        DispatchQueue.main.async { [weak imageContainer] in
+            let image = UIImage(data: imageData ?? Data())
+            imageContainer?.addArrangedSubview(UIImageView(image: image))
+        }
+    }
+    
+    @objc private func addPhotoButtonClick(){
         presenter?.addPhoto()
     }
     
-    @objc func createRequestButtonClick(){
-        presenter?.setCategory(category: categorySelector?.selectedItem)
-        presenter?.setPhone(phone: phoneNumberTextField?.text)
-        presenter?.setComments(comments: commentsTextView?.text)
-        presenter?.setPrice(price: orderSumTextField?.text)
-        presenter?.setTime(from: orderTimeFromPicker?.minuteInterval ?? 0, to: orderDateToPicker?.minuteInterval ?? 0)
-        presenter?.setDetails(details: privateInfoTextView?.text)
-        presenter?.createRequest()
+    @objc private func createPublicRequest(){
+        presenter?.createPublicRequest()
     }
     
     @objc private func orderDateToChanged(){
@@ -120,11 +108,12 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
         orderTimeToPicker?.minimumDate = Date()
     }
     
+    
+    
 }
-
-// MARK: Setup Views Content
-
-extension CreateRequestViewController{
+// MARK: Create Views
+extension PublicRequestViewController{
+    
     private func setupViews(){
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true
@@ -157,13 +146,6 @@ extension CreateRequestViewController{
             scrollView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         ])
         
-        createCategorySelectorLabel()
-        createCategorySelector()
-        createCategoryTextField()
-        
-        createRequestLocalizationLabel()
-        createRequestLocalizationTextField()
-        
         createOrderDateLabel()
         createOrderDateFromPicker()
         createOrderDateToPicker()
@@ -184,30 +166,24 @@ extension CreateRequestViewController{
         createCommentsLabel()
         createCommentsTextView()
         
-        createPrivateInfoLabel()
-        createPrivateInfoTextView()
-        
         createImageContainer()
         
         createAddPhotoButton()
         createCreateOrderButton()
         
         title = "Оформить вызов"
-        categorySelectorLabel?.text = "Выбор категории"
-        requestLocalizationLabel?.text = "Локализация заявки"
         orderDateLabel?.text = "Дата вызова"
         orderTimeLabel?.text = "Время вызова"
         orderSumLabel?.text = "Сумма оплаты"
         phoneNumberLabel?.text = "Номер телефона"
         addressLabel?.text = "Адрес вызова"
         commentsLabel?.text = "Комментарии"
-        privateInfoLabel?.text = "Конфиденциальная информация"
         
         addPhotoButton?.setTitle("Добавить фото", for: .normal)
         createOrderButton?.setTitle("Оформить", for: .normal)
         
         addPhotoButton?.addTarget(self, action: #selector(addPhotoButtonClick), for: .touchUpInside)
-        createOrderButton?.addTarget(self, action: #selector(createRequestButtonClick), for: .touchUpInside)
+        createOrderButton?.addTarget(self, action: #selector(createPublicRequest), for: .touchUpInside)
         
         setCurrentDate()
         if let orderDateToPicker = orderDateToPicker{
@@ -215,15 +191,8 @@ extension CreateRequestViewController{
         }
         setupViewsConstraints(to: scrollContentView)
     }
-}
-
-// MARK: Setup Views Constraints
-extension CreateRequestViewController{
+    
     private func setupViewsConstraints(to view: UIView){
-        setupCategorySelectorConstraints(view: view)
-        
-        setupRequestLocalizationConstraints(view: view)
-        
         setupOrderDateConstraints(view: view)
         
         setupOrderTimeConstraints(view: view)
@@ -240,8 +209,6 @@ extension CreateRequestViewController{
         
         setupAddPhotoButtonConstraints(view: view)
         setupCreateOrderButtonConstraints(view: view)
-        
-        setupPrivateInfoConstraints(view: view)
     }
     
     private func setupCreateOrderButtonConstraints(view: UIView){
@@ -282,37 +249,13 @@ extension CreateRequestViewController{
             return
         }
         
-        if let privateInfoTextView = privateInfoTextView{
-            imageContainer.topAnchor.constraint(equalTo: privateInfoTextView.bottomAnchor, constant: 10).isActive = true
+        if let commentsTextView = commentsTextView{
+            imageContainer.topAnchor.constraint(equalTo: commentsTextView.bottomAnchor, constant: 10).isActive = true
         }
 
         NSLayoutConstraint.activate([
             imageContainer.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             imageContainer.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-        ])
-    }
-    
-    private func setupPrivateInfoConstraints(view: UIView){
-        guard let privateInfoLabel = privateInfoLabel,
-              let privateInfoTextView = privateInfoTextView else {
-            return
-        }
-        
-        if let commentsTextView = commentsTextView{
-            privateInfoLabel.topAnchor.constraint(equalTo: commentsTextView.bottomAnchor, constant: 10).isActive = true
-        }
-        let heightConstraint = privateInfoTextView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.3)
-        heightConstraint.priority = .defaultLow
-        
-        NSLayoutConstraint.activate([
-            
-            privateInfoLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            privateInfoLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
-            privateInfoTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            privateInfoTextView.topAnchor.constraint(equalTo: privateInfoLabel.bottomAnchor, constant: 2),
-            privateInfoTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            heightConstraint
         ])
     }
     
@@ -449,13 +392,9 @@ extension CreateRequestViewController{
         betweenLabel.translatesAutoresizingMaskIntoConstraints = false
         betweenLabel.setContentHuggingPriority(.required, for: .horizontal)
         view.addSubview(betweenLabel)
-        
-        if let requestLocalizationTextField = requestLocalizationTextField{
-            orderDateLabel.topAnchor.constraint(equalTo: requestLocalizationTextField.safeAreaLayoutGuide.bottomAnchor, constant: 5).isActive = true
-        }
         NSLayoutConstraint.activate([
             orderDateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-
+            orderDateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             
             orderDateFromPicker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             orderDateFromPicker.topAnchor.constraint(equalTo: orderDateLabel.bottomAnchor, constant: 2),
@@ -470,49 +409,6 @@ extension CreateRequestViewController{
         ])
     }
     
-    private func setupRequestLocalizationConstraints(view: UIView){
-        guard let requestLocalizationLabel = requestLocalizationLabel, let requestLocalizationTextField = requestLocalizationTextField else {
-            return
-        }
-        
-        if let categoryTextField = categoryTextField{
-            requestLocalizationLabel.topAnchor.constraint(equalTo: categoryTextField.safeAreaLayoutGuide.bottomAnchor, constant: 5).isActive = true
-        }
-        
-        NSLayoutConstraint.activate([
-            requestLocalizationLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 15),
-            
-            requestLocalizationLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
-            requestLocalizationTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            requestLocalizationTextField.topAnchor.constraint(equalTo: requestLocalizationLabel.bottomAnchor, constant: 2),
-            requestLocalizationTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            requestLocalizationTextField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
-            
-        ])
-    }
-    
-    private func setupCategorySelectorConstraints(view: UIView){
-        guard let categoryTextField = categoryTextField, let categorySelectorLabel = categorySelectorLabel else {
-            return
-        }
-        
-        NSLayoutConstraint.activate([
-            categorySelectorLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 15),
-            categorySelectorLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            categorySelectorLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
-            categoryTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            categoryTextField.topAnchor.constraint(equalTo: categorySelectorLabel.bottomAnchor, constant: 2),
-            categoryTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            categoryTextField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
-            
-        ])
-    }
-}
-
-// MARK: Create Views
-extension CreateRequestViewController{
     private func createCreateOrderButton(){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -535,25 +431,6 @@ extension CreateRequestViewController{
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollContentView.addSubview(stackView)
         imageContainer = stackView
-    }
-    
-    private func createPrivateInfoTextView(){
-        let textView = UITextView()
-        textView.font = .systemFont(ofSize: 16)
-        textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
-        textView.isUserInteractionEnabled = true
-        textView.setCornerRadius(value: 12)
-        textView.layer.masksToBounds = true
-        textView.setBorder()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        scrollContentView.addSubview(textView)
-        privateInfoTextView = textView
-    }
-    
-    private func createPrivateInfoLabel(){
-        let label = createDescriptionLabel()
-        scrollContentView.addSubview(label)
-        privateInfoLabel = label
     }
     
     private func createCommentsTextView(){
@@ -663,39 +540,6 @@ extension CreateRequestViewController{
         let label = createDescriptionLabel()
         scrollContentView.addSubview(label)
         orderDateLabel = label
-    }
-    
-    private func createRequestLocalizationTextField(){
-        let textfield = createTextField()
-        scrollContentView.addSubview(textfield)
-        requestLocalizationTextField = textfield
-    }
-    
-    private func createRequestLocalizationLabel(){
-        let label = createDescriptionLabel()
-        scrollContentView.addSubview(label)
-        self.requestLocalizationLabel = label
-    }
-    
-    private func createCategoryTextField(){
-        let textfield = createTextField()
-        scrollContentView.addSubview(textfield)
-        categoryTextField = textfield
-        textfield.inputView = categorySelector
-        categorySelector?.parentTextField = textfield
-    }
-    
-    private func createCategorySelector(){
-        let categorySelector = UIPickerItemSelector()
-        categorySelector.parentTextField = categoryTextField
-        categoryTextField?.inputView = categorySelector
-        self.categorySelector = categorySelector
-    }
-    
-    private func createCategorySelectorLabel(){
-        let categorySelectorLabel = createDescriptionLabel()
-        scrollContentView.addSubview(categorySelectorLabel)
-        self.categorySelectorLabel = categorySelectorLabel
     }
     
     private func createTextField() -> UITextField{

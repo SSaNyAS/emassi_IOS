@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation.CLLocation
 
 protocol RouterDelegate: NSObject{
     func goToViewController(from viewController: UIViewController, to routedView: EmassiRoutedViews, presentationMode: ViewControllerPresentMode)
@@ -82,17 +83,18 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case categories
     case favorites
     case documents
+    case myWorks
     case activeWorks
     case settings
     case feedback
     case performersList(_ categoryId: String)
     case performerInfo(_ performerId: String)
-    case createOrder
+    case createPublicRequest(_ categoryId: String?)
     case resetPassword
     case performerProfile
-    case createRequest(_ performerId: String)
+    case createRequest(_ performerId: String, _ categoryId: String?)
     case imagePicker(_ didSelectAction: ((UIImage) -> Void)?,_ didCancelPickImage: (()->Void)?)
-    case addressSelector(_ searchText: String? = nil, _ didSelectAddressAction: ((Address) -> Void)?)
+    case addressSelector(_ searchText: String? = nil, _ didSelectAddressAction: ((Address, CLLocation?) -> Void)?)
     
     
     
@@ -120,6 +122,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "favorites"
         case .documents:
             return "documents"
+        case .myWorks:
+            return "myWorks"
         case .activeWorks:
             return "activeWorks"
         case .settings:
@@ -130,14 +134,14 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "performersListForCategory\(category)"
         case .performerInfo(let performer):
             return "performerInfoForPerformer\(performer)"
-        case .createOrder:
-            return "createOrder"
         case .resetPassword:
             return "resetPassword"
         case .performerProfile:
             return "performerProfile"
-        case .createRequest:
-            return "createRequest"
+        case .createRequest(let performer,let category):
+            return "createRequest\(performer)_\(String(describing: category))"
+        case .createPublicRequest(let category):
+            return "createPublicRequest\(String(describing: category))"
         case .imagePicker(_,_):
             return "imagePicker"
         case .addressSelector(_,_):
@@ -216,7 +220,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.router = router
             }
             return documentsVC
-        case .activeWorks:
+        case .myWorks:
             let worksRequestVC = WorksRequestViewController()
             if let api = router?.emassiApi{
                 let interactor = WorksRequestInteractor(emassiApi: api)
@@ -226,20 +230,39 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 worksRequestVC.presenter = presenter
             }
             return worksRequestVC
+        case .activeWorks:
+            let activeWorksVC = ActiveWorksViewController()
+            if let api = router?.emassiApi{
+                let interactor = ActiveWorksInteractor(emassiApi: api)
+                let presenter = ActiveWorksPresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = activeWorksVC
+                activeWorksVC.presenter = presenter
+            }
+            return activeWorksVC
         case .settings:
             let settingsVC = SettingsViewController()
             return settingsVC
         case .feedback:
             let feedbackVC = FeedbackViewController()
             return feedbackVC
-        case .createOrder:
-            let createOrderVC = CreateOrderViewController()
-            return createOrderVC
-        case .createRequest(let performerId):
+        case .createPublicRequest(let category):
+            let publicRequestVC = PublicRequestViewController()
+            if let api = router?.emassiApi{
+                let interactor = PublicRequestInteractor(emassiApi: api)
+                let presenter = PublicRequestPresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = publicRequestVC
+                presenter.selectedCategory = category
+                publicRequestVC.presenter = presenter
+            }
+            return publicRequestVC
+        case .createRequest(let performerId, let category):
             let createRequestVC = CreateRequestViewController()
             if let api = router?.emassiApi{
                 let interactor = CreateRequestInteractor(emassiApi: api)
                 let presenter = CreateRequestPresenter(interactor: interactor, performerId: performerId)
+                presenter.selectedCategory = category
                 presenter.router = router
                 presenter.viewDelegate = createRequestVC
                 createRequestVC.presenter = presenter

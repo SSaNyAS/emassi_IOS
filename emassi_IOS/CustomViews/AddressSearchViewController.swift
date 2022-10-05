@@ -13,7 +13,7 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
     lazy var searchController =  UISearchController()
     let cellIdentifire = "cellAddress"
     let geoCoder: CLGeocoder = CLGeocoder()
-    public var didSelectAddressAction: ((Address)-> Void)?
+    public var didSelectAddressAction: ((_ address: Address,_ coordinates: CLLocation?)-> Void)?
     lazy var locationManager: LocationManager? = {
         let locationManager = LocationManager()
         return locationManager
@@ -26,6 +26,7 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
             }
         }
     }
+    var coordinates: [CLLocation?] = []
     public var showGetMyLocationRow = true
     
     override func viewDidLoad() {
@@ -49,6 +50,7 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        locationManager = nil
         if navigationController == nil {
             super.dismiss(animated: flag, completion: completion)
         } else {
@@ -56,39 +58,40 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
         }
     }
     
-    func getMyLocation(completion: ((Address?) -> Void)? = nil ){
+    func getMyLocation(completion: ((Address?, CLLocation?) -> Void)? = nil ){
         guard let locationManager = locationManager else {
             return
         }
         locationManager.startUpdateLocations()
         locationManager.didCompleteGetLocation = { [weak self] location in
-            self?.geocodeFromLocation(location: location) { address in
-                completion?(address)
+            self?.geocodeFromLocation(location: location) { address, coordinates in
+                completion?(address, coordinates)
             }
-            self?.locationManager = nil
         }
         locationManager.didFailGetLocation = { [weak self] error in
-            completion?(nil)
+            completion?(nil, nil)
             self?.showMessage(message: "Ошибка при получении геопозиции", title: "")
-            self?.locationManager = nil
         }
     }
     
-    func geocodeFromLocation(location: CLLocation, completion: ((Address?) -> Void)? = nil ){
+    func geocodeFromLocation(location: CLLocation, completion: ((Address?, CLLocation?) -> Void)? = nil ){
         geoCoder.reverseGeocodeLocation(location) { places, error in
             guard let places = places, error == nil else {
                 return
             }
             if places.count == 1 {
                 let address = Address(place: places.first!)
-                completion?(address)
+                completion?(address, places.first!.location)
                 return
             } else {
-                self.addressList = places.map({
+                self.addressList = places.compactMap({
                     Address(place: $0)
                 })
+                self.coordinates = places.map{
+                    $0.location
+                }
             }
-            completion?(nil)
+            completion?(nil,nil)
         }
     }
     
@@ -103,8 +106,10 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
             self.addressList = places?.compactMap({ place in
                 let address = Address(place: place)
                 return address
-            }) ?? []
-            print (self.addressList)
+            }) ?? self.addressList
+            self.coordinates = places?.map({
+                $0.location
+            }) ?? self.coordinates
         }
     }
     
@@ -133,9 +138,9 @@ extension AddressSearchViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if showGetMyLocationRow && indexPath.row == 0 {
-            getMyLocation { [weak self] address in
+            getMyLocation { [weak self] address, coordinates in
                 if let address = address{
-                    self?.didSelectAddressAction?(address)
+                    self?.didSelectAddressAction?(address, coordinates)
                     self?.dismiss(animated: true)
                 }
             }
@@ -143,7 +148,8 @@ extension AddressSearchViewController: UITableViewDelegate, UITableViewDataSourc
         }
         let rowIndex = showGetMyLocationRow ? indexPath.row - 1 : indexPath.row
         let selectedAddress = addressList[rowIndex]
-        didSelectAddressAction?(selectedAddress)
+        let selectedCoordinates = coordinates[rowIndex]
+        didSelectAddressAction?(selectedAddress, selectedCoordinates)
         dismiss(animated: true)
     }
     

@@ -38,6 +38,8 @@ class UITextFieldEmassi: UITextField{
     
     func setupDefaultSettings(){
         font = .systemFont(ofSize: 16)
+        minimumFontSize = 8
+        adjustsFontSizeToFitWidth = true
         backgroundColor = .secondarySystemBackground
         setTextLeftInset(value: 8)
         setCornerRadius(value: 12)

@@ -2,16 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>used for capture photo</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>used for load image</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>used for fill profile</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>used for fill profile</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>used for fill profile</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

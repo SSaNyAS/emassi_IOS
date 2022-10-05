@@ -6,9 +6,13 @@
 //
 
 import Foundation
+import CoreLocation.CLLocation
+
 protocol CreateRequestPresenterDelegate{
     func viewDidLoad()
     func createRequest()
+    func selectLocalizationAddress(currentText: String?)
+    func selectCallAddress(currentText: String?)
     func addPhoto()
     
     func setPerformer(performerId: String)
@@ -17,6 +21,7 @@ protocol CreateRequestPresenterDelegate{
     func setComments(comments: String?)
     func setDetails(details: String?)
     func setPrice(price: String?)
+    func setDate(from: Date?, to: Date?)
     func setTime(from: Int, to: Int)
 }
 
@@ -26,6 +31,7 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
     weak var viewDelegate: CreateRequestViewDelegate?
     var imagesToRequest: [Data] = []
     var performerId: String
+    var selectedCategory: String?
     
     init(interactor: CreateRequestInteractorDelegate & WorkCreator, performerId:  String) {
         self.interactor = interactor
@@ -34,20 +40,31 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
     
     func createRequest() {
         interactor.createRequest(attachImages: imagesToRequest) { [weak self] apiResponse, message in
-            if let message = message{
-                self?.viewDelegate?.showMessage(message: message, title: "")
-            }
-            
-            if let viewController = self?.viewDelegate?.getViewController(){
-                self?.router?.goToViewController(from: viewController, to: .categories, presentationMode: .pop)
+            if (apiResponse?.isErrored ?? true){
+                self?.viewDelegate?.showMessage(message: message ?? "", title: "")
+            } else {
+                if let viewController = self?.viewDelegate?.getViewController(){
+                    DispatchQueue.main.async {
+                        viewController.dismiss(animated: true)
+                    }
+                }
             }
         }
     }
     
-    func selectAddress(currentText: String?){
+    func selectLocalizationAddress(currentText: String?){
         if let viewController = viewDelegate?.getViewController(){
-            router?.goToViewController(from: viewController, to: .addressSelector(currentText, { [weak self] address in
+            router?.goToViewController(from: viewController, to: .addressSelector(currentText, { [weak self] address, coordinate in
+                self?.setLocation(location: Location(from: address))
+            }), presentationMode: .present)
+        }
+    }
+    
+    func selectCallAddress(currentText: String?){
+        if let viewController = viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .addressSelector(currentText, { [weak self] address, coordinate in
                 self?.setAddress(address: address)
+                self?.setGeoPos(coordinates: coordinate)
             }), presentationMode: .present)
         }
     }
@@ -58,6 +75,7 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
                 guard let self = self else {return}
                 if let data = image.compressedData(){
                     self.imagesToRequest.append(data)
+                    self.viewDelegate?.addPhoto(imageData: data)
                 }
             }, nil), presentationMode: .present)
         }
@@ -66,17 +84,25 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
     func viewDidLoad() {
         interactor.getSelectableCategories {[weak self] categories, message in
             self?.viewDelegate?.setSelectableCategories(categories: categories)
+            if let category = self?.selectedCategory{
+                if let selectedCategory = categories.first(where: {($0.value as? String) == category}){
+                    self?.viewDelegate?.setSelectedCategory(category: selectedCategory)
+                }
+            }
         }
         interactor.getCustomerProfile {[weak self] profile, message in
             if let profile = profile{
-                self?.viewDelegate?.setAddress(address: profile.address.city)
+                self?.setAddress(address: profile.address)
+                self?.viewDelegate?.setPhone(phone: profile.phone.number)
+                self?.setPhone(phone: profile.phone.number)
             }
         }
+        
         setPerformer(performerId: performerId)
     }
 }
 
-extension CreateRequestPresenter: WorkCreator{
+extension CreateRequestPresenter: WorkCreator {
     func setPerformer(performerId: String) {
         interactor.setPerformer(performerId: performerId)
     }
@@ -85,9 +111,18 @@ extension CreateRequestPresenter: WorkCreator{
         interactor.setPhone(phone: phone)
     }
     
+    func setLocation(location: Location?){
+        interactor.setLocation(location: location)
+        viewDelegate?.setLocalizationAddress(address: location?.common ?? "")
+    }
+    
     func setAddress(address: Address?) {
         interactor.setAddress(address: address)
-        viewDelegate?.setAddress(address: address?.commonString ?? "")
+        viewDelegate?.setCallAddress(address: address?.commonString ?? "")
+    }
+    
+    func setGeoPos(coordinates: CLLocation?) {
+        interactor.setGeoPos(coordinates: coordinates)
     }
     
     func setCategory(category: MoreSelectorItem?) {
@@ -107,8 +142,29 @@ extension CreateRequestPresenter: WorkCreator{
     }
     
     func setTime(from: Int, to: Int) {
+        guard from >= 0 && from <= 24 && to >= 0 && to <= 24 else {
+            viewDelegate?.showMessage(message: "Время должно быть в пределах от 0 до 24 часов", title: "")
+            return
+        }
+
         interactor.setTime(from: from, to: to)
     }
     
+    func setDate(from: Date, to: Date) {
+        interactor.setDate(from: from.addingTimeInterval(60), to: to)
+    }
     
+    func setDate(from: Date?, to: Date?) {
+        guard var from = from, let to = to else {
+            viewDelegate?.showMessage(message: "Укажите дату", title: "")
+            return
+        }
+        
+        if from < Date(){
+            from = Date()
+            viewDelegate?.setMinimumDate()
+        }
+        
+        self.setDate(from: from, to: to)
+    }
 }

@@ -280,7 +280,7 @@ class MoreSelectorView: UIControl{
         let button = UIButton()
         button.setTitle(nil, for: .normal)
         button.setTitle(nil, for: .highlighted)
-        button.contentMode = .scaleAspectFill
+        button.contentMode = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         
         let image = UIImage(systemName: "x.circle")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
@@ -288,8 +288,7 @@ class MoreSelectorView: UIControl{
         button.setImage(image, for: .highlighted)
         button.setPreferredSymbolConfiguration(.init(pointSize: 25), forImageIn: .normal)
         button.setPreferredSymbolConfiguration(.init(pointSize: 23), forImageIn: .highlighted)
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+        button.widthAnchor.constraint(equalTo: button.heightAnchor,constant: 20).isActive = true
         
         button.addTarget(self, action: #selector(removeFieldClick(sender:)), for: .touchUpInside)
         return button
@@ -304,8 +303,8 @@ class MoreSelectorView: UIControl{
         textField.setBorder()
         textField.backgroundColor = .clear
         textField.setContentHuggingPriority(.defaultLow, for: .vertical)
-        textField.textInputView.backgroundColor = .red
         let heightConstraint = textField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
+        
         heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
         return textField

@@ -49,15 +49,15 @@ private func getImageDownloadConfiguration(apiKey: String) -> URLSessionConfigur
         "apiKey": apiKey
     ]
     
-    configuration.urlCache = URLCache(memoryCapacity: 200 * mb, diskCapacity: 300 * mb, diskPath: "images")
-    configuration.requestCachePolicy = .returnCacheDataElseLoad
-    
     configuration.timeoutIntervalForResource = 120
     configuration.timeoutIntervalForRequest = 30
     configuration.waitsForConnectivity = true
     
-    configuration.networkServiceType = .responsiveAV
+    configuration.networkServiceType = .responsiveData
     configuration.httpMaximumConnectionsPerHost = 8
+    
+    configuration.urlCache = URLCache(memoryCapacity: 200 * mb, diskCapacity: 300 * mb, diskPath: "images")
+    configuration.requestCachePolicy = .returnCacheDataElseLoad
     
     return configuration
 }

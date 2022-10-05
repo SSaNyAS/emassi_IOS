@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let skey = "skey_f19da651f0c2f96afb46b37f6e80a939"
     
     var emassiApi: EmassiApi?
-    
+    var networkMonitor: NetworkConnectionChecker?
     
     @objc private func didLogout(){
         if (emassiApi?.isValidToken ?? true) == false {
@@ -36,6 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(didLogout), name: .logoutNotification, object: nil)
         
         router = EmassiRouter(emassiApi: api)
+        networkMonitor = NetworkConnectionChecker()
+        networkMonitor?.connectionChanged = { isConnected in
+            print("connection changed, connection is successfull: \(isConnected)")
+        }
+        networkMonitor?.networkTypeChanged = { connectionType in
+            print("connection type changed, new type is \(connectionType.rawValue)")
+        }
         let navigationController = UINavigationController()
         navigationController.isToolbarHidden = true
         navigationController.isNavigationBarHidden = true

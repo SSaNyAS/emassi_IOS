@@ -103,7 +103,7 @@
 		11DCAE0928D3669100568D16 /* Work.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0828D3669100568D16 /* Work.swift */; };
 		11DCAE0B28D3673B00568D16 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0A28D3673B00568D16 /* Category.swift */; };
 		11DCAE0D28D3691B00568D16 /* DateStartEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */; };
-		11DCAE1028D5EC8300568D16 /* CreateOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */; };
+		11DCAE1028D5EC8300568D16 /* PublicRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0F28D5EC8300568D16 /* PublicRequestViewController.swift */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
@@ -113,6 +113,20 @@
 		11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */; };
 		11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062328E8896100EAEF33 /* LocationManager.swift */; };
 		11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062528E8C89000EAEF33 /* LocaleExtension.swift */; };
+		11FF062A28EA34D000EAEF33 /* PublicRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062928EA34D000EAEF33 /* PublicRequestPresenter.swift */; };
+		11FF062C28EA34E300EAEF33 /* PublicRequestInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062B28EA34E300EAEF33 /* PublicRequestInteractor.swift */; };
+		11FF062F28EB7AA900EAEF33 /* ActiveWorksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062E28EB7AA900EAEF33 /* ActiveWorksViewController.swift */; };
+		11FF063128EB7ABA00EAEF33 /* ActiveWorksPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063028EB7ABA00EAEF33 /* ActiveWorksPresenter.swift */; };
+		11FF063328EB7AC400EAEF33 /* ActiveWorksInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063228EB7AC400EAEF33 /* ActiveWorksInteractor.swift */; };
+		11FF063528EB8C3600EAEF33 /* ActiveWorksHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063428EB8C3600EAEF33 /* ActiveWorksHeaderView.swift */; };
+		11FF063728EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063628EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift */; };
+		11FF063928EBADF600EAEF33 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063828EBADF600EAEF33 /* DateExtension.swift */; };
+		11FF063C28EBB27600EAEF33 /* SendOfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063B28EBB27600EAEF33 /* SendOfferViewController.swift */; };
+		11FF063F28EC77A500EAEF33 /* OrdersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF063E28EC77A500EAEF33 /* OrdersListViewController.swift */; };
+		11FF064128EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064028EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift */; };
+		11FF064328EC817800EAEF33 /* OrdersListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */; };
+		11FF064528EC823000EAEF33 /* OrdersListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */; };
+		11FF064728ECEB9700EAEF33 /* NetworkConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,7 +247,7 @@
 		11DCAE0828D3669100568D16 /* Work.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Work.swift; sourceTree = "<group>"; };
 		11DCAE0A28D3673B00568D16 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStartEnd.swift; sourceTree = "<group>"; };
-		11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrderViewController.swift; sourceTree = "<group>"; };
+		11DCAE0F28D5EC8300568D16 /* PublicRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
@@ -243,6 +257,20 @@
 		11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewController.swift; sourceTree = "<group>"; };
 		11FF062328E8896100EAEF33 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		11FF062528E8C89000EAEF33 /* LocaleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtension.swift; sourceTree = "<group>"; };
+		11FF062928EA34D000EAEF33 /* PublicRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRequestPresenter.swift; sourceTree = "<group>"; };
+		11FF062B28EA34E300EAEF33 /* PublicRequestInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRequestInteractor.swift; sourceTree = "<group>"; };
+		11FF062E28EB7AA900EAEF33 /* ActiveWorksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorksViewController.swift; sourceTree = "<group>"; };
+		11FF063028EB7ABA00EAEF33 /* ActiveWorksPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorksPresenter.swift; sourceTree = "<group>"; };
+		11FF063228EB7AC400EAEF33 /* ActiveWorksInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorksInteractor.swift; sourceTree = "<group>"; };
+		11FF063428EB8C3600EAEF33 /* ActiveWorksHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorksHeaderView.swift; sourceTree = "<group>"; };
+		11FF063628EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorksTableViewDataUIWorker.swift; sourceTree = "<group>"; };
+		11FF063828EBADF600EAEF33 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		11FF063B28EBB27600EAEF33 /* SendOfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendOfferViewController.swift; sourceTree = "<group>"; };
+		11FF063E28EC77A500EAEF33 /* OrdersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListViewController.swift; sourceTree = "<group>"; };
+		11FF064028EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListItemTableViewCell.swift; sourceTree = "<group>"; };
+		11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListPresenter.swift; sourceTree = "<group>"; };
+		11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListInteractor.swift; sourceTree = "<group>"; };
+		11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,8 +367,11 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
-				115BB4AE28DF276600686670 /* Profile */,
-				11DCAE0E28D5EC6E00568D16 /* CreateOrderView */,
+				11FF063D28EC776B00EAEF33 /* OrdersListView */,
+				11FF063A28EBB1A000EAEF33 /* SendOffer */,
+				11FF062D28EB74F200EAEF33 /* ActiveWorksRequest */,
+				115BB4AE28DF276600686670 /* ProfileView */,
+				11DCAE0E28D5EC6E00568D16 /* RequestView */,
 				11DCADF328D34C6900568D16 /* FeedbackView */,
 				11DCADE828D08B7A00568D16 /* WorksRequest */,
 				11DCADE728CFD35A00568D16 /* SettingsView */,
@@ -409,6 +440,7 @@
 				115BB4B928E1C26100686670 /* UIImageExtension.swift */,
 				11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */,
 				11FF062528E8C89000EAEF33 /* LocaleExtension.swift */,
+				11FF063828EBADF600EAEF33 /* DateExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,14 +507,14 @@
 			path = ResetPasswordView;
 			sourceTree = "<group>";
 		};
-		115BB4AE28DF276600686670 /* Profile */ = {
+		115BB4AE28DF276600686670 /* ProfileView */ = {
 			isa = PBXGroup;
 			children = (
 				115BB4AF28DF277800686670 /* PerformerProfileViewController.swift */,
 				115BB4B528E0895F00686670 /* PerformerProfilePresenter.swift */,
 				115BB4B728E08A0600686670 /* PerformerProfileInteractor.swift */,
 			);
-			path = Profile;
+			path = ProfileView;
 			sourceTree = "<group>";
 		};
 		1194A15628CE7ED000BAF84B /* FavoriteView */ = {
@@ -542,6 +574,7 @@
 			isa = PBXGroup;
 			children = (
 				11FF062328E8896100EAEF33 /* LocationManager.swift */,
+				11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */,
 			);
 			path = CustomClasses;
 			sourceTree = "<group>";
@@ -575,15 +608,64 @@
 			path = FeedbackView;
 			sourceTree = "<group>";
 		};
-		11DCAE0E28D5EC6E00568D16 /* CreateOrderView */ = {
+		11DCAE0E28D5EC6E00568D16 /* RequestView */ = {
 			isa = PBXGroup;
 			children = (
-				11DCAE0F28D5EC8300568D16 /* CreateOrderViewController.swift */,
+				11FF062828EA32CE00EAEF33 /* RequestForAllPerformers */,
+				11FF062728EA329D00EAEF33 /* RequestForPerformer */,
+			);
+			path = RequestView;
+			sourceTree = "<group>";
+		};
+		11FF062728EA329D00EAEF33 /* RequestForPerformer */ = {
+			isa = PBXGroup;
+			children = (
+				11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */,
 				11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */,
 				11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */,
-				11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */,
 			);
-			path = CreateOrderView;
+			path = RequestForPerformer;
+			sourceTree = "<group>";
+		};
+		11FF062828EA32CE00EAEF33 /* RequestForAllPerformers */ = {
+			isa = PBXGroup;
+			children = (
+				11DCAE0F28D5EC8300568D16 /* PublicRequestViewController.swift */,
+				11FF062928EA34D000EAEF33 /* PublicRequestPresenter.swift */,
+				11FF062B28EA34E300EAEF33 /* PublicRequestInteractor.swift */,
+			);
+			path = RequestForAllPerformers;
+			sourceTree = "<group>";
+		};
+		11FF062D28EB74F200EAEF33 /* ActiveWorksRequest */ = {
+			isa = PBXGroup;
+			children = (
+				11FF062E28EB7AA900EAEF33 /* ActiveWorksViewController.swift */,
+				11FF063028EB7ABA00EAEF33 /* ActiveWorksPresenter.swift */,
+				11FF063228EB7AC400EAEF33 /* ActiveWorksInteractor.swift */,
+				11FF063428EB8C3600EAEF33 /* ActiveWorksHeaderView.swift */,
+				11FF063628EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift */,
+			);
+			path = ActiveWorksRequest;
+			sourceTree = "<group>";
+		};
+		11FF063A28EBB1A000EAEF33 /* SendOffer */ = {
+			isa = PBXGroup;
+			children = (
+				11FF063B28EBB27600EAEF33 /* SendOfferViewController.swift */,
+			);
+			path = SendOffer;
+			sourceTree = "<group>";
+		};
+		11FF063D28EC776B00EAEF33 /* OrdersListView */ = {
+			isa = PBXGroup;
+			children = (
+				11FF063E28EC77A500EAEF33 /* OrdersListViewController.swift */,
+				11FF064028EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift */,
+				11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */,
+				11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */,
+			);
+			path = OrdersListView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -717,11 +799,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11FF064528EC823000EAEF33 /* OrdersListInteractor.swift in Sources */,
 				115BB49428DA2A0A00686670 /* Time.swift in Sources */,
 				1113D2CD28E50536003C9FD3 /* WorksRequestInteractor.swift in Sources */,
 				11DCADFF28D35B7100568D16 /* Photo.swift in Sources */,
 				1113D2C928E502A4003C9FD3 /* WorksRequestPresenter.swift in Sources */,
 				115BB4B828E08A0600686670 /* PerformerProfileInteractor.swift in Sources */,
+				11FF062C28EA34E300EAEF33 /* PublicRequestInteractor.swift in Sources */,
 				11DCAE0D28D3691B00568D16 /* DateStartEnd.swift in Sources */,
 				115BB49B28DB80DF00686670 /* ResetPasswordPresenter.swift in Sources */,
 				114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */,
@@ -733,7 +817,7 @@
 				115BB4A728DDA93C00686670 /* PerformersListInteractor.swift in Sources */,
 				11DCAE0328D3613B00568D16 /* Customer.swift in Sources */,
 				1140130C28CA1C9F00B14D5A /* StringExtension.swift in Sources */,
-				11DCAE1028D5EC8300568D16 /* CreateOrderViewController.swift in Sources */,
+				11DCAE1028D5EC8300568D16 /* PublicRequestViewController.swift in Sources */,
 				1194A15F28CF7DED00BAF84B /* EmassiRouter.swift in Sources */,
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
 				1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */,
@@ -742,10 +826,13 @@
 				115BB4AB28DE06D000686670 /* PerformerInfoPresenter.swift in Sources */,
 				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
 				1194A15D28CF718A00BAF84B /* EmassiApiResponse.swift in Sources */,
+				11FF062A28EA34D000EAEF33 /* PublicRequestPresenter.swift in Sources */,
 				1113D2C328E4A0F3003C9FD3 /* DocumentsInteractor.swift in Sources */,
 				115BB4B028DF277800686670 /* PerformerProfileViewController.swift in Sources */,
+				11FF062F28EB7AA900EAEF33 /* ActiveWorksViewController.swift in Sources */,
 				114E80EA28C12AD60028F39B /* OnboardingViewController.swift in Sources */,
 				115BB49228DA0C0D00686670 /* Offer.swift in Sources */,
+				11FF063528EB8C3600EAEF33 /* ActiveWorksHeaderView.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
 				11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
@@ -762,6 +849,8 @@
 				11DCAE0728D364B100568D16 /* Location.swift in Sources */,
 				115BB49928DB7A8B00686670 /* ResetPasswordViewContoller.swift in Sources */,
 				1113D2BD28E47B30003C9FD3 /* DocumentType.swift in Sources */,
+				11FF064728ECEB9700EAEF33 /* NetworkConnectionChecker.swift in Sources */,
+				11FF063928EBADF600EAEF33 /* DateExtension.swift in Sources */,
 				11FF061A28E5C35400EAEF33 /* CreateRequestInteractor.swift in Sources */,
 				115BB4B628E0895F00686670 /* PerformerProfilePresenter.swift in Sources */,
 				114E80F428C242250028F39B /* UIViewExtension.swift in Sources */,
@@ -776,6 +865,7 @@
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				11FF063C28EBB27600EAEF33 /* SendOfferViewController.swift in Sources */,
 				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
 				11DCADF228D24E1000568D16 /* SettingTableViewCell.swift in Sources */,
 				11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */,
@@ -784,7 +874,9 @@
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
 				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				115BB4A328DC893400686670 /* PerformersCategoriesInteractor.swift in Sources */,
+				11FF063728EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift in Sources */,
 				1194A15828CE7EEB00BAF84B /* FavoriteViewController.swift in Sources */,
+				11FF063128EB7ABA00EAEF33 /* ActiveWorksPresenter.swift in Sources */,
 				1140130628C9AD6C00B14D5A /* AuthorizationViewsData.swift in Sources */,
 				11FF061C28E6293500EAEF33 /* NotificationCenterExtension.swift in Sources */,
 				115BB49628DA57D900686670 /* GeoPosition.swift in Sources */,
@@ -798,6 +890,7 @@
 				1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */,
+				11FF063328EB7AC400EAEF33 /* ActiveWorksInteractor.swift in Sources */,
 				11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */,
 				11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
@@ -811,7 +904,10 @@
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
+				11FF064328EC817800EAEF33 /* OrdersListPresenter.swift in Sources */,
+				11FF063F28EC77A500EAEF33 /* OrdersListViewController.swift in Sources */,
 				11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */,
+				11FF064128EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift in Sources */,
 				11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */,
 				11DCADEA28D08CC400568D16 /* WorksRequestViewController.swift in Sources */,
 				11DCAE0128D35B9800568D16 /* Phone.swift in Sources */,
@@ -996,11 +1092,17 @@
 				DEVELOPMENT_TEAM = VWXX892QUL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = emassi_IOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "used for capture photo";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "used for load image";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1025,11 +1127,17 @@
 				DEVELOPMENT_TEAM = VWXX892QUL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = emassi_IOS/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "used for capture photo";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "used for fill profile";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "used for load image";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

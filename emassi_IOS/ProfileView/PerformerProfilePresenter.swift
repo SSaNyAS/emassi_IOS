@@ -7,8 +7,8 @@
 
 import Foundation
 protocol PerformerProfilePresenterDelegate: AnyObject{
-    func viewDidLoad()
-    func pickImage()
+    func viewDidLoad(profileMode: ProfileMode)
+    func pickImage(with profileMode: ProfileMode)
     func selectAddress(currentValue: String?)
     func selectSupportRegion(currentValue: String?, allSelectedValues: [MoreSelectorItem])
 
@@ -18,7 +18,7 @@ protocol PerformerProfilePresenterDelegate: AnyObject{
     func setSupportRegions(supportRegions: [MoreSelectorItem])
     func setCategories(categories: [MoreSelectorItem])
     func setAboutPerformer(aboutText: String)
-    func saveClick()
+    func saveClick(profileMode: ProfileMode)
 }
 
 class PerformerProfilePresenter{
@@ -40,14 +40,14 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         self.setCategories(categories: categoryStringList)
     }
     
-    func saveClick() {
-        interactor.updateProfile {[weak self] message, isSuccess in
+    func saveClick(profileMode: ProfileMode) {
+        interactor.updateProfile(profileMode: profileMode) {[weak self] message, isSuccess in
             self?.viewDelegate?.showMessage(message: message ?? "", title: "")
         }
     }
     func selectAddress(currentValue: String? = nil) {
         if let viewController = self.viewDelegate?.getViewController(){
-            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address in
+            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address, coordinates in
                 self?.setAddress(address: address)
             }), presentationMode: .present)
         }
@@ -55,7 +55,7 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
     
     func selectSupportRegion(currentValue: String?, allSelectedValues: [MoreSelectorItem]) {
         if let viewController = self.viewDelegate?.getViewController(){
-            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address in
+            router?.goToViewController(from: viewController, to: .addressSelector(currentValue,{ [weak self] address, coordinates in
                 var allSelectedValues = allSelectedValues
                 let locationPerformer = Location(from: address)
                 allSelectedValues.append(.init(value: locationPerformer, name: locationPerformer.common))
@@ -69,9 +69,18 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         viewDelegate?.setName(name: FIO)
     }
     
+    func setEmail(email: String, confirmed: Bool = false) {
+        viewDelegate?.setEmail(email: email, confirmed: confirmed)
+    }
+    //call where get phone
+    func setPhoneNumber(phone: String, confirmed: Bool) {
+        interactor.setPhoneNumber(phone: phone)
+        viewDelegate?.setPhone(phone: phone, confirmed: confirmed)
+    }
+    
+    //Call from viewDelegate
     func setPhoneNumber(phone: String) {
         interactor.setPhoneNumber(phone: phone)
-        viewDelegate?.setPhone(phone: phone)
     }
     
     func setAddress(address: Address) {
@@ -97,7 +106,7 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         viewDelegate?.setAboutPeformer(aboutText: aboutText)
     }
     
-    func viewDidLoad() {
+    func viewDidLoad(profileMode: ProfileMode) {
         interactor.getPerformerProfile { [weak self] profile, message in
             if profile == nil {
                 self?.viewDelegate?.showMessage(message: message ?? "", title: "")
@@ -106,13 +115,16 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
                     return
                 }
                 self.setUsername(FIO: profile.username.common)
-                self.setPhoneNumber(phone: profile.phone.number)
+                let email = profile.email
+                self.setEmail(email: email.address, confirmed: email.confirmed)
+                let phone = profile.phone
+                self.setPhoneNumber(phone: phone.number, confirmed: phone.confirmed)
                 self.viewDelegate?.setProfileRating(rating: profile.rating)
                 self.viewDelegate?.setReviewsRating(rating: profile.rating5)
                 self.viewDelegate?.setOrdersCount(count: profile.works)
                 self.setAboutPerformer(aboutText: profile.comments)
                 self.setAddress(address: profile.address)
-                self.interactor.getPerformerPhoto { [weak self] imageData in
+                self.interactor.getPhoto(for: profileMode) { [weak self] imageData in
                     self?.viewDelegate?.setProfileImage(imageData: imageData)
                 }
                 
@@ -134,11 +146,11 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
         }
     }
     
-    func pickImage() {
+    func pickImage(with profileMode: ProfileMode) {
         if let viewController = viewDelegate?.getViewController(){
             router?.goToViewController(from: viewController, to: .imagePicker({ [weak self] image in
                 if let data = image.resizeImage(targetSize: .init(width: 200, height: 240))?.jpegData(compressionQuality: 0.8){
-                    self?.interactor.uploadPhoto(jpegData: data, completion: {[weak self] message, isSuccess in
+                    self?.interactor.uploadPhoto(jpegData: data,with: profileMode, completion: {[weak self] message, isSuccess in
                         if !isSuccess{
                             self?.viewDelegate?.showMessage(message: message ?? "", title: "")
                         } else{
@@ -147,14 +159,6 @@ extension PerformerProfilePresenter: PerformerProfilePresenterDelegate{
                     })
                 }
             }, nil), presentationMode: .present)
-        }
-    }
-    
-    func uploadPhoto(jpegData: Data) {
-        interactor.uploadPhoto(jpegData: jpegData) {[weak self] message, isSuccess in
-            if !isSuccess{
-                self?.viewDelegate?.showMessage(message: message ?? "", title: "")
-            }
         }
     }
 }

@@ -96,8 +96,10 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
             if let cell = cell as? PerformersCategoryTableViewCell{
                 let category = performersCategories[indexPath.section]
                 cell.setText(text: category.name)
-                if let image = UIImage(named: category.imageAddress){
-                    cell.setImage(image: image)
+                if category.imageAddress.isEmpty == false{
+                    if let image = UIImage(named: category.imageAddress){
+                        cell.setImage(image: image)
+                    }
                 }
             }
             cell.separatorInset = .init(top: 0, left: tableView.frame.width*2, bottom: 0, right: 0)

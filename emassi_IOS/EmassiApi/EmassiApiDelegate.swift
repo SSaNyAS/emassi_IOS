@@ -131,6 +131,35 @@ class EmassiApi: EmassiApiFetcher{
         completion(categories,nil,nil)
     }
     
+    func getCategoryInfo(category: String, completion: @escaping (PerformersSubCategory?, EmassiApiResponse?, Error?) -> Void){
+        getPerformersCategories(completion: { categories, apiResponse, error in
+                    
+            let allSubCategories = categories.map({$0.subCategories})
+            
+            for subCategories in allSubCategories{
+                let subcategory = subCategories.first { subCat in
+                    subCat.value == category
+                }
+                if let subcategory = subcategory{
+                    completion(subcategory,nil,nil)
+                    return
+                }
+            }
+            completion(nil,nil,nil)
+        })
+    }
+    
+    func getSuperCategory(subCategoryId: String, completion: @escaping (PerformersCategory?, EmassiApiResponse?, Error?) -> Void){
+        getPerformersCategories(completion: { categories, apiResponse, error in
+            let superCategory = categories.first { performersCategory in
+                performersCategory.subCategories.contains { subCategory in
+                    subCategory.value == subCategoryId
+                }
+            }
+            completion(superCategory,nil,nil)
+        })
+    }
+    
     func getGeoIPLocation(completion: @escaping (Location?,EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/account/geoip",relativeTo: hostUrl) else{
             completion(nil,nil,nil)
@@ -259,9 +288,9 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func getAllWorks(active: Bool, type: String, startDate: Date? = nil, completion: @escaping ([AllWork]?,EmassiApiResponse?,Error?) -> Void){
+    func getAllWorks(active: Bool, type: String, startDate: Date? = nil, completion: @escaping ([AllWork],EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work",relativeTo: hostUrl) else{
-            completion(nil,nil,nil)
+            completion([],nil,nil)
             return
         }
         let startDateIntervalEncoded = try? jsonEncoder.encode(startDate)
@@ -277,10 +306,10 @@ class EmassiApi: EmassiApiFetcher{
         let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
             if let data = apiResponse?.data{
                 let allWorks = try? self?.jsonDecoder.decode([AllWork].self, from: data)
-                completion(allWorks,apiResponse,error)
+                completion(allWorks ?? [],apiResponse,error)
                 return
             }
-            completion(nil,apiResponse,error)
+            completion([],apiResponse,error)
         }
         task.resume()
     }
@@ -324,13 +353,13 @@ class EmassiApi: EmassiApiFetcher{
             return
         }
         
-        // проверка размера изображения
-        // проверка формата изображения
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let date = Date().timeIntervalSince1970.rounded(.down)
+        let photoBody = createMultipartFormFor(parameterName: "photo", contentType: "image/jpg",fileName: "work\(workId)_date\(date)_", data: photoJpeg, boundary: boundary)
         
-        #warning("Neeed To Implement multipart form data")
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.httpBody = photoJpeg
+        request.httpBody = photoBody
         request.addValue(token ?? "", forHTTPHeaderField: "id_token_customer")
         
         let task = baseDataRequest(request: request,completion: completion)
@@ -589,12 +618,14 @@ class EmassiApi: EmassiApiFetcher{
         // проверка размера изображения
         // проверка формата изображения
         
-        let boundary = "---------------------------\(UUID().uuidString)"
+        let boundary = "Boundary-\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
         
-        var form = createMultipartFormFor(parameterName: "file", contentType: "image/jpeg", fileName: "\(token ?? "f")_\(documentName).jpeg", data: photoJpeg, boundary: boundary)
+        let date = Date().timeIntervalSince1970.rounded(.down)
+        
+        var form = createMultipartFormFor(parameterName: "file", contentType: "image/jpeg", fileName: "\(token ?? "f")_\(documentName)_date\(date)_.jpeg", data: photoJpeg, boundary: boundary)
         
         if let documentTypeData = documentType.rawValue.data(using: .utf8){
             form += createMultipartFormFor(parameterName: "type", contentType: "text", data: documentTypeData, boundary: boundary)
@@ -602,8 +633,8 @@ class EmassiApi: EmassiApiFetcher{
         if let nameData = documentName.data(using: .utf8){
             form += createMultipartFormFor(parameterName: "name", contentType: "text", data: nameData, boundary: boundary)
         }
-        form += "--\(boundary)--\r\n"
-        request.httpBody = form.data(using: .utf8)
+    
+        request.httpBody = form
         
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
@@ -651,15 +682,16 @@ class EmassiApi: EmassiApiFetcher{
         }
         
         // проверка размера изображения
-        let boundary = "---------------------------\(UUID().uuidString)"
+        let boundary = "Boundary-\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
+        let date = Date().timeIntervalSince1970.rounded(.down)
+        let photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpg", fileName: "performer_\(token ?? "filename")_date\(date)_.jpg", data: photoJpeg, boundary: boundary)
         
-        var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "performer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
-        photoForm += "--\(boundary)--\r\n"
-        request.httpBody = photoForm.data(using: .utf8)
+        request.httpBody = photoForm
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
+        imageDownloadURLSession.configuration.urlCache?.removeCachedResponse(for: .init(url: url))
         
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
@@ -672,15 +704,17 @@ class EmassiApi: EmassiApiFetcher{
         }
         
         // проверка размера изображения
-        let boundary = "---------------------------\(UUID().uuidString)"
+        let boundary = "Boundary-\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        
+        let date = Date().timeIntervalSince1970.rounded(.down)
+        let photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpg", fileName: "customer_\(token ?? "filename")_date\(date)_.jpg", data: photoJpeg, boundary: boundary)
+        
+        request.httpBody = photoForm
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
-        
-        var photoForm = createMultipartFormFor(parameterName: "photo", contentType: "image/jpeg", fileName: "customer_\(token ?? "filename").jpeg", data: photoJpeg, boundary: boundary)
-        photoForm += "--\(boundary)--\r\n"
-        request.httpBody = photoForm.data(using: .utf8)
-        
+        imageDownloadURLSession.configuration.urlCache?.removeCachedResponse(for: .init(url: url))
+
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
     }
@@ -865,29 +899,42 @@ class EmassiApi: EmassiApiFetcher{
         return apiResponse
     }
     
-    func createMultipartFormFor(parameterName: String, contentType: String,fileName: String? = nil, data: Data, boundary: String) -> String{
-        var bodyString = ""
-        bodyString += "--\(boundary)\r\n"
-        bodyString += "Content-Disposition:form-data; name=\"\(parameterName)\""
+    func createMultipartFormFor(parameterName: String, contentType: String,fileName: String? = nil, data: Data, boundary: String) -> Data{
+        var bodyData: Data = Data()
+        if let boundaryHead = "--\(boundary)\r\n".data(using: .utf8){
+            bodyData.append(boundaryHead)
+        }
+        if let contentDisposition = "Content-Disposition:form-data; name=\"\(parameterName)\"".data(using: .utf8){
+            bodyData.append(contentDisposition)
+        }
         if fileName != nil {
-            bodyString += "; filename=\"\(fileName!)\""
+            if let filenameData = "; filename=\"\(fileName!)\"\r\n".data(using: .utf8){
+                bodyData.append(filenameData)
+            }
+            if let contentTypeData = "Content-Type: \(contentType)".data(using: .utf8){
+                bodyData.append(contentTypeData)
+            }
+        }
+        if let newLinesData = "\r\n\r\n".data(using: .utf8){
+            bodyData.append(newLinesData)
         }
         
-        bodyString += "\r\n\r\n"
         if contentType.hasPrefix("text"){
-            bodyString += String(data: data, encoding: .utf8) ?? ""
+            bodyData.append(data)
         } else if contentType.hasPrefix("file"){
             let src = String(data: data, encoding: .utf8)
             if let url = URL(string: src ?? ""){
                 if let fileData = try? Data(contentsOf: url){
-                    bodyString +=  String.init(data: fileData, encoding: .utf8) ?? ""
+                    bodyData.append(fileData)
                 }
             }
         } else if contentType.hasPrefix("image"){
-            bodyString += data.base64EncodedString()
+            bodyData += data
         }
-        bodyString += "\r\n\r\n"
-        return bodyString
+        if let boundaryFooter = "\r\n--\(boundary)--\r\n".data(using: .utf8){
+            bodyData.append(boundaryFooter)
+        }
+        return bodyData
     }
     
     func computeSign(email: String, password: String) -> String{

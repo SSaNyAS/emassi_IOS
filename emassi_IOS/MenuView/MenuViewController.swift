@@ -56,6 +56,11 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .activeWorks, presentationMode: .push)
                 }
             },
+            .init(title: "Работа", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .myWorks, presentationMode: .push)
+                }
+            },
             .init(title: "Чат", image: "message.fill"){
                 
             },
@@ -64,14 +69,9 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .feedback, presentationMode: .push)
                 }
             },
-            .init(title: "Создать вызов", image: "star.fill"){ [weak menuNavigationController, weak router] in
-                if let currentVC = menuNavigationController?.topViewController{
-                    router?.goToViewController(from: currentVC, to: .createOrder, presentationMode: .push)
-                }
-            },
             .init(title: "Создать заявку", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
-                    router?.goToViewController(from: currentVC, to: .createRequest(""), presentationMode: .push)
+                    router?.goToViewController(from: currentVC, to: .createRequest("",nil), presentationMode: .push)
                 }
             },
             .init(title: "Избранное", image: "star.fill"){ [weak menuNavigationController, weak router] in
@@ -141,6 +141,7 @@ class MenuViewController: UIViewController{
             profileImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor, multiplier: 1.2),
+            profileImageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.4),
         ])
     }
     
@@ -173,8 +174,9 @@ class MenuViewController: UIViewController{
     func createImageView(in view: UIView){
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "nophotouser")
-        imageView.contentMode = .scaleAspectFit
+        imageView.image = .noPhotoUser
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
         imageView.setCornerRadius(value: 12)
         imageView.setBorder()
         imageView.isUserInteractionEnabled = true

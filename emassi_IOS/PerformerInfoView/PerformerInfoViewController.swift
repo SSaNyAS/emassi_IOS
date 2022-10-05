@@ -54,7 +54,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     func setReviewsCount(count: Int) {
         DispatchQueue.main.async { [weak self] in
-            self?.reviewsCountLabel?.text = "\(count)"
+            self?.reviewsCountLabel?.text = "\(count) оценок"
         }
     }
     

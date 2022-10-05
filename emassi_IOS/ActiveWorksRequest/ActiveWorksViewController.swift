@@ -1,18 +1,18 @@
 //
-//  WorksRequestViewController.swift
+//  ActiveWorksViewController.swift
 //  emassi_IOS
 //
-//  Created by Алексей Рябин on 13.09.2022.
+//  Created by Алексей Рябин on 04.10.2022.
 //
 
 import Foundation
 import UIKit
 
-protocol WorksRequestViewDelegate: AnyObject{
+protocol ActiveWorksViewDelegate: AnyObject{
     func getViewController() -> UIViewController
     func setTableViewDataSource(dataSource: UITableViewDataSource)
+    func setTableViewDelegate(delegate: UITableViewDelegate)
     func showMessage(message: String, title: String)
-    func setDate(date: Date)
     func reloadTableViewData()
     
     func removeBackgroundViews()
@@ -20,18 +20,17 @@ protocol WorksRequestViewDelegate: AnyObject{
     func setEmptyListView()
 }
 
-class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
+class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
     weak var worksTableView: UITableView?
-    weak var datePicker: UIDatePicker?
     weak var refreshControl: UIRefreshControl?
     weak var emptyListView: UIView?
     weak var goToCreatePerformerAccountView: UIView?
     
-    var presenter: WorksRequestPresenterDelegate?
+    var presenter: ActiveWorksPresenterDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Работа"
+        title = "Активные заявки"
         setupViews()
         presenter?.viewDidLoad()
     }
@@ -39,10 +38,8 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
     private func setupViews(){
         view.backgroundColor = .white
         createWorksTableView()
-        createDataPicker()
         
         setupTableViewConstraints()
-        setupDatePickerConstraints()
     }
     
     func removeBackgroundViews(){
@@ -64,28 +61,24 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
     }
     
     @objc func reloadData(){
-        presenter?.getAllWorks()
         removeBackgroundViews()
-    }
-    
-    @objc private func goToRegisterAsPerformer(){
-        presenter?.goToRegisterAsPerformer()
+        presenter?.loadWorks()
     }
     
     func getViewController() -> UIViewController {
         return self
     }
     
-    func setDate(date: Date) {
-        DispatchQueue.main.async { [weak self] in
-            self?.datePicker?.date = date
-        }
-    }
-    
     func setTableViewDataSource(dataSource: UITableViewDataSource) {
         DispatchQueue.main.async { [weak self] in
             self?.worksTableView?.dataSource = dataSource
             self?.refreshControl?.endRefreshing()
+        }
+    }
+    
+    func setTableViewDelegate(delegate: UITableViewDelegate) {
+        DispatchQueue.main.async { [weak self] in
+            self?.worksTableView?.delegate = delegate
         }
     }
     
@@ -101,18 +94,7 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
 
 
 // MARK: Create Views
-extension WorksRequestViewController{
-    
-    private func setupDatePickerConstraints(){
-        guard let datePicker = datePicker else {return}
-        
-        NSLayoutConstraint.activate([
-            datePicker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            datePicker.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            datePicker.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            datePicker.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-        ])
-    }
+extension ActiveWorksViewController{
     
     private func createEmptyListView(isShow: Bool = false){
         if isShow{
@@ -145,7 +127,7 @@ extension WorksRequestViewController{
             label.translatesAutoresizingMaskIntoConstraints = false
             let goToRegisterButton = UIButtonEmassi()
             goToRegisterButton.setTitle("Зарегистрироваться", for: .normal)
-            goToRegisterButton.addTarget(self, action: #selector(goToRegisterAsPerformer), for: .touchUpInside)
+            //goToRegisterButton.addTarget(self, action: #selector(goToRegisterAsPerformer), for: .touchUpInside)
             goToRegisterButton.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(label)
             view.addSubview(goToRegisterButton)
@@ -171,27 +153,12 @@ extension WorksRequestViewController{
         }
     }
     
-    private func createDataPicker(){
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .dateAndTime
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(datePicker)
-        self.datePicker = datePicker
-    }
-    
     private func setupTableViewConstraints(){
         guard let ordersTableView = worksTableView else {
             return
         }
         
-        if let datePicker = datePicker{
-            let constraint = ordersTableView.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 5)
-            constraint.priority = .required
-            constraint.isActive = true
-        }
-        
         let topToSuperView = ordersTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
-        topToSuperView.priority = .defaultHigh
         
         NSLayoutConstraint.activate([
             ordersTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -208,8 +175,10 @@ extension WorksRequestViewController{
         tableView.refreshControl = refreshControl
         self.refreshControl = refreshControl
         tableView.separatorStyle = .none
+        //tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(WorksRequestTableViewCell.self, forCellReuseIdentifier: WorksRequestTableViewCell.identifire)
+        tableView.register(PerformerTableViewCell.self, forCellReuseIdentifier: PerformerTableViewCell.identifire)
         
         view.addSubview(tableView)
         worksTableView = tableView

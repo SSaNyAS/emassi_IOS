@@ -6,32 +6,25 @@
 //
 
 import Foundation
-protocol PerformersListInteractorDelegate{
+protocol PerformersListInteractorDelegate: AnyObject{
     func getPerformersList(category: String, completion: @escaping (_ performers: [PerformerForList],_ apiResponse: EmassiApiResponse?) -> Void)
     func getCategoryInfo(category: String, completion:@escaping (_ categoryName: String?) -> Void)
+    func downloadPerformerPhoto(performerId: String, completion: @escaping (_ imageData: Data?, _ apiResponse: EmassiApiResponse?) -> Void)
 }
 
-class PerformersListInteractor: PerformersListInteractorDelegate{
+class PerformersListInteractor:NSObject, PerformersListInteractorDelegate{
     weak var emassiApi: EmassiApi?
     init(emassiApi: EmassiApi) {
         self.emassiApi = emassiApi
     }
     
+    func downloadPerformerPhoto(performerId: String, completion: @escaping (_ imageData: Data?, _ apiResponse: EmassiApiResponse?) -> Void){
+        emassiApi?.downloadPerformerPhotoPublic(performerId: performerId, completion: completion)
+    }
+    
     func getCategoryInfo(category: String, completion:@escaping (_ categoryName: String?) -> Void){
-        emassiApi?.getPerformersCategories(completion: { categories, apiResponse, error in
-                    
-            let allSubCategories = categories.map({$0.subCategories})
-            
-            for subCategories in allSubCategories{
-                let subcategory = subCategories.first { subCat in
-                    subCat.value == category
-                }
-                if let subcategory = subcategory{
-                    completion(subcategory.name)
-                    return
-                }
-            }
-            completion(nil)
+        emassiApi?.getCategoryInfo(category: category, completion: { category, _, _ in
+            completion(category?.name)
         })
     }
     

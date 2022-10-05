@@ -21,11 +21,10 @@ class WorksRequestTableViewDataSource:NSObject, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: WorksRequestTableViewCell.identifire, for: indexPath)
         if let cell = cell as? WorksRequestTableViewCell{
             let work = works[indexPath.row]
-            cell.orderTypeLabel?.text = work.type
+            cell.orderTypeLabel?.text = work.type.rawValue
             cell.categoryLabel?.text = work.category.level1 + "\r\n" + work.category.level2
             cell.dateLabel?.text = work.dateStarted.description(with: .current)
-            cell.addressLabel?.text = work.currency
-            
+            cell.addressLabel?.text = ""
             
             cell.createButton(title: "Внести в календарь") { [weak self, work] in
                 self?.addToCalendarAction?(work)

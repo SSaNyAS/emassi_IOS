@@ -53,6 +53,11 @@ class PerformersListViewController: UIViewController, PerformersListViewDelegate
 
         setupCreateOrderButton()
         createOrderButton?.setTitle("Оформить заявку", for: .normal)
+        createOrderButton?.addTarget(self, action: #selector(createOrderButtonClick), for: .touchUpInside)
+    }
+    
+    @objc private func createOrderButtonClick(){
+        presenter?.createOrder()
     }
     
     @objc private func updateData(){

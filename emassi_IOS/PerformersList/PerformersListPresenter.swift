@@ -8,6 +8,7 @@
 import Foundation
 protocol PerformersListPresenterDelegate: NSObject{
     func loadPerformers(completion: @escaping (Bool)->Void)
+    func createOrder()
 }
 class PerformersListPresenter:NSObject, PerformersListPresenterDelegate{
     var interactor: PerformersListInteractorDelegate
@@ -25,7 +26,11 @@ class PerformersListPresenter:NSObject, PerformersListPresenterDelegate{
         dataSourceDelegate.didSelectAction = { [weak self] performer in
             self?.didSelectPerformer(performerId: performer.id)
         }
-        
+        dataSourceDelegate.imageDownloadAction = { [weak interactor] performer, completion in
+            interactor?.downloadPerformerPhoto(performerId: performer.id) { imageData, apiResponse in
+                completion(imageData)
+            }
+        }
         getCategoryInfo { categoryName in
             dataSourceDelegate.category = categoryName
         }
@@ -40,6 +45,12 @@ class PerformersListPresenter:NSObject, PerformersListPresenterDelegate{
     func getCategoryInfo(completion: @escaping (String?) -> Void){
         interactor.getCategoryInfo(category: category) {categoryName in
             completion(categoryName)
+        }
+    }
+    
+    func createOrder() {
+        if let viewController = viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .createRequest("", category), presentationMode: .present)
         }
     }
     

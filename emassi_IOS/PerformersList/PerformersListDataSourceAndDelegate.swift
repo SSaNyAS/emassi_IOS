@@ -11,6 +11,7 @@ import UIKit
 class PerformersListDataSourceAndDelegate: NSObject, UITableViewDataSource, UITableViewDelegate{
     public var performers: [PerformerForList] = []
     public var didSelectAction: ((PerformerForList) -> Void)?
+    public var imageDownloadAction: ((PerformerForList, _ completion: @escaping (Data?) -> Void) -> Void)?
     public var category: String?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -28,6 +29,11 @@ class PerformersListDataSourceAndDelegate: NSObject, UITableViewDataSource, UITa
             let currentPerformer = performers[indexPath.row]
             cell.isSelectingEnabled = false
             cell.nameLabel?.text = currentPerformer.username.common
+            imageDownloadAction?(currentPerformer){ [weak photoImageView = cell.photoImageView] imageData in
+                DispatchQueue.main.async {
+                    photoImageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
+                }
+            }
             cell.photoImageView?.image = .noPhotoUser
             cell.ratingView?.rating = currentPerformer.rating
             cell.categoryLabel?.text = category

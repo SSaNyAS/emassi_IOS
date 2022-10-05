@@ -20,7 +20,8 @@ protocol PerformerProfileViewDelegate: AnyObject{
     func loadNewPhoto()
     func setProfileRating(rating: Float)
     func setName(name: String?)
-    func setPhone(phone: String?)
+    func setEmail(email: String?, confirmed: Bool?)
+    func setPhone(phone: String?, confirmed: Bool?)
     func setAddress(address: String?)
     func setSupportRegions(regions: [MoreSelectorItem])
     func setCategoryList(categories: [MoreSelectorItem])
@@ -38,6 +39,7 @@ class PerformerProfileViewController: UIViewController{
     weak var ratingView: UIRatingView?
     weak var stackViewForFields: UIStackView?
     weak var nameTextField: UITextField?
+    weak var emailTextField: UITextField?
     weak var phoneTextField: UITextField?
     weak var addressTextField: UITextField?
     weak var supportRegionSelector: MoreSelectorView?
@@ -49,13 +51,32 @@ class PerformerProfileViewController: UIViewController{
     weak var saveButton: UIButton?
     weak var goToUserProfileButton: UIButton?
     var presenter: PerformerProfilePresenterDelegate?
-    var profileMode: ProfileMode = .performer
+    var profileMode: ProfileMode = .performer{
+        didSet{
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {return}
+                UIView.animate(withDuration: 0.4) {
+                    self.presenter?.viewDidLoad(profileMode: self.profileMode)
+                    let isHideMode = self.profileMode == .customer
+                    self.supportRegionSelector?.superview?.isHidden = isHideMode
+                    self.categorySelector?.superview?.isHidden = isHideMode
+                    self.aboutPerformer?.superview?.isHidden = isHideMode
+                    self.goToUserProfileButton?.setTitle( !isHideMode ? "Перейти в профиль пользователя" : "Перейти в профиль исполнителя", for: .normal)
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        title = "Профиль"
         setupViews()
-        presenter?.viewDidLoad()
+        presenter?.viewDidLoad(profileMode: profileMode)
+    }
+    
+    @objc func changeProfileMode(){
+        self.profileMode = self.profileMode == .performer ? .customer : .performer
     }
     
     @objc func saveButtonClick(){
@@ -64,7 +85,7 @@ class PerformerProfileViewController: UIViewController{
         presenter?.setCategories(categories: categorySelector?.selectedItems ?? [])
         presenter?.setPhoneNumber(phone: phoneTextField?.text ?? "")
         presenter?.setSupportRegions(supportRegions: supportRegionSelector?.selectedItems ?? [])
-        presenter?.saveClick()
+        presenter?.saveClick(profileMode: profileMode)
     }
 }
 
@@ -82,16 +103,13 @@ extension PerformerProfileViewController: PerformerProfileViewDelegate {
     }
     
     func setProfileImage(imageData: Data?) {
-        guard let imageData = imageData else {
-            return
-        }
         DispatchQueue.main.async { [weak self] in
-            self?.profileImageView?.image = UIImage(data: imageData) ?? .noPhotoUser
+            self?.profileImageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
         }
     }
     
     @objc func loadNewPhoto() {
-        presenter?.pickImage()
+        presenter?.pickImage(with: profileMode)
     }
     
     func setProfileRating(rating: Float) {
@@ -106,10 +124,57 @@ extension PerformerProfileViewController: PerformerProfileViewDelegate {
         }
     }
     
-    func setPhone(phone: String?) {
-        DispatchQueue.main.async { [weak self] in
-            self?.phoneTextField?.text = phone
+    func setEmail(email: String?, confirmed: Bool?) {
+        DispatchQueue.main.async { [weak self, weak emailTextField] in
+            guard let self = self else {return}
+            emailTextField?.rightView?.removeFromSuperview()
+            emailTextField?.rightView = nil
+            if confirmed == false{
+                let confirmButton = self.createConfirmButton()
+                confirmButton.addTarget(self, action: #selector(self.confirmEmail), for: .touchUpInside)
+                emailTextField?.rightView = confirmButton
+                emailTextField?.rightViewMode = .unlessEditing
+            }else {
+                let confirmedImageView = self.createConfirmedImageView()
+                DispatchQueue.main.async { [weak emailTextField] in
+                    emailTextField?.rightView = confirmedImageView
+                    emailTextField?.rightViewMode = .always
+                }
+            }
+            emailTextField?.text = email
         }
+    }
+    
+    func setPhone(phone: String?, confirmed: Bool?) {
+        DispatchQueue.main.async { [weak self, weak phoneTextField] in
+            guard let self = self else {return}
+            phoneTextField?.rightView?.removeFromSuperview()
+            phoneTextField?.rightView = nil
+            
+            if confirmed == false{
+                let confirmButton = self.createConfirmButton()
+                confirmButton.addTarget(self, action: #selector(self.confirmPhoneNumber), for: .touchUpInside)
+                DispatchQueue.main.async { [weak phoneTextField] in
+                    phoneTextField?.rightView = confirmButton
+                    phoneTextField?.rightViewMode = .unlessEditing
+                }
+            } else {
+                let confirmedImageView = self.createConfirmedImageView()
+                DispatchQueue.main.async { [weak phoneTextField] in
+                    phoneTextField?.rightView = confirmedImageView
+                    phoneTextField?.rightViewMode = .always
+                }
+            }
+                phoneTextField?.text = phone
+        }
+    }
+    
+    @objc private func confirmPhoneNumber(){
+        print("confirmPhoneNumber")
+    }
+    
+    @objc private func confirmEmail(){
+        print("confirmEmail")
     }
     
     func setSupportRegions(regions: [MoreSelectorItem]) {
@@ -153,6 +218,28 @@ extension PerformerProfileViewController: PerformerProfileViewDelegate {
             self?.reviewsRatingView?.rating = rating
         }
     }
+    
+    func createConfirmedImageView() -> UIImageView{
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "checkmark.circle.fill")?.applyingSymbolConfiguration(.init(pointSize: 25))?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+        imageView.image = image
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, constant: 30).isActive = true
+        return imageView
+    }
+    
+    func createConfirmButton() -> UIButton{
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "checkmark.circle.badge.xmark.fill")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+        button.setImage(image, for: .normal)
+        button.contentMode = .center
+        button.setPreferredSymbolConfiguration(.init(pointSize: 25), forImageIn: .normal)
+        button.widthAnchor.constraint(equalTo: button.heightAnchor, constant: 30).isActive = true
+        return button
+    }
 }
 
 // MARK: Create Views
@@ -194,11 +281,14 @@ extension PerformerProfileViewController{
         createRatingView(in: contentView)
         createStackViewForFields(in: contentView)
         createTextField(with: "ФИО", attachTo: &nameTextField)
+        createTextField(with: "email", attachTo: &emailTextField)
+        emailTextField?.textContentType = .emailAddress
+        emailTextField?.isEnabled = false
         createTextField(with: "Номер телефона", attachTo: &phoneTextField)
         createTextField(with: "Адрес", attachTo: &addressTextField)
         
         addressTextField?.addTarget(self, action: #selector(openAddressSearchViewController), for: .editingDidBegin)
-
+        
         createSupportRegionSelector()
         createCategorySelector()
         createAboutPerformerView()
@@ -218,6 +308,7 @@ extension PerformerProfileViewController{
         saveButton?.setTitle("Сохранить", for: .normal)
         saveButton?.addTarget(self, action: #selector(saveButtonClick), for: .touchUpInside)
         goToUserProfileButton?.setTitle("Перейти в профиль пользователя", for: .normal)
+        goToUserProfileButton?.addTarget(self, action: #selector(changeProfileMode), for: .touchUpInside)
         supportRegionSelector?.addTargetForAllTextFields(target: self, action: #selector(didSelectSupportRegion(sender:)), for: .editingDidBegin)
         
         createProfileImageViewConstraints(in: contentView)
@@ -426,7 +517,7 @@ extension PerformerProfileViewController{
     
     private func createProfileImageView(in view: UIView){
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.image = .noPhotoUser
         imageView.setCornerRadius(value: 12)
         imageView.setBorder()
