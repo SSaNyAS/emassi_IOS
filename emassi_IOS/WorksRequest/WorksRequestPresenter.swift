@@ -32,7 +32,7 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
     }
     
     func getAllWorks(){
-        interactor.getAllWorks {[weak self] works, message in
+        interactor.getAllWorks(active: true, type: .public, date: nil) {[weak self] works, message in
             self?.worksDataSource.works = works
             if let worksDataSource = self?.worksDataSource{
                 self?.viewDelegate?.setTableViewDataSource(dataSource: worksDataSource)
@@ -40,6 +40,8 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
             }
             if works.isEmpty{
                 self?.viewDelegate?.setEmptyListView()
+            } else {
+                self?.viewDelegate?.removeBackgroundViews()
             }
         }
     }

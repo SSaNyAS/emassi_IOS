@@ -21,6 +21,8 @@ class SendOfferViewController: UIViewController{
         setupViews()
         title = "Отзыв"
         overUserNameTextFieldLabel?.text = "Укажите имя"
+        overUserNameTextFieldLabel?.isHidden = true
+        usernameTextField?.isHidden = true
         overCommentLabel?.text = "Оставьте свой комментарий"
         completeButton?.setTitle("Завершить", for: .normal)
         completeButton?.addTarget(self, action: #selector(sendOfferClick), for: .touchUpInside)
@@ -28,7 +30,7 @@ class SendOfferViewController: UIViewController{
     
     @objc private func sendOfferClick(){
         guard let workId = workId else {
-            showMessage(message: "Ошибка выберите завершенную заявку")
+            showMessage(message: "Ошибка выберите заявку")
             return
         }
         

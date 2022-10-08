@@ -11,6 +11,48 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
     public var performersCategories: [PerformersCategory] = []
     weak var tableView: UITableView?
     public var didSelectCategoryAction: ((_ category: String) -> Void)?
+    static let subCategoryCellIdentifire = "subCategoryCell"
+    
+    func searchAndScroollToRow(searchText: String){
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self, let tableView = self.tableView else {
+                return
+            }
+            
+            var searchText = searchText.lowercased()
+            for categoryId in 0..<self.performersCategories.count{
+                self.performersCategories[categoryId].isOpened = true
+            }
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
+            
+            var itemIndexPath: IndexPath?
+            let firstIndex = self.performersCategories.firstIndex { category in
+                for itemId in 0..<category.subCategories.count{
+                    let isContains = category.subCategories[itemId].name.lowercased().contains(searchText)
+                    if isContains{
+                        itemIndexPath = .init(row: itemId+1, section: 0)
+                        return true
+                    }
+                }
+                return false
+            }
+            guard var itemIndexPath = itemIndexPath else {
+                return
+            }
+            itemIndexPath = .init(row: itemIndexPath.row, section: firstIndex ?? itemIndexPath.section)
+            
+            DispatchQueue.main.async { [weak self] in
+                if self?.performersCategories[itemIndexPath.section].isOpened == false{
+                    self?.performersCategories[itemIndexPath.section].isOpened = true
+                    self?.tableView?.reloadSections([itemIndexPath.section], with: .automatic)
+                }
+                self?.tableView?.scrollToRow(at: itemIndexPath, at: .top, animated: true)
+                //self?.animatedScrollToIndexPath(indexPath: itemIndexPath)
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let category = performersCategories[section]
@@ -37,9 +79,9 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
                 indexPaths.append(index)
             }
         if performersCategories[indexPath.section].isOpened{
-            tableView.insertRows(at: indexPaths, with: .bottom)
+            tableView.insertRows(at: indexPaths, with: .automatic)
         } else {
-            tableView.deleteRows(at: indexPaths, with: .top)
+            tableView.deleteRows(at: indexPaths, with: .fade)
         }
         
         tableView.endUpdates()
@@ -81,9 +123,9 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10
+        return 0
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .clear
@@ -102,11 +144,11 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
                     }
                 }
             }
-            cell.separatorInset = .init(top: 0, left: tableView.frame.width*2, bottom: 0, right: 0)
             cell.selectionStyle = .none
+            cell.separatorInset = .init(top: 0, left: tableView.frame.width, bottom: 0, right: 0)
             return cell
         } else {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            let cell = tableView.dequeueReusableCell(withIdentifier: PerformersCategoriesTableViewDataSourceDelegate.subCategoryCellIdentifire, for: indexPath)
             
             let subCategory = performersCategories[indexPath.section].subCategories[indexPath.row-1]
             if #available(iOS 14.0, *) {
@@ -114,7 +156,15 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
                 contentConfig.text = subCategory.name
                 cell.contentConfiguration = contentConfig
             } else {
+                cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = subCategory.name
+            }
+            cell.indentationWidth = 10
+            cell.indentationLevel = 2
+            cell.selectionStyle = .default
+            cell.separatorInset = .init(top: 0, left: 10, bottom: 0, right: 0)
+            if indexPath.row == performersCategories[indexPath.section].subCategories.count{
+                cell.separatorInset = .init(top: 0, left: tableView.frame.width, bottom: 0, right: 0)
             }
             return cell
         }

@@ -87,7 +87,7 @@ struct WorkActive: Codable{
 
 struct AllWork: Codable{
     let id: String
-    let customerId: String?
+    var customerId: String?
     let type: DocumentType
     let confirmed: Bool?
     let dateStarted: Date
@@ -99,7 +99,7 @@ struct AllWork: Codable{
     let price: Int
     let currency: String
     let offer: Offer
-    let customer: Customer?
+    var customer: Customer?
     
     enum CodingKeys:String, CodingKey {
         case id
@@ -174,9 +174,9 @@ struct WorkRequest: Codable{
     let category: Category
     let date: DateStartEnd
     let time: Time
-    let address: Address
-    let geopos: GeoPosition
-    let phoneNumber: String
+    let address: Address?
+    let geopos: GeoPosition?
+    let phoneNumber: String?
     let price: Int
     let currency: String
     let comments: String
@@ -197,5 +197,22 @@ struct WorkRequest: Codable{
         case comments
         case photos
         case offers
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.startDate = try container.decode(Date.self, forKey: .startDate)
+        self.category = try container.decode(Category.self, forKey: .category)
+        self.date = try container.decode(DateStartEnd.self, forKey: .date)
+        self.time = try container.decode(Time.self, forKey: .time)
+        self.address = try? container.decodeIfPresent(Address.self, forKey: .address)
+        self.geopos = try? container.decodeIfPresent(GeoPosition.self, forKey: .geopos)
+        self.phoneNumber = try? container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        self.price = try container.decode(Int.self, forKey: .price)
+        self.currency = try container.decode(String.self, forKey: .currency)
+        self.comments = try container.decode(String.self, forKey: .comments)
+        self.photos = try container.decode([String].self, forKey: .photos)
+        self.offers = try container.decode([Offer].self, forKey: .offers)
     }
 }

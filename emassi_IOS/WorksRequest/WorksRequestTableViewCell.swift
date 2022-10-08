@@ -44,7 +44,7 @@ class WorksRequestTableViewCell: UITableViewCell{
     private func setupDefaultSettings(){
         selectionStyle = .none
         let secondContentView = UIView()
-        secondContentView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+        secondContentView.backgroundColor = .baseAppColorBackground
         secondContentView.setCornerRadius(value: 12)
         secondContentView.layer.masksToBounds = true
         secondContentView.translatesAutoresizingMaskIntoConstraints = false

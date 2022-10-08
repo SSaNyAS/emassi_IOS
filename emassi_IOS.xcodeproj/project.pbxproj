@@ -104,12 +104,15 @@
 		11DCAE0B28D3673B00568D16 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0A28D3673B00568D16 /* Category.swift */; };
 		11DCAE0D28D3691B00568D16 /* DateStartEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */; };
 		11DCAE1028D5EC8300568D16 /* PublicRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DCAE0F28D5EC8300568D16 /* PublicRequestViewController.swift */; };
+		11F818D028EDEF8E00769AC1 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */; };
+		11F818D228EF16F200769AC1 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */; };
+		11F818D428EF753100769AC1 /* ResponseWorkWithCustomer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
 		11FF061A28E5C35400EAEF33 /* CreateRequestInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */; };
 		11FF061C28E6293500EAEF33 /* NotificationCenterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */; };
-		11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */; };
+		11FF061E28E7210D00EAEF33 /* UImageViewPagging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061D28E7210D00EAEF33 /* UImageViewPagging.swift */; };
 		11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */; };
 		11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062328E8896100EAEF33 /* LocationManager.swift */; };
 		11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF062528E8C89000EAEF33 /* LocaleExtension.swift */; };
@@ -127,6 +130,8 @@
 		11FF064328EC817800EAEF33 /* OrdersListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */; };
 		11FF064528EC823000EAEF33 /* OrdersListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */; };
 		11FF064728ECEB9700EAEF33 /* NetworkConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */; };
+		11FF064B28ED35C800EAEF33 /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = 11FF064A28ED35C800EAEF33 /* Connectivity */; };
+		11FF064D28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF064C28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,12 +253,15 @@
 		11DCAE0A28D3673B00568D16 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		11DCAE0C28D3691B00568D16 /* DateStartEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStartEnd.swift; sourceTree = "<group>"; };
 		11DCAE0F28D5EC8300568D16 /* PublicRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRequestViewController.swift; sourceTree = "<group>"; };
+		11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseWorkWithCustomer.swift; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
 		11FF061928E5C35400EAEF33 /* CreateRequestInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestInteractor.swift; sourceTree = "<group>"; };
 		11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterExtension.swift; sourceTree = "<group>"; };
-		11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImageViewPaging.swift; sourceTree = "<group>"; };
+		11FF061D28E7210D00EAEF33 /* UImageViewPagging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UImageViewPagging.swift; sourceTree = "<group>"; };
 		11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewController.swift; sourceTree = "<group>"; };
 		11FF062328E8896100EAEF33 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		11FF062528E8C89000EAEF33 /* LocaleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtension.swift; sourceTree = "<group>"; };
@@ -271,6 +279,7 @@
 		11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListPresenter.swift; sourceTree = "<group>"; };
 		11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListInteractor.swift; sourceTree = "<group>"; };
 		11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionChecker.swift; sourceTree = "<group>"; };
+		11FF064C28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListTableViewDataUIWorker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +287,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11FF064B28ED35C800EAEF33 /* Connectivity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +451,7 @@
 				11FF061B28E6293500EAEF33 /* NotificationCenterExtension.swift */,
 				11FF062528E8C89000EAEF33 /* LocaleExtension.swift */,
 				11FF063828EBADF600EAEF33 /* DateExtension.swift */,
+				11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -478,7 +489,7 @@
 				115BB4B128DF3BB000686670 /* MoreSelector.swift */,
 				115BB4B328E06A6600686670 /* UIPickerItemsSelector.swift */,
 				115BB4BB28E1E3F300686670 /* ImagePickerController.swift */,
-				11FF061D28E7210D00EAEF33 /* UImageViewPaging.swift */,
+				11FF061D28E7210D00EAEF33 /* UImageViewPagging.swift */,
 				11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */,
 			);
 			path = CustomViews;
@@ -489,7 +500,6 @@
 			children = (
 				114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */,
 				114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */,
-				114E810928C3C6AE0028F39B /* PerformersCategory.swift */,
 				11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */,
 				115BB4A028DC888A00686670 /* PerformersCategoriesPresenter.swift */,
 				115BB4A228DC893400686670 /* PerformersCategoriesInteractor.swift */,
@@ -533,6 +543,7 @@
 				11DCADFA28D35B3300568D16 /* Review.swift */,
 				11DCADFC28D35B4C00568D16 /* Username.swift */,
 				11DCADFE28D35B7100568D16 /* Photo.swift */,
+				114E810928C3C6AE0028F39B /* PerformersCategory.swift */,
 				11DCAE0028D35B9800568D16 /* Phone.swift */,
 				11DCAE0228D3613B00568D16 /* Customer.swift */,
 				11DCAE0428D3619B00568D16 /* Address.swift */,
@@ -545,6 +556,7 @@
 				115BB49328DA2A0A00686670 /* Time.swift */,
 				115BB49528DA57D900686670 /* GeoPosition.swift */,
 				1113D2BC28E47B30003C9FD3 /* DocumentType.swift */,
+				11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -575,6 +587,7 @@
 			children = (
 				11FF062328E8896100EAEF33 /* LocationManager.swift */,
 				11FF064628ECEB9700EAEF33 /* NetworkConnectionChecker.swift */,
+				11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */,
 			);
 			path = CustomClasses;
 			sourceTree = "<group>";
@@ -664,6 +677,7 @@
 				11FF064028EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift */,
 				11FF064228EC817800EAEF33 /* OrdersListPresenter.swift */,
 				11FF064428EC823000EAEF33 /* OrdersListInteractor.swift */,
+				11FF064C28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift */,
 			);
 			path = OrdersListView;
 			sourceTree = "<group>";
@@ -684,6 +698,9 @@
 			dependencies = (
 			);
 			name = emassi_IOS;
+			packageProductDependencies = (
+				11FF064A28ED35C800EAEF33 /* Connectivity */,
+			);
 			productName = emassi_IOS;
 			productReference = 114E80B228C108B70028F39B /* emassi_IOS.app */;
 			productType = "com.apple.product-type.application";
@@ -756,6 +773,9 @@
 				Base,
 			);
 			mainGroup = 114E80A928C108B70028F39B;
+			packageReferences = (
+				11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */,
+			);
 			productRefGroup = 114E80B328C108B70028F39B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -824,6 +844,7 @@
 				11DCAE0528D3619B00568D16 /* Address.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				115BB4AB28DE06D000686670 /* PerformerInfoPresenter.swift in Sources */,
+				11F818D228EF16F200769AC1 /* UserDefaultsExtension.swift in Sources */,
 				114012FF28C7CE5C00B14D5A /* MenuAction.swift in Sources */,
 				1194A15D28CF718A00BAF84B /* EmassiApiResponse.swift in Sources */,
 				11FF062A28EA34D000EAEF33 /* PublicRequestPresenter.swift in Sources */,
@@ -834,9 +855,10 @@
 				115BB49228DA0C0D00686670 /* Offer.swift in Sources */,
 				11FF063528EB8C3600EAEF33 /* ActiveWorksHeaderView.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
-				11FF061E28E7210D00EAEF33 /* UImageViewPaging.swift in Sources */,
+				11FF061E28E7210D00EAEF33 /* UImageViewPagging.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
+				11F818D028EDEF8E00769AC1 /* AsyncOperation.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,
 				115BB4B428E06A6600686670 /* UIPickerItemsSelector.swift in Sources */,
 				115BB4BC28E1E3F300686670 /* ImagePickerController.swift in Sources */,
@@ -866,6 +888,7 @@
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
 				11FF063C28EBB27600EAEF33 /* SendOfferViewController.swift in Sources */,
+				11F818D428EF753100769AC1 /* ResponseWorkWithCustomer.swift in Sources */,
 				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
 				11DCADF228D24E1000568D16 /* SettingTableViewCell.swift in Sources */,
 				11FF062628E8C89000EAEF33 /* LocaleExtension.swift in Sources */,
@@ -894,6 +917,7 @@
 				11FF062428E8896100EAEF33 /* LocationManager.swift in Sources */,
 				11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
+				11FF064D28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift in Sources */,
 				11DCADEC28D1FD6F00568D16 /* WorksRequestTableViewCell.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
 				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
@@ -1268,6 +1292,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rwbutler/connectivity";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		11FF064A28ED35C800EAEF33 /* Connectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */;
+			productName = Connectivity;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		114E80BE28C108B70028F39B /* emassi_IOS.xcdatamodeld */ = {

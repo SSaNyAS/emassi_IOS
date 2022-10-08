@@ -61,6 +61,7 @@ class PerformersListViewController: UIViewController, PerformersListViewDelegate
     }
     
     @objc private func updateData(){
+        refreshControl?.beginRefreshing()
         setNoItemsView(isShow: false)
         presenter?.loadPerformers(completion: {[weak self] _ in
             self?.updateTableView()
@@ -70,12 +71,9 @@ class PerformersListViewController: UIViewController, PerformersListViewDelegate
     func updateTableView(){
         DispatchQueue.main.async { [weak self] in
             self?.performersTableView?.reloadData()
+            let isShow = self?.performersTableView?.numberOfRows(inSection: 0) == 0
+            self?.setNoItemsView(isShow: isShow)
             self?.refreshControl?.endRefreshing()
-            if (self?.performersTableView?.numberOfRows(inSection: 0) == 0){
-                self?.setNoItemsView(isShow: true)
-            } else {
-                self?.setNoItemsView(isShow: false)
-            }
         }
     }
     
@@ -98,7 +96,6 @@ class PerformersListViewController: UIViewController, PerformersListViewDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshControl?.beginRefreshing()
         updateData()
     }
     

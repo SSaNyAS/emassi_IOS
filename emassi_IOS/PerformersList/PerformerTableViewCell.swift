@@ -17,12 +17,14 @@ class PerformerTableViewCell: UITableViewCell{
     weak var sendMessageButton: UIButton?
     weak var callButton: UIButton?
     weak var acceptButton: UIButton?
+    weak var denyButton: UIButton?
     weak var reviewLabel: UILabel?
     weak var showPerformerInfoButton: UIButton?
     weak var selectorView: UISwitch?
     
     var sendMessageButtonAction: (() ->Void)?
     var callButtonAction: (() ->Void)?
+    var denyButtonAction: (()->Void)?
     var acceptButtonAction: (() ->Void)?
     private weak var buttonsContainer: UIStackView?
     private var isSetuppedConstraints: Bool = false
@@ -88,6 +90,10 @@ class PerformerTableViewCell: UITableViewCell{
         acceptButtonAction?()
     }
     
+    @objc private func denyButtonClick(){
+        denyButtonAction?()
+    }
+    
     func addSendMessageButton(title: String? = nil, action: @escaping () -> Void){
         if sendMessageButton == nil {
             setupSendMessageButton()
@@ -106,6 +112,16 @@ class PerformerTableViewCell: UITableViewCell{
             callButton?.setTitle(title, for: .normal)
         }
         callButtonAction = action
+    }
+    
+    func addDenyButton(title: String? = nil, action: @escaping () -> Void){
+        if denyButton == nil {
+            setupDenyButton()
+        }
+        if let title = title {
+            denyButton?.setTitle(title, for: .normal)
+        }
+        denyButtonAction = action
     }
     
     func setReviewText(text: String){
@@ -142,12 +158,17 @@ class PerformerTableViewCell: UITableViewCell{
         acceptButton?.removeFromSuperview()
         acceptButton = nil
         
+        denyButton?.removeTarget(self, action: #selector(denyButtonClick), for: .touchUpInside)
+        denyButton?.removeFromSuperview()
+        denyButton = nil
+        
         reviewLabel?.removeFromSuperview()
         reviewLabel = nil
         
         sendMessageButtonAction = nil
         callButtonAction = nil
         acceptButtonAction = nil
+        denyButtonAction = nil
     }
     
     private func setupDefaultSettings(){
@@ -167,7 +188,7 @@ class PerformerTableViewCell: UITableViewCell{
                 contentViewSecond.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             ])
             
-            contentViewSecond.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+            contentViewSecond.backgroundColor = .baseAppColorBackground
             contentViewSecond.setCornerRadius(value: 12)
             
             selectionStyle = .none
@@ -221,7 +242,7 @@ class PerformerTableViewCell: UITableViewCell{
     }
     
     private func setupReviewLabelConstraints(){
-        guard let reviewLabel = reviewLabel, let photoImageView = photoImageView else {
+        guard let reviewLabel = reviewLabel else {
             return
         }
         let trailingConstraint = reviewLabel.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
@@ -229,11 +250,23 @@ class PerformerTableViewCell: UITableViewCell{
         if let selectorView = selectorView {
             reviewLabel.trailingAnchor.constraint(equalTo: selectorView.leadingAnchor, constant: -5).isActive = true
         }
+        
+//        if let photoImageView = photoImageView{
+//            let topToBottomPhotoImageViewConstraint = reviewLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor,constant: 10)
+//            topToBottomPhotoImageViewConstraint.priority = .defaultLow
+//            topToBottomPhotoImageViewConstraint.isActive = true
+//        }
+        
+        if let buttonsContainer = buttonsContainer{
+            let topConstraintToButtonContainer = reviewLabel.topAnchor.constraint(equalTo: buttonsContainer.bottomAnchor, constant: 10)
+            topConstraintToButtonContainer.priority = .required
+            topConstraintToButtonContainer.isActive = true
+        }
+        
         NSLayoutConstraint.activate([
             reviewLabel.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor, constant: 10),
-            reviewLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 10),
             trailingConstraint,
-            reviewLabel.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -5),
+            reviewLabel.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -10),
         ])
     }
     
@@ -243,6 +276,8 @@ class PerformerTableViewCell: UITableViewCell{
         label.isUseBorder = false
         label.cornerRadius = 12
         label.numberOfLines = 0
+//        label.setContentCompressionResistancePriority(.defaultHigh - 1, for: .vertical)
+//        label.setContentHuggingPriority(.defaultLow - 2, for: .)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentViewSecond.addSubview(label)
         reviewLabel = label
@@ -255,6 +290,15 @@ class PerformerTableViewCell: UITableViewCell{
         buttonsContainer?.addArrangedSubview(button)
         button.addTarget(self, action: #selector(acceptButtonClick), for: .touchUpInside)
         acceptButton = button
+    }
+    
+    private func setupDenyButton(){
+        let button = UIButtonEmassi()
+        button.setTitle("Отказать", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        buttonsContainer?.addArrangedSubview(button)
+        button.addTarget(self, action: #selector(denyButtonClick), for: .touchUpInside)
+        denyButton = button
     }
     
     private func setupCallButton(){
@@ -279,21 +323,46 @@ class PerformerTableViewCell: UITableViewCell{
         guard let buttonsContainer = buttonsContainer, let photoImageView = photoImageView, let ratingView = ratingView else {
             return
         }
+        let topConstraint1 = buttonsContainer.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 5)
+        
+        topConstraint1.priority = .defaultLow - 100
+        topConstraint1.isActive = true
         
         let topConstraint = buttonsContainer.topAnchor.constraint(greaterThanOrEqualTo: ratingView.bottomAnchor, constant: 5)
         
-        topConstraint.priority = .defaultHigh
+        topConstraint.priority = .required
+        topConstraint.isActive = true
+        
+        let topConstraintToImageViewBottom = buttonsContainer.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 5)
+            
+        topConstraintToImageViewBottom.priority = .defaultHigh - 1
+        topConstraintToImageViewBottom.isActive = true
+        
+        let leadingConstraintToSuperView = buttonsContainer.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor,constant: 10)
+        
+        leadingConstraintToSuperView.priority = .defaultHigh - 1
+        leadingConstraintToSuperView.isActive = true
+        
+        let leadingConstraint = buttonsContainer.leadingAnchor.constraint(lessThanOrEqualTo: photoImageView.trailingAnchor, constant: 5)
+        leadingConstraint.priority = .defaultHigh
+        leadingConstraint.isActive = true
         
         let trailingConstraint = buttonsContainer.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
         trailingConstraint.priority = .defaultHigh
+        trailingConstraint.isActive = true
+        
+        let bottomConstraintToImageView = buttonsContainer.bottomAnchor.constraint(greaterThanOrEqualTo: photoImageView.lastBaselineAnchor)
+        bottomConstraintToImageView.priority = .defaultHigh - 1
+        bottomConstraintToImageView.isActive = true
+        
+//        if let reviewLabel = reviewLabel{
+//            let bottomConstraintToReviewLabel = buttonsContainer.bottomAnchor.constraint(lessThanOrEqualTo: reviewLabel.topAnchor, constant: -10)
+//            bottomConstraintToReviewLabel.priority = .required
+//            bottomConstraintToReviewLabel.isActive = true
+//        }
         
         NSLayoutConstraint.activate([
-            topConstraint,
-            buttonsContainer.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 5),
-            
             buttonsContainer.heightAnchor.constraint(equalToConstant: 32),
-            buttonsContainer.bottomAnchor.constraint(equalTo: photoImageView.lastBaselineAnchor),
-            trailingConstraint,
         ])
     }
     
@@ -326,6 +395,7 @@ class PerformerTableViewCell: UITableViewCell{
         let ratingView = UIRatingView()
         ratingView.translatesAutoresizingMaskIntoConstraints = false
         ratingView.rating = 0
+        //ratingView.setContentCompressionResistancePriority(.required, for: .vertical)
         contentViewSecond.addSubview(ratingView)
         self.ratingView = ratingView
     }
@@ -348,7 +418,7 @@ class PerformerTableViewCell: UITableViewCell{
     private func setupCategoryLabel(){
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentViewSecond.addSubview(label)
         categoryLabel = label
@@ -358,8 +428,8 @@ class PerformerTableViewCell: UITableViewCell{
         guard let nameLabel = nameLabel, let photoImageView = photoImageView else {
             return
         }
-        let trailingConstraint = nameLabel.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
-        trailingConstraint.priority = .defaultHigh
+        let trailingConstraint = nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentViewSecond.trailingAnchor, constant: -10)
+        trailingConstraint.priority = .required
         
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 5),
@@ -370,9 +440,10 @@ class PerformerTableViewCell: UITableViewCell{
     
     private func setupNameLabel(){
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.font = .systemFont(ofSize: 16,weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
+
         contentViewSecond.addSubview(label)
         nameLabel = label
     }
@@ -383,10 +454,15 @@ class PerformerTableViewCell: UITableViewCell{
         }
         let bottomConstraint = photoImageView.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -10)
         bottomConstraint.priority = .defaultLow
+        
+        let widthConstraint = photoImageView.widthAnchor.constraint(equalTo: contentViewSecond.widthAnchor,multiplier: 0.3)
+        widthConstraint.priority = .required
+        
         NSLayoutConstraint.activate([
             photoImageView.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor, constant: 10),
             photoImageView.topAnchor.constraint(equalTo: contentViewSecond.topAnchor, constant: 5),
             photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 1.2),
+            widthConstraint,
             bottomConstraint
         ])
     }

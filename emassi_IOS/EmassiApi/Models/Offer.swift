@@ -25,4 +25,8 @@ struct Offer: Codable{
         self.date = try container.decode(Date.self, forKey: .date)
         self.text = try container.decode(String.self, forKey: .text)
     }
+    
+    public var isEmpty: Bool{
+        return text.isEmpty && date.timeIntervalSince1970 == 0
+    }
 }

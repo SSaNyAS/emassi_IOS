@@ -273,7 +273,7 @@ class RegisterViewController: UIViewController, RegisterViewDelegate{
     private func setupPasswordConfirmationTextField(){
         let textField = UITextFieldEmassi()
         textField.isSecureTextEntry = true
-        textField.passwordRules = nil
+        textField.passwordRules = UITextInputPasswordRules(descriptor: "required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;")
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)
@@ -294,7 +294,7 @@ class RegisterViewController: UIViewController, RegisterViewDelegate{
     private func setupPasswordTextField(){
         let textField = UITextFieldEmassi()
         textField.isSecureTextEntry = true
-        textField.passwordRules = nil
+        textField.passwordRules = UITextInputPasswordRules(descriptor: "required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;")
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)

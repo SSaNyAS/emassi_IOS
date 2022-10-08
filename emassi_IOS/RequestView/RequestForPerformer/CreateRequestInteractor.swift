@@ -24,9 +24,9 @@ protocol WorkCreator{
 
 protocol CreateRequestInteractorDelegate: WorkCreator{
     func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem], _ message: String?) -> Void)
-    func createRequest(attachImages: [Data], completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void)
+    func createRequest(completion: @escaping (_ workId: String?, _ apiResponse: EmassiApiResponse?, _ message: String?) -> Void)
     func getCustomerProfile(completion: @escaping (_ profile: CustomerProfile?, _ message: String?) -> Void)
-    func uploadWorkPhoto(workId: String,photoJpeg: Data, completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void)
+    func uploadWorkPhotos(workId: String,photosJpeg: [Data], completion: @escaping (_ isSuccess: Bool) -> Void)
 }
 
 class CreateRequestInteractor: CreateRequestInteractorDelegate{
@@ -42,28 +42,36 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
     }
     
     
-    func uploadWorkPhoto(workId: String,photoJpeg: Data, completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void){
-        emassiApi.uploadWorkPhoto(workId: workId, photoJpeg: photoJpeg, completion: { apiResponse, error in
-            completion(apiResponse,error?.localizedDescription ?? apiResponse?.message)
-        })
-    }
-    
-    func createRequest(attachImages: [Data], completion: @escaping (_ apiResponse: EmassiApiResponse?, _ message: String?) -> Void){
-        emassiApi.addNewWork(work: workCreate) {[weak self] workId, apiResponseWorkCreate, errorAddNewWork in
-            guard let self = self else {return}
-            
-            if let workId = workId{
-                self.createdWorkId = workId
-                completion(apiResponseWorkCreate, errorAddNewWork?.localizedDescription ?? apiResponseWorkCreate?.message)
-                for imageData in attachImages{
-                    self.emassiApi.uploadWorkPhoto(workId: workId, photoJpeg: imageData) { apiResponse, error in
-                        guard error == nil, apiResponse?.isErrored == false else {
-                            completion(apiResponse, error?.localizedDescription ?? apiResponse?.message)
-                            return
+    func uploadWorkPhotos(workId: String,photosJpeg: [Data], completion: @escaping (_ isSuccess: Bool) -> Void){
+        DispatchQueue.global(qos: .utility).async {
+            let uploadPhotoOperationQueue = OperationQueue()
+            uploadPhotoOperationQueue.maxConcurrentOperationCount = 4
+            var allTasksSuccessFinish = true
+            for imageData in photosJpeg{
+                let asyncOperation = AsyncBlockOperation()
+                
+                asyncOperation.action = { [weak self, weak asyncOperation] in
+                    DispatchQueue.main.async { [weak self, weak asyncOperation] in
+                        self?.emassiApi.uploadWorkPhoto(workId: workId, photoJpeg: imageData) { apiResponse, error in
+                            asyncOperation?.finish()
+                            if error != nil || (apiResponse?.isErrored ?? true){
+                                allTasksSuccessFinish = false && allTasksSuccessFinish
+                            }
                         }
                     }
                 }
+                uploadPhotoOperationQueue.addOperation(asyncOperation)
             }
+            uploadPhotoOperationQueue.waitUntilAllOperationsAreFinished()
+            completion(allTasksSuccessFinish)
+        }
+    }
+    
+    func createRequest(completion: @escaping (_ workId: String?, _ apiResponse: EmassiApiResponse?, _ message: String?) -> Void){
+        emassiApi.addNewWork(work: workCreate) {[weak self] workId, apiResponseWorkCreate, errorAddNewWork in
+            guard let self = self else {return}
+                self.createdWorkId = workId
+                completion(workId, apiResponseWorkCreate, errorAddNewWork?.localizedDescription ?? apiResponseWorkCreate?.message)
         }
     }
     
@@ -127,12 +135,6 @@ extension CreateRequestInteractor: WorkCreator{
                 self?.workCreate.category = .init(level1: category, level2: "")
             }
         }
-//        var superCategoryString = ""
-//        let superCategoryInt = ((Int(category) ?? 0) / 1000) * 1000
-//        if superCategoryInt != 0 {
-//            superCategoryString = "\(superCategoryInt)"
-//        }
-//        workCreate.category = .init(level1: superCategoryString, level2: category)
     }
     
     func setComments(comments: String?) {

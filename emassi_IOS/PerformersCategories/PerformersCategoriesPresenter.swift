@@ -8,6 +8,7 @@
 import Foundation
 protocol PerformersCategoriesPresenterDelegate: NSObject{
     func getCategories(completion:@escaping (Bool)->Void)
+    func didChangeSearchText(searchText: String)
 }
 
 class PerformersCategoriesPresenter: NSObject, PerformersCategoriesPresenterDelegate{
@@ -29,6 +30,10 @@ class PerformersCategoriesPresenter: NSObject, PerformersCategoriesPresenterDele
         if let viewController = viewDelegate?.getViewController(){
             router?.goToViewController(from: viewController, to: .performersList(category), presentationMode: .push)
         }
+    }
+    
+    func didChangeSearchText(searchText: String) {
+        dataSource.searchAndScroollToRow(searchText: searchText)
     }
     
     func getCategories(completion:@escaping (_ isSuccess: Bool)->Void) {

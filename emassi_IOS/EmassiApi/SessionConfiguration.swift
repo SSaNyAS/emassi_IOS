@@ -7,35 +7,43 @@
 
 import Foundation
 public class SessionConfiguration{
-    static let saveAuthorizationKey = "saveAuthorization"
-    static let tokenKey = "Token"
+    
     static let lastWorksRequestDateKey = "lastWorksRequestDate"
-    static let isDontNeedShowOnboardingKey = "isDontNeedShowOnboardingKey"
+    
+    static var tokenObserver: NSKeyValueObservation?
     
     public static var isDontNeedShowOnboarding: Bool{
         get{
-            return UserDefaults.standard.bool(forKey: isDontNeedShowOnboardingKey)
+            return UserDefaults.standard.bool(forKey: UserDefaults.isDontNeedShowOnboardingKey)
         }
         set{
-            UserDefaults.standard.setValue(newValue, forKey: isDontNeedShowOnboardingKey)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaults.isDontNeedShowOnboardingKey)
         }
     }
     
     public static var saveAuthorization: Bool{
         get{
-            return UserDefaults.standard.bool(forKey: saveAuthorizationKey)
+            return UserDefaults.standard.bool(forKey: UserDefaults.saveAuthorizationKey)
         }
         set{
-            UserDefaults.standard.setValue(newValue, forKey: saveAuthorizationKey)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaults.saveAuthorizationKey)
         }
     }
     
     public static var Token: String?{
         get{
-            UserDefaults.standard.string(forKey: tokenKey)
+            UserDefaults.standard.string(forKey: UserDefaults.TokenKey)
         }
         set{
-            UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+            UserDefaults.standard.setValue(newValue, forKey: UserDefaults.TokenKey)
+            if newValue?.isEmpty == false{
+                tokenObserver =  UserDefaults.standard.observe(\.Token, options: [.initial, .new], changeHandler: {[weak tokenObserver] (defaults, change) in
+                    if (change.newValue??.isEmpty ?? true) == true{
+                        Logout()
+                        tokenObserver?.invalidate()
+                    }
+                })
+            }
         }
     }
     
@@ -55,8 +63,8 @@ public class SessionConfiguration{
     }
     public static func removeToken(completion: ((Bool)-> Void)? = nil){
         DispatchQueue.main.async {
-            UserDefaults.standard.removeObject(forKey: tokenKey)
-            UserDefaults.standard.removeObject(forKey: saveAuthorizationKey)
+            UserDefaults.standard.removeObject(forKey: UserDefaults.TokenKey)
+            UserDefaults.standard.removeObject(forKey: UserDefaults.saveAuthorizationKey)
             let result = UserDefaults.standard.synchronize()
             completion?(result)
         }

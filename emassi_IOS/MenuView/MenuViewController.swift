@@ -56,6 +56,11 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .activeWorks, presentationMode: .push)
                 }
             },
+            .init(title: "Лента заявок", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .ordersList, presentationMode: .push)
+                }
+            },
             .init(title: "Работа", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
                     router?.goToViewController(from: currentVC, to: .myWorks, presentationMode: .push)
@@ -66,7 +71,7 @@ class MenuViewController: UIViewController{
             },
             .init(title: "Отзыв", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
-                    router?.goToViewController(from: currentVC, to: .feedback, presentationMode: .push)
+                    router?.goToViewController(from: currentVC, to: .feedback(""), presentationMode: .push)
                 }
             },
             .init(title: "Создать заявку", image: "star.fill"){ [weak menuNavigationController, weak router] in
@@ -208,13 +213,17 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate{
             var content = UIListContentConfiguration.valueCell()
             content.imageToTextPadding = 5
             content.text = currentCommand.title
-            content.image = UIImage(systemName: currentCommand.image)
+            if currentCommand.image.isEmpty == false{
+                content.image = UIImage(systemName: currentCommand.image)
+            }
             content.imageProperties.tintColor = .lightGray
             content.textToSecondaryTextHorizontalPadding = .zero
             cell.contentConfiguration = content
         } else {
             cell.textLabel?.text = currentCommand.title
-            cell.imageView?.image = UIImage(systemName: currentCommand.image)
+            if currentCommand.image.isEmpty == false{
+                cell.imageView?.image = UIImage(systemName: currentCommand.image)
+            }
             cell.imageView?.tintColor = .lightGray
         }
         

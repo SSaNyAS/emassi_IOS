@@ -13,6 +13,9 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
     var getPerformersForWork: ((_ workId: String, @escaping ([PerformerForWork]) -> Void)->Void)?
     var getPerformerPhoto: ((_ performerId: String, @escaping (Data?) ->Void )->Void)?
     var didCancelWorkAction: ((_ workId: String, @escaping (Bool) -> Void) -> Void)?
+    var didAcceptPerformerAction: ((_ workId: String, String) -> Void)?
+    var didDenyPerformerAction: ((_ workId: String, String) -> Void)?
+    var didSendMessageToPerformerAction: ((_ workId: String, String) -> Void)?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return works[section].performersList.count
@@ -63,7 +66,26 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
             cell.categoryLabel?.text = performer.offer.date.formattedAsDateTime()
             
             getPerformerPhoto?(performer.id){[weak imageView = cell.photoImageView] imageData in
-                imageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
+                DispatchQueue.main.async {
+                    imageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
+                }
+            }
+            cell.addSendMessageButton { [weak self] in
+                self?.didSendMessageToPerformerAction?(work.workId, performer.id)
+            }
+            if work.performerId == performer.id{
+                cell.categoryLabel?.text = "Выбранный исполнитель"
+                cell.addCallButton {
+                    if let url = URL(string: "tel:\\79328487228"){
+                        if UIApplication.shared.canOpenURL(url){
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                }
+            } else {
+                cell.addAcceptButton{ [weak self] in
+                    self?.didAcceptPerformerAction?(work.workId, performer.id)
+                }
             }
             cell.ratingView?.rating = performer.rating5
             cell.setReviewText(text: performer.offer.text)

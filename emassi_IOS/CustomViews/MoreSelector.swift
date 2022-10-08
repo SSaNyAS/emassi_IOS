@@ -115,6 +115,7 @@ class MoreSelectorView: UIControl{
                 }
             } else {
                 let newField = createNewTextField()
+                setInputViewToTextField(textField: newField)
                 if let inputView = newField.inputView as? UIPickerItemSelector{
                     inputView.selectedItem = selectedItems[itemId]
                 }
@@ -272,7 +273,6 @@ class MoreSelectorView: UIControl{
         if let allTextFieldTargets = allTextFieldTargets{
             textField.addTarget(allTextFieldTargets.target, action: allTextFieldTargets.action, for: allTextFieldTargets.event)
         }
-        
         return textField
     }
     
@@ -301,6 +301,7 @@ class MoreSelectorView: UIControl{
         textField.setCornerRadius(value: 12)
         textField.setTextLeftInset(value: 10)
         textField.setBorder()
+        textField.isTextEditable = isTextWritable
         textField.backgroundColor = .clear
         textField.setContentHuggingPriority(.defaultLow, for: .vertical)
         let heightConstraint = textField.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)

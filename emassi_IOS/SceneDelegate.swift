@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Connectivity
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let skey = "skey_f19da651f0c2f96afb46b37f6e80a939"
     
     var emassiApi: EmassiApi?
-    var networkMonitor: NetworkConnectionChecker?
+    var connectivity: Connectivity?
     
     @objc private func didLogout(){
         if (emassiApi?.isValidToken ?? true) == false {
@@ -30,19 +31,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        
         let api = EmassiApi(apiKey: apiKey, skey: skey)
         emassiApi = api
         
         NotificationCenter.default.addObserver(self, selector: #selector(didLogout), name: .logoutNotification, object: nil)
         
         router = EmassiRouter(emassiApi: api)
-        networkMonitor = NetworkConnectionChecker()
-        networkMonitor?.connectionChanged = { isConnected in
-            print("connection changed, connection is successfull: \(isConnected)")
+        connectivity = Connectivity()
+        connectivity?.whenDisconnected = { connectivity in
+            print(connectivity.status.description)
         }
-        networkMonitor?.networkTypeChanged = { connectionType in
-            print("connection type changed, new type is \(connectionType.rawValue)")
+        connectivity?.isPollingEnabled = true
+        connectivity?.whenConnected = { connectivity in
+            print(connectivity.status.description)
         }
+        let dispatchQueue = DispatchQueue(label: "networkCheck")
+        connectivity?.startNotifier(queue: dispatchQueue)
+        
         let navigationController = UINavigationController()
         navigationController.isToolbarHidden = true
         navigationController.isNavigationBarHidden = true

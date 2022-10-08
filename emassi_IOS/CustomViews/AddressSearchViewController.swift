@@ -9,6 +9,7 @@ import UIKit
 import CoreLocation
 
 class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
+    
     weak var tableView: UITableView!
     lazy var searchController =  UISearchController()
     let cellIdentifire = "cellAddress"

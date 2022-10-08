@@ -57,7 +57,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     weak var privateInfoLabel: UILabel?
     weak var privateInfoTextView: UITextView?
     
-    weak var imageContainer: UIStackView?
+    weak var imageContainer: ImageViewPagging?
     
     weak var addPhotoButton: UIButton?
     weak var createOrderButton: UIButton?
@@ -80,12 +80,6 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
         }
         timer?.fire()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addressTextField?.resignFirstResponder()
-        requestLocalizationTextField?.resignFirstResponder()
-    }
 
     func getViewController() -> UIViewController {
         return self
@@ -94,12 +88,14 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     func setLocalizationAddress(address: String?) {
         DispatchQueue.main.async {
             self.requestLocalizationTextField?.text = address
+            self.requestLocalizationTextField?.endEditing(true)
         }
     }
     
     func setCallAddress(address: String?) {
         DispatchQueue.main.async {
             self.addressTextField?.text = address
+            self.addressTextField?.endEditing(true)
         }
     }
     
@@ -111,7 +107,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     
     func addPhoto(imageData: Data?) {
         if let image = UIImage(data: imageData ?? Data()){
-            imageContainer?.addSubview(UIImageView(image: image))
+            imageContainer?.addImage(image: image)
         }
     }
     
@@ -124,6 +120,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     func setSelectedCategory(category: MoreSelectorItem){
         DispatchQueue.main.async {
             self.categorySelector?.selectedItem = category
+            self.categorySelector?.endEditing(true)
         }
     }
     
@@ -132,12 +129,12 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     }
     
     @objc func localizationAddressTextFieldDidPress(){
-        addressTextField?.resignFirstResponder()
+        requestLocalizationTextField?.endEditing(true)
         presenter?.selectLocalizationAddress(currentText: requestLocalizationTextField?.text)
     }
     
     @objc func callAddressTextFieldDidPress(){
-        addressTextField?.resignFirstResponder()
+        addressTextField?.endEditing(true)
         presenter?.selectCallAddress(currentText: addressTextField?.text)
     }
     
@@ -181,15 +178,13 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     @objc func setMinimumDate(){
         DispatchQueue.main.async { [weak self] in
             let addingToNextDayValue: TimeInterval = 60*60*24
-            let datePlusOneYear = Date().addingTimeInterval(60*60*24*365)
+            let datePlusOneYear = Date().addingTimeInterval(addingToNextDayValue*365)
             let nextDay = Date().addingTimeInterval(addingToNextDayValue)
             self?.orderDateFromPicker?.minimumDate = nextDay
             self?.orderDateFromPicker?.maximumDate = datePlusOneYear
             
             self?.orderDateToPicker?.minimumDate = nextDay
             self?.orderDateToPicker?.maximumDate = datePlusOneYear
-//            self?.orderTimeFromPicker?.minimumDate = nextDay
-//            self?.orderTimeToPicker?.minimumDate = nextDay
         }
     }
     
@@ -280,8 +275,9 @@ extension CreateRequestViewController{
         
         addPhotoButton?.addTarget(self, action: #selector(addPhotoButtonClick), for: .touchUpInside)
         createOrderButton?.addTarget(self, action: #selector(createRequestButtonClick), for: .touchUpInside)
-        requestLocalizationTextField?.addTarget(self, action: #selector(localizationAddressTextFieldDidPress), for: .allEditingEvents)
-        addressTextField?.addTarget(self, action: #selector(callAddressTextFieldDidPress), for: .allEditingEvents)        
+        
+        requestLocalizationTextField?.addTarget(self, action: #selector(localizationAddressTextFieldDidPress), for: .editingDidBegin)
+        addressTextField?.addTarget(self, action: #selector(callAddressTextFieldDidPress), for: .editingDidBegin)
 
         setCurrentDate()
         
@@ -601,15 +597,12 @@ extension CreateRequestViewController{
     }
     
     private func createImageContainer(){
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        stackView.distribution = .fillEqually
-        stackView.setCornerRadius(value: 12)
-        stackView.layer.masksToBounds = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        scrollContentView.addSubview(stackView)
-        imageContainer = stackView
+        let imagePaggingView = ImageViewPagging()
+        imagePaggingView.setCornerRadius(value: 12)
+        imagePaggingView.layer.masksToBounds = true
+        imagePaggingView.translatesAutoresizingMaskIntoConstraints = false
+        scrollContentView.addSubview(imagePaggingView)
+        imageContainer = imagePaggingView
     }
     
     private func createPrivateInfoTextView(){
@@ -652,6 +645,7 @@ extension CreateRequestViewController{
     
     private func createAddressTextField(){
         let textfield = createTextField()
+        textfield.isTextEditable = false
         textfield.textContentType = .streetAddressLine1
         scrollContentView.addSubview(textfield)
         addressTextField = textfield
@@ -738,6 +732,7 @@ extension CreateRequestViewController{
     
     private func createRequestLocalizationTextField(){
         let textfield = createTextField()
+        textfield.isTextEditable = false
         scrollContentView.addSubview(textfield)
         requestLocalizationTextField = textfield
     }
@@ -750,6 +745,7 @@ extension CreateRequestViewController{
     
     private func createCategoryTextField(){
         let textfield = createTextField()
+        textfield.isTextEditable = false
         scrollContentView.addSubview(textfield)
         categoryTextField = textfield
         textfield.inputView = categorySelector
@@ -770,7 +766,7 @@ extension CreateRequestViewController{
         self.categorySelectorLabel = categorySelectorLabel
     }
     
-    private func createTextField() -> UITextField{
+    private func createTextField() -> UITextFieldEmassi{
         let textfield = UITextFieldEmassi()
         textfield.backgroundColor = .white
         textfield.setBorder()

@@ -288,6 +288,58 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
+    func getWork(workId: String,  completion: @escaping (_ workWithCustomer: WorkWithCustomer?,EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
+            completion(nil,nil,nil)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let task = baseDataRequest(request: request){ [weak self] apiResponse, error in
+            if let data = apiResponse?.data{
+                var workWithCustomer: WorkWithCustomer?
+                
+                guard let dataJson = try? JSONSerialization.jsonObject(with: data) as? [String:Any] else {
+                    completion(workWithCustomer,apiResponse,error)
+                    return
+                }
+                
+                if let workWithCustomer = try? self?.jsonDecoder.decode(WorkWithCustomer.self, from: data){
+                    completion(workWithCustomer,apiResponse,error)
+                    return
+                }
+                
+                if let workJsonObject = dataJson["work"]{
+                    if let workData = try? JSONSerialization.data(withJSONObject: workJsonObject){
+                        if let work = try? self?.jsonDecoder.decode(WorkRequest.self, from: workData){
+                            if workWithCustomer == nil{
+                                workWithCustomer = .init()
+                            }
+                            workWithCustomer?.work = work
+                        }
+                    }
+                }
+                if let customerJsonObject = dataJson["customer"]{
+                    if let customerData = try? JSONSerialization.data(withJSONObject: customerJsonObject){
+                        
+                        if let customer = try? self?.jsonDecoder.decode(Customer.self, from: customerData){
+                            if workWithCustomer == nil{
+                                workWithCustomer = .init()
+                            }
+                            workWithCustomer?.customer = customer
+                        }
+                    }
+                }
+                completion(workWithCustomer,apiResponse,error)
+                return
+            }
+            completion(nil,apiResponse,error)
+        }
+        task.resume()
+    }
+    
     func getAllWorks(active: Bool, type: String, startDate: Date? = nil, completion: @escaping ([AllWork],EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work",relativeTo: hostUrl) else{
             completion([],nil,nil)

@@ -30,7 +30,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     func setProfileRating(rating: Float) {
         DispatchQueue.main.async { [weak self] in
             self?.profileRatingView?.rating = rating
-            self?.profileRatingLabel?.text = "\(rating)"
         }
     }
     
@@ -79,7 +78,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     weak var profileImageView: UIImageView?
     weak var profileRatingView: UIRatingView?
-    weak var profileRatingLabel: UILabel?
     weak var nameLabel: UILabel?
     weak var phoneLabel: UILabel?
     weak var descriptionLabel: UILabel?
@@ -140,7 +138,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         
         setupProfileImageView(attachTo: contentView)
         setupProfileRatingView(attachTo: contentView)
-        setupProfileRatingLabel(attachTo: contentView)
         setupNameLabel(attachTo: contentView)
         setupPhoneLabel(attachTo: contentView)
         setupDescriptionLabel(attachTo: contentView)
@@ -261,7 +258,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         reviewCountLabel.text = "0 оценок"
         let reviewsRatingView = UIRatingView()
         reviewsRatingView.translatesAutoresizingMaskIntoConstraints = false
-        reviewsRatingView.rating = 4
+        reviewsRatingView.rating = 0
         
         blockView.addSubview(reviewCountLabel)
         blockView.addSubview(reviewsRatingView)
@@ -303,9 +300,10 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         let label = UILabelBordered()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.text = """
-gregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergegregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregregergregregregregergereghertghertgretgregregregregrege
-"""
+        
+        let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
+        minHeight.priority = .defaultLow
+        minHeight.isActive = true
         
         view.addSubview(label)
         descriptionLabel = label
@@ -329,8 +327,11 @@ gregregregergregregregregergereghertghertgretgregregregregregergregregregregerge
     func setupPhoneLabel(attachTo view: UIView){
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "+79328487228"
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
+        minHeight.priority = .defaultLow
+        minHeight.isActive = true
         
         view.addSubview(label)
         phoneLabel = label
@@ -349,8 +350,11 @@ gregregregergregregregregergereghertghertgretgregregregregregergregregregregerge
     func setupNameLabel(attachTo view: UIView){
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "gfgfdgfdg gfdgdfg dfggfdgf"
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
+        minHeight.priority = .defaultLow
+        minHeight.isActive = true
         
         view.addSubview(label)
         nameLabel = label
@@ -366,30 +370,10 @@ gregregregergregregregregergereghertghertgretgregregregregregergregregregregerge
         ])
     }
     
-    func setupProfileRatingLabel(attachTo view: UIView){
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 20)
-        label.text = "0.0"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(label)
-        profileRatingLabel = label
-        
-        guard let profileRatingView = profileRatingView else {
-            return
-        }
-        
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: profileRatingView.trailingAnchor, constant: 5),
-            label.centerYAnchor.constraint(equalTo: profileRatingView.centerYAnchor),
-        ])
-    }
-    
     func setupProfileRatingView(attachTo view: UIView){
         let ratingView = UIRatingView()
         ratingView.translatesAutoresizingMaskIntoConstraints = false
-        
+        ratingView.isShowRatingLabel = true
         view.addSubview(ratingView)
         profileRatingView = ratingView
         

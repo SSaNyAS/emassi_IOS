@@ -39,15 +39,23 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
     }
     
     func createRequest() {
-        interactor.createRequest(attachImages: imagesToRequest) { [weak self] apiResponse, message in
+        interactor.createRequest { [weak self] workId, apiResponse, message in
             if (apiResponse?.isErrored ?? true){
                 self?.viewDelegate?.showMessage(message: message ?? "", title: "")
             } else {
-                if let viewController = self?.viewDelegate?.getViewController(){
-                    DispatchQueue.main.async {
-                        viewController.dismiss(animated: true)
+                guard let workId = workId else {
+                    return
+                }
+                self?.interactor.uploadWorkPhotos(workId: workId, photosJpeg: self?.imagesToRequest ?? []) { [weak self] isSuccess in
+                    if isSuccess {
+                        if let viewController = self?.viewDelegate?.getViewController(){
+                            DispatchQueue.main.async {
+                                viewController.dismiss(animated: true)
+                            }
+                        }
                     }
                 }
+                
             }
         }
     }

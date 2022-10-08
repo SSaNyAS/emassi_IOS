@@ -46,7 +46,7 @@ class SettingTableViewCell: UITableViewCell{
     private func setupDefaultSettings(){
         self.selectionStyle = .none
      let secondContentView = UIView()
-        secondContentView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+        secondContentView.backgroundColor = .baseAppColorBackground
         secondContentView.setCornerRadius(value: 12)
         secondContentView.translatesAutoresizingMaskIntoConstraints = false
         

@@ -11,6 +11,9 @@ protocol ActiveWorksInteractorDelegate: AnyObject{
     func getPerformersForWork(workId: String, completion: @escaping ([PerformerForWork]) -> Void)
     func getCategoryName(categoryId: String, completion: @escaping (String?) -> Void)
     func deleteWork(workId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void)
+    func getPerformerPhoto(performerId: String, completion: @escaping (Data?) -> Void)
+    func acceptPerformerToWork(workId: String, performerId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void)
+    func sendMessageToPerformer(workId: String, performerId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void)
 }
 
 class ActiveWorksInteractor: ActiveWorksInteractorDelegate{
@@ -26,10 +29,24 @@ class ActiveWorksInteractor: ActiveWorksInteractorDelegate{
         }
     }
     
+    func getPerformerPhoto(performerId: String, completion: @escaping (Data?) -> Void){
+        emassiApi.downloadPerformerPhotoPublic(performerId: performerId) { data, _ in
+            completion(data)
+        }
+    }
+    
     func getPerformersForWork(workId: String, completion: @escaping ([PerformerForWork]) -> Void){
         emassiApi.getPerformersForWork(workId: workId) { performers, apiResponse, error in
             completion(performers)
         }
+    }
+    
+    func acceptPerformerToWork(workId: String, performerId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void) {
+        emassiApi.acceptPerformerForWork(workId: workId, performerId: performerId, completion: completion)
+    }
+    
+    func sendMessageToPerformer(workId: String, performerId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void) {
+        
     }
     
     func deleteWork(workId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void){

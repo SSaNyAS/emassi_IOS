@@ -27,12 +27,12 @@ class ActiveWorksHeaderView: UIView {
     }
     
     @objc private func didCancelWork(){
-        
+        didCancelWorkAction?()
     }
     
     private func setupDefaultSettings(){
         let contentView = UIView()
-        contentView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+        contentView.backgroundColor = .baseAppColorBackground
         contentView.setCornerRadius(value: 12)
         contentView.layer.masksToBounds = true
         contentView.translatesAutoresizingMaskIntoConstraints = false

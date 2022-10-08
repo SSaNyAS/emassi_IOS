@@ -69,6 +69,7 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         searchBar.searchTextField.setCornerRadius(value: 12)
         searchBar.searchTextField.setBorder()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.delegate = self
         
         view.addSubview(searchBar)
         self.searchBar = searchBar
@@ -88,7 +89,7 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
     func setupTableView(){
         let tableView = UITableView()
         tableView.register(PerformersCategoryTableViewCell.self, forCellReuseIdentifier: PerformersCategoryTableViewCell.identifire)
-        
+        tableView.register(UITableViewCell.self,forCellReuseIdentifier: PerformersCategoriesTableViewDataSourceDelegate.subCategoryCellIdentifire)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         //tableView.estimatedRowHeight = 44
@@ -108,5 +109,21 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
             buttomConstraint
             
         ])
+    }
+}
+
+extension PerformersCategoriesViewController: UISearchBarDelegate{
+    @objc private func searchWithThrottle(searchText: String){
+        presenter?.didChangeSearchText(searchText: searchText)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        NSObject.cancelPreviousPerformRequests(withTarget: self,
+                                               selector: #selector(searchWithThrottle(searchText:)),
+                                                   object: searchText)
+
+        perform(#selector(searchWithThrottle(searchText:)),
+                    with: searchText, afterDelay: 0.5)
+        
     }
 }

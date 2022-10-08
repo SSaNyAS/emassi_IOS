@@ -286,11 +286,14 @@ extension PerformerProfileViewController{
         emailTextField?.isEnabled = false
         createTextField(with: "Номер телефона", attachTo: &phoneTextField)
         createTextField(with: "Адрес", attachTo: &addressTextField)
+        if let addressTextField = addressTextField as? UITextFieldEmassi{
+            addressTextField.isTextEditable = false
+        }
         
         addressTextField?.addTarget(self, action: #selector(openAddressSearchViewController), for: .editingDidBegin)
         
         createSupportRegionSelector()
-        createCategorySelector()
+        createCategorySelector();#warning("second category showing as empty field")
         createAboutPerformerView()
         
         let reviewsCountLabel = createReviewsCountLabel()
@@ -301,8 +304,8 @@ extension PerformerProfileViewController{
         createSaveButton(in: contentView)
         createGoToUserProfileButton(in: contentView)
         
-        self.reviewsCountLabel?.text = "0 оценок"
-        ordersCountLabel?.text = "Выполнено 0 заказов"
+        self.reviewsCountLabel?.text = "Оценок: 0"
+        ordersCountLabel?.text = "Выполнено заказов: 0"
         loadNewPhotoButton?.setTitle("Изменить фото профиля", for: .normal)
         loadNewPhotoButton?.addTarget(self, action: #selector(loadNewPhoto), for: .touchUpInside)
         saveButton?.setTitle("Сохранить", for: .normal)
@@ -321,12 +324,12 @@ extension PerformerProfileViewController{
     }
     
     @objc private func openAddressSearchViewController(){
-        addressTextField?.resignFirstResponder()
+        addressTextField?.endEditing(true)
         presenter?.selectAddress(currentValue: addressTextField?.text)
     }
     
     @objc private func didSelectSupportRegion(sender: UITextField){
-        sender.resignFirstResponder()
+        sender.endEditing(true)
         presenter?.selectSupportRegion(currentValue: sender.text, allSelectedValues: supportRegionSelector?.selectedItems ?? [])
     }
     

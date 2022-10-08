@@ -23,7 +23,7 @@ public class EmassiRouter:NSObject, RouterDelegate{
     
     var emassiApi: EmassiApi
     var authorizationData: AuthorizationViewsData?
-    
+    var currentView: EmassiRoutedViews = .onboarding
     init(emassiApi: EmassiApi){
         self.emassiApi = emassiApi
     }
@@ -43,12 +43,11 @@ public class EmassiRouter:NSObject, RouterDelegate{
                     return
                 }
             }
+            if presentationMode == .push{
+                
+            }
             self?.presentWithMode(from: viewController, to: showingVC, presentMode: presentationMode)
         }
-    }
-    
-    func setRootViewController(routedView: EmassiRoutedViews){
-        
     }
     
     @MainActor
@@ -85,8 +84,10 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case documents
     case myWorks
     case activeWorks
+    case ordersList
     case settings
-    case feedback
+    case feedback(_ workId: String)
+    case sendOfferForWork(_ workId: String)
     case performersList(_ categoryId: String)
     case performerInfo(_ performerId: String)
     case createPublicRequest(_ categoryId: String?)
@@ -126,10 +127,14 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "myWorks"
         case .activeWorks:
             return "activeWorks"
+        case .ordersList:
+            return "ordersList"
         case .settings:
             return "settings"
-        case .feedback:
-            return "feedback"
+        case .feedback(let workId):
+            return "feedbackForWork\(workId)"
+        case .sendOfferForWork(let workId):
+            return "sendOfferForWork\(workId)"
         case .performersList(let category):
             return "performersListForCategory\(category)"
         case .performerInfo(let performer):
@@ -240,12 +245,27 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 activeWorksVC.presenter = presenter
             }
             return activeWorksVC
+        case .ordersList:
+            let ordersListVC = OrdersListViewController()
+            if let api = router?.emassiApi{
+                let interactor = OrdersListInteractor(emassiApi: api)
+                let presenter = OrdersListPresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = ordersListVC
+                ordersListVC.presenter = presenter
+            }
+            return ordersListVC
         case .settings:
             let settingsVC = SettingsViewController()
             return settingsVC
-        case .feedback:
+        case .feedback(let workId):
             let feedbackVC = FeedbackViewController()
             return feedbackVC
+        case .sendOfferForWork(let workId):
+            let sendOfferVC = SendOfferViewController()
+            sendOfferVC.workId = workId
+            sendOfferVC.emassiApi = router?.emassiApi
+            return sendOfferVC
         case .createPublicRequest(let category):
             let publicRequestVC = PublicRequestViewController()
             if let api = router?.emassiApi{
@@ -325,7 +345,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
 }
 
 
-enum ViewControllerPresentMode{
+enum ViewControllerPresentMode: Equatable{
     case present
     case push
     case popToRoot

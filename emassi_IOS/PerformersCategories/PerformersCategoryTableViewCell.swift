@@ -19,7 +19,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         super.prepareForReuse()
         titleTextLabel?.text = ""
         backgroundImageView?.image = nil
-        backgroundImageView?.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+        backgroundImageView?.backgroundColor = .baseAppColorBackground
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -54,7 +54,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         backgroundImageView = imageView
         backgroundColor = .clear
         
-        imageView.backgroundColor = .baseAppColor.withAlphaComponent(0.2)
+        imageView.backgroundColor = .baseAppColorBackground
         
         let label = UILabel()
         label.textColor = .white

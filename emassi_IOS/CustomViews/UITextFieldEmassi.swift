@@ -7,8 +7,8 @@
 
 import Foundation
 import UIKit
-class UITextFieldEmassi: UITextField{
-    static let defaultHeight: CGFloat = 40
+class UITextFieldEmassi: UITextField, UITextFieldDelegate{
+    static let defaultHeight: CGFloat = 44
     private var inputViewControllerStored: UIInputViewController?
     
     override var inputViewController: UIInputViewController?{
@@ -19,6 +19,19 @@ class UITextFieldEmassi: UITextField{
             inputViewControllerStored = newValue
         }
     }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return isTextEditable
+    }
+    
+    public var isTextEditable: Bool = true{
+        didSet{
+            DispatchQueue.main.async {
+                self.text = ""
+            }
+        }
+    }
+    
+//    public var isUseCustomInputView: Bool = false
     
     init(){
         super.init(frame: .zero)
@@ -35,7 +48,6 @@ class UITextFieldEmassi: UITextField{
         setupDefaultSettings()
     }
     
-    
     func setupDefaultSettings(){
         font = .systemFont(ofSize: 16)
         minimumFontSize = 8
@@ -43,5 +55,6 @@ class UITextFieldEmassi: UITextField{
         backgroundColor = .secondarySystemBackground
         setTextLeftInset(value: 8)
         setCornerRadius(value: 12)
+        delegate = self
     }
 }

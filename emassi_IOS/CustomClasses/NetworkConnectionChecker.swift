@@ -7,7 +7,6 @@
 
 import Foundation
 import Network
-import RealRechability
 
 class NetworkConnectionChecker{
     private var networkChecker: NWPathMonitor

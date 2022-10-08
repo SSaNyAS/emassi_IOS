@@ -7,7 +7,7 @@
 
 import Foundation
 protocol WorksRequestInteractorDelegate{
-    func getAllWorks(completion: @escaping (_ works: [AllWork],_ message: String?) -> Void)
+    func getAllWorks(active: Bool, type: DocumentType, date: Date?, completion: @escaping (_ works: [AllWork],_ message: String?) -> Void)
     func getWorksRequests(completion: @escaping (_ works: [Work],_ message: String?) -> Void)
     func getActiveWorks(completion: @escaping (_ works: [Work],_ message: String?) -> Void)
     func getAccountInfo(completion: @escaping (_ accountInfo: AccountInfoModel?,_ message: String?) -> Void)
@@ -38,8 +38,8 @@ class WorksRequestInteractor: WorksRequestInteractorDelegate {
         })
     }
     
-    func getAllWorks(completion: @escaping (_ works: [AllWork],_ message: String?) -> Void){
-        emassiApi?.getAllWorks(active: false, type: "public", completion: { works, apiResponse, error in
+    func getAllWorks(active: Bool, type: DocumentType, date: Date?, completion: @escaping (_ works: [AllWork],_ message: String?) -> Void){
+        emassiApi?.getAllWorks(active: active, type: type.rawValue,startDate: date, completion: { works, apiResponse, error in
             completion(works,error?.localizedDescription ?? apiResponse?.message)
         })
     }
