@@ -107,6 +107,11 @@
 		11F818D028EDEF8E00769AC1 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */; };
 		11F818D228EF16F200769AC1 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */; };
 		11F818D428EF753100769AC1 /* ResponseWorkWithCustomer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */; };
+		11F818D728F100BB00769AC1 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 11F818D628F100BB00769AC1 /* KeychainAccess */; };
+		11F818D928F20FA400769AC1 /* FavoritePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D828F20FA400769AC1 /* FavoritePresenter.swift */; };
+		11F818DB28F2131400769AC1 /* FavoriteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DA28F2131400769AC1 /* FavoriteInteractor.swift */; };
+		11F818DD28F228BC00769AC1 /* SendFeedbackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DC28F228BC00769AC1 /* SendFeedbackPresenter.swift */; };
+		11F818DF28F22A2000769AC1 /* SendFeedbackInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DE28F22A2000769AC1 /* SendFeedbackInteractor.swift */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
@@ -256,6 +261,10 @@
 		11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
 		11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseWorkWithCustomer.swift; sourceTree = "<group>"; };
+		11F818D828F20FA400769AC1 /* FavoritePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresenter.swift; sourceTree = "<group>"; };
+		11F818DA28F2131400769AC1 /* FavoriteInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteInteractor.swift; sourceTree = "<group>"; };
+		11F818DC28F228BC00769AC1 /* SendFeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFeedbackPresenter.swift; sourceTree = "<group>"; };
+		11F818DE28F22A2000769AC1 /* SendFeedbackInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFeedbackInteractor.swift; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
@@ -287,6 +296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11F818D728F100BB00769AC1 /* KeychainAccess in Frameworks */,
 				11FF064B28ED35C800EAEF33 /* Connectivity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +541,8 @@
 			isa = PBXGroup;
 			children = (
 				1194A15728CE7EEB00BAF84B /* FavoriteViewController.swift */,
+				11F818D828F20FA400769AC1 /* FavoritePresenter.swift */,
+				11F818DA28F2131400769AC1 /* FavoriteInteractor.swift */,
 			);
 			path = FavoriteView;
 			sourceTree = "<group>";
@@ -617,6 +629,8 @@
 			isa = PBXGroup;
 			children = (
 				11DCADF428D34C7900568D16 /* FeedbackViewController.swift */,
+				11F818DC28F228BC00769AC1 /* SendFeedbackPresenter.swift */,
+				11F818DE28F22A2000769AC1 /* SendFeedbackInteractor.swift */,
 			);
 			path = FeedbackView;
 			sourceTree = "<group>";
@@ -700,6 +714,7 @@
 			name = emassi_IOS;
 			packageProductDependencies = (
 				11FF064A28ED35C800EAEF33 /* Connectivity */,
+				11F818D628F100BB00769AC1 /* KeychainAccess */,
 			);
 			productName = emassi_IOS;
 			productReference = 114E80B228C108B70028F39B /* emassi_IOS.app */;
@@ -775,6 +790,7 @@
 			mainGroup = 114E80A928C108B70028F39B;
 			packageReferences = (
 				11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */,
+				11F818D528F100BB00769AC1 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 114E80B328C108B70028F39B /* Products */;
 			projectDirPath = "";
@@ -895,6 +911,7 @@
 				115BB4B228DF3BB000686670 /* MoreSelector.swift in Sources */,
 				115BB4BA28E1C26100686670 /* UIImageExtension.swift in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
+				11F818D928F20FA400769AC1 /* FavoritePresenter.swift in Sources */,
 				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				115BB4A328DC893400686670 /* PerformersCategoriesInteractor.swift in Sources */,
 				11FF063728EB923700EAEF33 /* ActiveWorksTableViewDataUIWorker.swift in Sources */,
@@ -904,6 +921,7 @@
 				11FF061C28E6293500EAEF33 /* NotificationCenterExtension.swift in Sources */,
 				115BB49628DA57D900686670 /* GeoPosition.swift in Sources */,
 				11DCADF028D24D9E00568D16 /* SettingsViewController.swift in Sources */,
+				11F818DB28F2131400769AC1 /* FavoriteInteractor.swift in Sources */,
 				114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */,
 				11DCADEE28D20FED00568D16 /* UIControlExtension.swift in Sources */,
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
@@ -918,6 +936,7 @@
 				11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */,
 				114E80ED28C12F510028F39B /* UIColorExtension.swift in Sources */,
 				11FF064D28EDBBAB00EAEF33 /* OrdersListTableViewDataUIWorker.swift in Sources */,
+				11F818DF28F22A2000769AC1 /* SendFeedbackInteractor.swift in Sources */,
 				11DCADEC28D1FD6F00568D16 /* WorksRequestTableViewCell.swift in Sources */,
 				11CBB7C028C4B22900FED8D5 /* PerformerInfoViewController.swift in Sources */,
 				1140130128C7E1E600B14D5A /* MenuNavigationViewController.swift in Sources */,
@@ -933,6 +952,7 @@
 				11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */,
 				11FF064128EC77CF00EAEF33 /* OrdersListItemTableViewCell.swift in Sources */,
 				11FF062228E755C000EAEF33 /* AddressSearchViewController.swift in Sources */,
+				11F818DD28F228BC00769AC1 /* SendFeedbackPresenter.swift in Sources */,
 				11DCADEA28D08CC400568D16 /* WorksRequestViewController.swift in Sources */,
 				11DCAE0128D35B9800568D16 /* Phone.swift in Sources */,
 				1140131128CAB66000B14D5A /* URLRequestExtension.swift in Sources */,
@@ -1294,6 +1314,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		11F818D528F100BB00769AC1 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rwbutler/connectivity";
@@ -1305,6 +1333,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		11F818D628F100BB00769AC1 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11F818D528F100BB00769AC1 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
 		11FF064A28ED35C800EAEF33 /* Connectivity */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 11FF064928ED35C800EAEF33 /* XCRemoteSwiftPackageReference "connectivity" */;

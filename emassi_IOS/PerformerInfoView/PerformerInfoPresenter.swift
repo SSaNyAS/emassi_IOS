@@ -10,6 +10,7 @@ import UIKit.UIImage
 protocol PerformerInfoPresenterDelegate: NSObject{
     func viewDidLoad()
     func getPerformerInfo()
+    func sendOfferForPerformer()
 }
 
 class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
@@ -17,14 +18,25 @@ class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
     var performerId: String
     weak var router: RouterDelegate?
     weak var viewDelegate: PerformerInfoViewDelegate?
-    var reviewsDataSource: PerformerReviewsTableViewDataSource = PerformerReviewsTableViewDataSource()
+    var reviewsDataSource: PerformerReviewsTableViewDataSource
     init(interactor: PerformerInfoInteractorDelegate, performerId: String) {
         self.interactor = interactor
         self.performerId = performerId
+        self.reviewsDataSource = .init()
+        super.init()
+        reviewsDataSource.getCustomerAction = { [weak self] customerId, completion in
+            self?.getCustomerInfo(customerId: customerId, completion: completion)
+        }
     }
     
     func viewDidLoad() {
         
+    }
+    
+    func sendOfferForPerformer(){
+        if let viewController = viewDelegate?.getViewController(){
+            router?.goToViewController(from: viewController, to: .createRequest(performerId, nil), presentationMode: .present)
+        }
     }
     
     func getPerformerInfo() {
@@ -43,5 +55,9 @@ class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
             self.reviewsDataSource.reviews = performer?.reviews ?? []
             self.viewDelegate?.setReviewsDataSource(dataSource: self.reviewsDataSource)
         }
+    }
+    
+    func getCustomerInfo(customerId: String, completion: @escaping (Customer?) -> Void){
+        
     }
 }

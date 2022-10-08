@@ -122,6 +122,7 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     }
     override func setOn(_ on: Bool, animated: Bool) {
         super.setOn(on, animated: animated)
+        self.sendActions(for: .valueChanged)
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else {return}
             self.imageView?.image = self.isOn ? self.onImage : self.offImage

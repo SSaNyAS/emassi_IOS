@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 class UITextFieldEmassi: UITextField, UITextFieldDelegate{
-    static let defaultHeight: CGFloat = 44
+    static let defaultHeight: CGFloat = 40
     private var inputViewControllerStored: UIInputViewController?
     
     override var inputViewController: UIInputViewController?{

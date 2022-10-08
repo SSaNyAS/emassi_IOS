@@ -8,6 +8,7 @@
 import Foundation
 import Network
 import CryptoKit
+import KeychainAccess
 
 protocol EmassiApiDelegate{
     
@@ -499,24 +500,29 @@ class EmassiApi: EmassiApiFetcher{
             completion(nil,nil,nil)
             return
         }
-        let bodyData = try? jsonEncoder.encode(work)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.addValue("application/json", forHTTPHeaderField: "content-type")
-        request.httpBody = bodyData
-        
-        let task = baseDataRequest(request: request){ apiResponse,error in
-            if let data = apiResponse?.data{
-                if let dataJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
-                    let workId = dataJson["id"] as? String
-                    completion(workId,apiResponse,error)
-                    return
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let bodyData = try? self?.jsonEncoder.encode(work)
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            request.addValue("application/json", forHTTPHeaderField: "content-type")
+            request.httpBody = bodyData
+            
+            let task = self?.baseDataRequest(request: request){ apiResponse,error in
+                if let data = apiResponse?.data{
+                    if let dataJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any]{
+                        let workId = dataJson["id"] as? String
+                        completion(workId,apiResponse,error)
+                        return
+                    }
                 }
+                completion(nil,apiResponse,error)
             }
-            completion(nil,apiResponse,error)
+            if task == nil {
+                completion(nil,nil,nil)
+            }
+            task?.resume()
         }
-        task.resume()
+        
     }
     
     func downloadWorkPhoto(workId: String, photoId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void){
@@ -902,7 +908,6 @@ class EmassiApi: EmassiApiFetcher{
         request.addValue(email, forHTTPHeaderField: "email")
         request.addValue(password, forHTTPHeaderField: "password")
         request.addValue("application/json", forHTTPHeaderField: "content-type")
-        
         let task = baseDataRequest(request: request, completion: completion)
         task.resume()
     }
@@ -987,6 +992,26 @@ class EmassiApi: EmassiApiFetcher{
             bodyData.append(boundaryFooter)
         }
         return bodyData
+    }
+    
+    func saveToKeyChain(username: String, password: String, completion: @escaping (Error?) -> Void){
+        DispatchQueue.global().async { [weak self] in
+            guard let hostString = self?.hostUrl?.absoluteString else {
+                return
+            }
+            let keyChain = Keychain(server: hostString, protocolType: .https)
+                .synchronizable(true)
+                .authenticationPrompt("used to save password in keychain")
+                .accessibility(.afterFirstUnlock, authenticationPolicy: [.biometryAny,.devicePasscode])
+            do{
+                keyChain.setSharedPassword(password, account: username)
+                try keyChain.set(username, key: "email")
+                try keyChain.set(password, key: "password")
+                completion(nil)
+            } catch{
+                completion(error)
+            }
+        }
     }
     
     func computeSign(email: String, password: String) -> String{

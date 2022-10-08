@@ -7,12 +7,30 @@
 
 import Foundation
 import UIKit
-class FeedbackViewController: UIViewController{
+
+protocol SendFeedbackViewDelegate: AnyObject{
+    func getViewController() -> UIViewController
+    func showMessage(message: String, title: String)
+    func dismiss(animated: Bool)
+}
+
+class FeedbackViewController: UIViewController, SendFeedbackViewDelegate{
+    func getViewController() -> UIViewController {
+        return self
+    }
+    
+    func dismiss(animated: Bool) {
+        DispatchQueue.main.async {
+            self.dismiss(animated: animated)
+        }
+    }
+    
     weak var overRatingViewLabel: UILabel?
     weak var ratingView: UIRatingView?
     weak var overCommentLabel: UILabel?
     weak var commentTextView: UITextView?
     weak var completeButton: UIButton?
+    var presenter: SendFeedbackPresenterDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +39,19 @@ class FeedbackViewController: UIViewController{
         overRatingViewLabel?.text = "Оцените качество выполненной работы"
         overCommentLabel?.text = "Оставьте свой комментарий"
         completeButton?.setTitle("Завершить", for: .normal)
+        completeButton?.addTarget(self, action: #selector(sendFeedback), for: .touchUpInside)
     }
     
+    @objc func sendFeedback(){
+        #error("Сделать отправку отзывов у исполнителя и заказчика, добавить экран где можно просматривать дополнительную информацию о заявке")
+        presenter?.setFeedbackText(text: commentTextView?.text)
+        presenter?.setFeedbackRating(rating: ratingView?.rating ?? 0.0)
+        presenter?.sendFeedback()
+    }
+}
+
+// MARK: CreateViews
+extension FeedbackViewController{
     private func setupViews(){
         view.backgroundColor = .white
         createOverRatingViewLabel()

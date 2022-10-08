@@ -21,6 +21,7 @@ class PerformerInfoInteractor: PerformerInfoInteractorDelegate{
             completion(data)
         })
     }
+    
     func getPerformerInfo(performerId: String, completion: @escaping (PerformerInfo?,EmassiApiResponse?) -> Void) {
         emassiApi?.getPerformerProfileByIdPublic(performerId: performerId, completion: { performer, apiResponse, error in
             completion(performer,apiResponse)

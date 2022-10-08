@@ -214,6 +214,13 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return menuNavigationController
         case .favorites:
             let favoritesVC = FavoriteViewController()
+            if let api = router?.emassiApi{
+                let interactor = FavoriteInteractor(emassiApi: api)
+                let presenter = FavoritePresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = favoritesVC
+                favoritesVC.presenter = presenter
+            }
             return favoritesVC
         case .documents:
             let documentsVC = DocumentsViewController()
@@ -260,6 +267,14 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return settingsVC
         case .feedback(let workId):
             let feedbackVC = FeedbackViewController()
+            if let api = router?.emassiApi{
+                let interactor = SendFeedbackInteractor(emassiApi: api)
+                let presenter = SendFeedbackPresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = feedbackVC
+                presenter.workId = workId
+                feedbackVC.presenter = presenter
+            }
             return feedbackVC
         case .sendOfferForWork(let workId):
             let sendOfferVC = SendOfferViewController()

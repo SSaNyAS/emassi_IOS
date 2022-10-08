@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 protocol PerformerInfoViewDelegate: NSObjectProtocol{
+    func getViewController() -> UIViewController
     func setProfileImage(image: UIImage?)
     func setProfileRating(rating: Float)
     func setName(name: String?)
@@ -88,6 +89,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     weak var lastFiveReviewsView: UITableView?
     weak var allReviewsButton: UIButton?
     weak var sendMessageButton: UIButton?
+    weak var sendOfferAsCustomerButton: UIButton?
     var presenter: PerformerInfoPresenterDelegate?
     
     
@@ -101,6 +103,14 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter?.getPerformerInfo()
+    }
+    
+    func getViewController() -> UIViewController{
+        return self
+    }
+    
+    @objc private func sendOfferForPerformer(){
+        presenter?.sendOfferForPerformer()
     }
     
     func setupViews(){
@@ -146,6 +156,28 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         setupLastFiveReviewsView(attachTo: contentView)
         setupAllReviewsButton(attachTo: contentView)
         setupSendMessageButton(attachTo: contentView)
+        setupSendOfferAsCustomerButton(attachTo: contentView)
+    }
+    
+    func setupSendOfferAsCustomerButton(attachTo view: UIView){
+        let button = UIButtonEmassi()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Вызвать", for: .normal)
+        button.addTarget(self, action: #selector(sendOfferForPerformer), for: .touchUpInside)
+        view.addSubview(button)
+        sendOfferAsCustomerButton = button
+        
+        guard let sendMessageButton = sendMessageButton else {
+            return
+        }
+        
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            button.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 10),
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            button.heightAnchor.constraint(equalToConstant: UIButtonEmassi.defaultHeight),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -30)
+        ])
     }
     
     func setupSendMessageButton(attachTo view: UIView){
@@ -165,7 +197,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
             button.topAnchor.constraint(equalTo: allReviewsButton.bottomAnchor, constant: 10),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             button.heightAnchor.constraint(equalToConstant: UIButtonEmassi.defaultHeight),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -30)
         ])
     }
     
@@ -204,6 +235,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         tableView.showsHorizontalScrollIndicator = false
         tableView.setCornerRadius(value: 12)
         tableView.setBorder()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: PerformerReviewsTableViewDataSource.reuseIdentifire)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(tableView)
@@ -212,7 +244,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         guard let completedOrdersLabel = completedOrdersLabel else {
             return
         }
-        let minHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 100)
+        let minHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 200)
         minHeightConstraint.priority = .defaultLow
         
         NSLayoutConstraint.activate([
@@ -230,7 +262,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     func setupCompletedOrdersLabel(attachTo view: UIView){
         let label = UILabelBordered()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Выполнено 0 заказов"
+        label.text = "Выполнено заказов: 0"
         
         view.addSubview(label)
         completedOrdersLabel = label
@@ -255,7 +287,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         
         let reviewCountLabel = UILabel()
         reviewCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        reviewCountLabel.text = "0 оценок"
+        reviewCountLabel.text = "Оценок: 0"
         let reviewsRatingView = UIRatingView()
         reviewsRatingView.translatesAutoresizingMaskIntoConstraints = false
         reviewsRatingView.rating = 0
@@ -302,7 +334,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         label.numberOfLines = 0
         
         let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
-        minHeight.priority = .defaultLow
+        minHeight.priority = .defaultLow + 1
         minHeight.isActive = true
         
         view.addSubview(label)
@@ -329,10 +361,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         
-        let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
-        minHeight.priority = .defaultLow
-        minHeight.isActive = true
-        
         view.addSubview(label)
         phoneLabel = label
         
@@ -351,10 +379,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         let label = UILabel()
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
-        
-        let minHeight = label.heightAnchor.constraint(equalToConstant: UITextFieldEmassi.defaultHeight)
-        minHeight.priority = .defaultLow
-        minHeight.isActive = true
         
         view.addSubview(label)
         nameLabel = label

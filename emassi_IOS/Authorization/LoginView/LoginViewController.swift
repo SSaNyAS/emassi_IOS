@@ -73,6 +73,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         
         resetPasswordButton?.setTitle("Забыли пароль?", for: .normal)
         resetPasswordButton?.addTarget(self, action: #selector(goResetPassword), for: .touchUpInside)
+        rememberPasswordChecker?.addTarget(self, action: #selector(rememberPasswordChanged), for: .valueChanged)
     }
     
     @objc func goResetPassword(){
@@ -83,9 +84,12 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         presenter?.goToRegister()
     }
     
+    @objc private func rememberPasswordChanged(){
+        SessionConfiguration.saveAuthorization = rememberPasswordChecker?.isOn ?? false
+    }
+    
     @objc func loginButtonClick(){
         presenter?.login(login: loginTextField?.text, password: passwordTextField?.text)
-        SessionConfiguration.saveAuthorization = rememberPasswordChecker?.isOn ?? false
     }
     
     func setupResetPasswordLabel(){
@@ -178,6 +182,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         let textField = UITextFieldEmassi()
         textField.isSecureTextEntry = true
         textField.passwordRules = nil
+        textField.textContentType = .password
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)
@@ -197,6 +202,8 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     
     func setupLoginTextField(){
         let textField = UITextFieldEmassi()
+        textField.textContentType = .emailAddress
+        textField.keyboardType = .emailAddress
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)

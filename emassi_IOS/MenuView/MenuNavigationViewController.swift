@@ -66,6 +66,17 @@ class MenuNavigationViewController: UINavigationController {
         if isOpenedMenu {
             toggleMenu()
         }
+        let firstWhereTypeEquals = viewControllers.first(where: {type(of: $0) == type(of: viewController)})
+        if let viewControllerOld = firstWhereTypeEquals{
+            super.popToViewController(viewControllerOld, animated: true)
+            return
+        }
+        if let lastVC = viewControllers.last{
+            if type(of: lastVC) == type(of: viewController){
+                super.popViewController(animated: true)
+                return
+            }
+        }
         super.pushViewController(viewController, animated: animated)
     }
     
