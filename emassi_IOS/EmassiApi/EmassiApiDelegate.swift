@@ -224,6 +224,28 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
+    func sendPerformerFeedback(workId: String, rating: Float, text: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+        guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)/feedback",relativeTo: hostUrl) else{
+            completion(nil,nil)
+            return
+        }
+        
+        let bodyString = """
+            {
+                "rating": "\(rating)",
+                "text": "\(text)"
+            }
+        """
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = baseDataRequest(request: request, completion: completion)
+        task.resume()
+    }
+    
     func deleteCompletedWorkPerformer(workId: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
             completion(nil,nil)

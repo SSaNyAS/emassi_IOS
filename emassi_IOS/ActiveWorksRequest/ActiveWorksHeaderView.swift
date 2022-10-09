@@ -7,17 +7,25 @@
 
 import UIKit
 
-class ActiveWorksHeaderView: UIView {
-    weak var contentView: UIView!
+class ActiveWorksHeaderView: UITableViewHeaderFooterView {
+    static let identifire: String = "ActiveWorksHeaderView"
+    weak var contentViewSecond: UIView!
     weak var categoryLabel: UILabel?
     weak var dateTimeLabel: UILabel?
     weak var cancelButton: UIButton?
-    weak var commentsTextView: UITextView?
+    weak var commentsTextLabel: UILabel?
     weak var showPerformersButton: UIButton?
-    
     var didCancelWorkAction: (()-> Void)?
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        categoryLabel?.text = ""
+        dateTimeLabel?.text = ""
+        commentsTextLabel?.text = ""
+        didCancelWorkAction = nil
+    }
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         setupDefaultSettings()
     }
     
@@ -31,19 +39,27 @@ class ActiveWorksHeaderView: UIView {
     }
     
     private func setupDefaultSettings(){
-        let contentView = UIView()
-        contentView.backgroundColor = .baseAppColorBackground
-        contentView.setCornerRadius(value: 12)
-        contentView.layer.masksToBounds = true
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contentView)
-        self.contentView = contentView
+        let contentViewSecond = UIView()
+        contentViewSecond.backgroundColor = .baseAppColorBackground
+        contentViewSecond.setCornerRadius(value: 12)
+        contentViewSecond.layer.masksToBounds = true
+        contentViewSecond.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.contentView.addSubview(contentViewSecond)
+        self.contentViewSecond = contentViewSecond
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor,constant: -10),
-            contentView.widthAnchor.constraint(equalTo: widthAnchor),
+            self.contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            self.contentView.topAnchor.constraint(equalTo: topAnchor),
+            self.contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            self.contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            self.contentView.widthAnchor.constraint(equalTo: widthAnchor),
+            
+            contentViewSecond.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentViewSecond.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentViewSecond.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            contentViewSecond.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -10),
+            contentViewSecond.widthAnchor.constraint(equalTo: contentView.widthAnchor),
         ])
         
         createCategoryLabel()
@@ -51,43 +67,46 @@ class ActiveWorksHeaderView: UIView {
         createCancelButton()
         createCommentsTextView()
         
-        guard let categoryLabel = categoryLabel, let dateTimeLabel = dateTimeLabel, let cancelButton = cancelButton, let commentsTextView = commentsTextView else {
+        guard let categoryLabel = categoryLabel, let dateTimeLabel = dateTimeLabel, let cancelButton = cancelButton, let commentsTextView = commentsTextLabel else {
             return
         }
         
         NSLayoutConstraint.activate([
-            categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10),
-            categoryLabel.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 10),
+            categoryLabel.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor,constant: 10),
+            categoryLabel.topAnchor.constraint(equalTo: contentViewSecond.topAnchor,constant: 10),
             categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: cancelButton.leadingAnchor, constant: -10),
             
-            cancelButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -10),
-            cancelButton.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 10),
-            cancelButton.bottomAnchor.constraint(lessThanOrEqualTo: commentsTextView.topAnchor, constant: -10),
-            cancelButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4),
+            cancelButton.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor,constant: -10),
+            cancelButton.topAnchor.constraint(greaterThanOrEqualTo: contentViewSecond.topAnchor, constant: 10),
+            cancelButton.bottomAnchor.constraint(equalTo: dateTimeLabel.bottomAnchor),
+            cancelButton.widthAnchor.constraint(equalTo: contentViewSecond.widthAnchor, multiplier: 0.4),
             
-            dateTimeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10),
+            dateTimeLabel.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor,constant: 10),
             dateTimeLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor,constant: 5),
             dateTimeLabel.trailingAnchor.constraint(lessThanOrEqualTo: cancelButton.leadingAnchor, constant: -10),
-            dateTimeLabel.topAnchor.constraint(equalTo: cancelButton.centerYAnchor, constant: 2.5),
             
-            commentsTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            commentsTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            commentsTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            commentsTextView.topAnchor.constraint(equalTo: dateTimeLabel.bottomAnchor, constant: 10),
+            commentsTextView.leadingAnchor.constraint(equalTo: contentViewSecond.leadingAnchor, constant: 10),
+            commentsTextView.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10),
+            commentsTextView.bottomAnchor.constraint(equalTo: contentViewSecond.bottomAnchor, constant: -10),
+            
         ])
     }
 }
 
 //MARK: Create Views
 extension ActiveWorksHeaderView{
-    
     private func createCommentsTextView(){
-        let textView = UITextViewEmassi()
-        textView.font = .systemFont(ofSize: 16)
-        textView.isEditable = false
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.textColor = .label
-        contentView.addSubview(textView)
-        self.commentsTextView = textView
+        let label = UILabelBordered()
+        label.font = .systemFont(ofSize: 16)
+        label.layer.masksToBounds = true
+        label.backgroundColor = .white
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isUseBorder = false
+        
+        contentViewSecond.addSubview(label)
+        self.commentsTextLabel = label
     }
     
     private func createCancelButton(){
@@ -95,19 +114,19 @@ extension ActiveWorksHeaderView{
         button.setTitle("Отменить", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didCancelWork), for: .touchUpInside)
-        contentView.addSubview(button)
+        contentViewSecond.addSubview(button)
         self.cancelButton = button
     }
     
     private func createDateTimeLabel(){
         let label = createLabel()
-        contentView.addSubview(label)
+        contentViewSecond.addSubview(label)
         self.dateTimeLabel = label
     }
     
     private func createCategoryLabel(){
         let label = createLabel()
-        contentView.addSubview(label)
+        contentViewSecond.addSubview(label)
         self.categoryLabel = label
     }
     
@@ -115,7 +134,6 @@ extension ActiveWorksHeaderView{
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.numberOfLines = 0
-        //label.setContentHuggingPriority(.required, for: .vertical)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .label
         return label

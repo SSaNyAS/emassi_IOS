@@ -276,8 +276,6 @@ class PerformerTableViewCell: UITableViewCell{
         label.isUseBorder = false
         label.cornerRadius = 12
         label.numberOfLines = 0
-//        label.setContentCompressionResistancePriority(.defaultHigh - 1, for: .vertical)
-//        label.setContentHuggingPriority(.defaultLow - 2, for: .)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentViewSecond.addSubview(label)
         reviewLabel = label
@@ -325,7 +323,7 @@ class PerformerTableViewCell: UITableViewCell{
         }
         let topConstraint1 = buttonsContainer.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 5)
         
-        topConstraint1.priority = .defaultLow - 100
+        topConstraint1.priority = .defaultLow
         topConstraint1.isActive = true
         
         let topConstraint = buttonsContainer.topAnchor.constraint(greaterThanOrEqualTo: ratingView.bottomAnchor, constant: 5)
@@ -344,7 +342,7 @@ class PerformerTableViewCell: UITableViewCell{
         leadingConstraintToSuperView.isActive = true
         
         let leadingConstraint = buttonsContainer.leadingAnchor.constraint(lessThanOrEqualTo: photoImageView.trailingAnchor, constant: 5)
-        leadingConstraint.priority = .defaultHigh
+        leadingConstraint.priority = .defaultHigh + 1
         leadingConstraint.isActive = true
         
         let trailingConstraint = buttonsContainer.trailingAnchor.constraint(equalTo: contentViewSecond.trailingAnchor, constant: -10)
@@ -354,6 +352,10 @@ class PerformerTableViewCell: UITableViewCell{
         let bottomConstraintToImageView = buttonsContainer.bottomAnchor.constraint(greaterThanOrEqualTo: photoImageView.lastBaselineAnchor)
         bottomConstraintToImageView.priority = .defaultHigh - 1
         bottomConstraintToImageView.isActive = true
+        
+        let bottomConstraintToContentView = buttonsContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentViewSecond.bottomAnchor, constant: -10)
+        bottomConstraintToContentView.priority = .defaultHigh - 1
+        bottomConstraintToContentView.isActive = true
         
 //        if let reviewLabel = reviewLabel{
 //            let bottomConstraintToReviewLabel = buttonsContainer.bottomAnchor.constraint(lessThanOrEqualTo: reviewLabel.topAnchor, constant: -10)

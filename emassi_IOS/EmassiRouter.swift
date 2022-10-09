@@ -86,7 +86,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case activeWorks
     case ordersList
     case settings
-    case feedback(_ workId: String)
+    case feedback(_ workId: String, _ profileMode: ProfileMode = .customer)
     case sendOfferForWork(_ workId: String)
     case performersList(_ categoryId: String)
     case performerInfo(_ performerId: String)
@@ -131,8 +131,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "ordersList"
         case .settings:
             return "settings"
-        case .feedback(let workId):
-            return "feedbackForWork\(workId)"
+        case .feedback(let workId, let profileMode):
+            return "feedbackForWork\(workId)\(profileMode)"
         case .sendOfferForWork(let workId):
             return "sendOfferForWork\(workId)"
         case .performersList(let category):
@@ -265,7 +265,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
         case .settings:
             let settingsVC = SettingsViewController()
             return settingsVC
-        case .feedback(let workId):
+        case .feedback(let workId, let profileMode):
             let feedbackVC = FeedbackViewController()
             if let api = router?.emassiApi{
                 let interactor = SendFeedbackInteractor(emassiApi: api)
@@ -273,6 +273,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.router = router
                 presenter.viewDelegate = feedbackVC
                 presenter.workId = workId
+                presenter.profileMode = profileMode
                 feedbackVC.presenter = presenter
             }
             return feedbackVC

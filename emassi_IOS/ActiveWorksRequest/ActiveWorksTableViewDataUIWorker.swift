@@ -26,34 +26,40 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let activeWorksHeaderView = ActiveWorksHeaderView()
-        //activeWorksHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        //activeWorksHeaderView.widthAnchor.constraint(equalToConstant: tableView.frame.width).isActive = true
-        return activeWorksHeaderView
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let activeWorksHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActiveWorksHeaderView.identifire) as? ActiveWorksHeaderView
         let currentWork = works[section]
-        if let view = view as? ActiveWorksHeaderView{
-            
-            view.didCancelWorkAction = { [weak self] in
+        if let activeWorksHeaderView = activeWorksHeaderView{
+            activeWorksHeaderView.didCancelWorkAction = { [weak self] in
                 self?.didCancelWorkAction?(currentWork.workId, { [weak self] isSuccess in
-                    tableView.beginUpdates()
-                    self?.works.remove(at: section)
-                    tableView.endUpdates()
+                    if isSuccess{
+                        DispatchQueue.main.async {
+                            tableView.beginUpdates()
+                            self?.works.remove(at: section)
+                            tableView.endUpdates()
+                        }
+                    }
                 })
             }
             
-            getCategoryNameAction?(currentWork.category.level2){ [weak categoryLabel = view.categoryLabel] categoryName in
+            getCategoryNameAction?(currentWork.category.level2){ [weak categoryLabel = activeWorksHeaderView.categoryLabel, weak activeWorksHeaderView] categoryName in
                 categoryLabel?.text = categoryName
+                activeWorksHeaderView?.invalidateIntrinsicContentSize()
             }
-            view.commentsTextView?.text = currentWork.comments
-            view.dateTimeLabel?.text = currentWork.dateStarted.formattedAsDateTime()
+            activeWorksHeaderView.commentsTextLabel?.text = currentWork.comments
+            activeWorksHeaderView.commentsTextLabel?.invalidateIntrinsicContentSize()
+            activeWorksHeaderView.dateTimeLabel?.text = currentWork.dateStarted.formattedAsDateTime()
         }
+        activeWorksHeaderView?.layoutIfNeeded()
+        return activeWorksHeaderView
     }
     
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.noIntrinsicMetric
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,19 +82,22 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
             if work.performerId == performer.id{
                 cell.categoryLabel?.text = "Выбранный исполнитель"
                 cell.addCallButton {
-                    if let url = URL(string: "tel:\\79328487228"){
+                    if let url = URL(string: "tel:\\+79328487228"){
                         if UIApplication.shared.canOpenURL(url){
                             UIApplication.shared.open(url)
                         }
                     }
                 }
-            } else {
+            } else if work.performerId.isEmpty {
                 cell.addAcceptButton{ [weak self] in
                     self?.didAcceptPerformerAction?(work.workId, performer.id)
                 }
             }
             cell.ratingView?.rating = performer.rating5
-            cell.setReviewText(text: performer.offer.text)
+            let offerText = performer.offer.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if offerText.isEmpty == false{
+                cell.setReviewText(text: offerText)
+            }
         }
         
         return cell

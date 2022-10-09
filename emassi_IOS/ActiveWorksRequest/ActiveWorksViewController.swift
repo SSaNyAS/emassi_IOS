@@ -175,9 +175,9 @@ extension ActiveWorksViewController{
         tableView.refreshControl = refreshControl
         self.refreshControl = refreshControl
         tableView.separatorStyle = .none
-        //tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
-        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = 70
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(ActiveWorksHeaderView.self, forHeaderFooterViewReuseIdentifier: ActiveWorksHeaderView.identifire)
         tableView.register(PerformerTableViewCell.self, forCellReuseIdentifier: PerformerTableViewCell.identifire)
         
         view.addSubview(tableView)

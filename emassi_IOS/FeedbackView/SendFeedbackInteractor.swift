@@ -11,6 +11,7 @@ protocol SendFeedbackInteractorDelegate: AnyObject{
     func setRating(rating: Float)
     func setFeedbackText(text: String)
     func sendCustomerFeedback(completion: @escaping (EmassiApiResponse?, Error?) -> Void)
+    func sendPerformerFeedback(completion: @escaping (EmassiApiResponse?, Error?) -> Void)
 }
 
 class SendFeedbackInteractor: SendFeedbackInteractorDelegate{
@@ -26,6 +27,10 @@ class SendFeedbackInteractor: SendFeedbackInteractorDelegate{
     
     func sendCustomerFeedback(completion: @escaping (EmassiApiResponse?, Error?) -> Void){
         emassiApi.sendCustomerFeedback(workId: workId, rating: rating, text: feedbackText, completion: completion)
+    }
+    
+    func sendPerformerFeedback(completion: @escaping (EmassiApiResponse?, Error?) -> Void){
+        emassiApi.sendPerformerFeedback(workId: workId, rating: rating, text: feedbackText, completion: completion)
     }
     
     func setWorkId(workId: String) {

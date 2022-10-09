@@ -14,8 +14,10 @@ protocol SendFeedbackPresenterDelegate: AnyObject{
 
 class SendFeedbackPresenter: SendFeedbackPresenterDelegate{
     var interactor: SendFeedbackInteractorDelegate
+    var profileMode: ProfileMode = .customer
     weak var router: RouterDelegate?
     weak var viewDelegate: SendFeedbackViewDelegate?
+    
     var workId: String? {
         didSet{
             self.interactor.setWorkId(workId: workId ?? "")
@@ -27,11 +29,20 @@ class SendFeedbackPresenter: SendFeedbackPresenterDelegate{
     }
     
     func sendFeedback(){
-        interactor.sendCustomerFeedback { [weak self] apiResponse, error in
-            if apiResponse?.isErrored == false{
-                self?.viewDelegate?.dismiss(animated: true)
+        if profileMode == .customer {
+            interactor.sendCustomerFeedback { [weak self] apiResponse, error in
+                if apiResponse?.isErrored == false{
+                    self?.viewDelegate?.dismiss(animated: true)
+                }
+                self?.viewDelegate?.showMessage(message: error?.localizedDescription ?? apiResponse?.message ?? "", title: "")
             }
-            self?.viewDelegate?.showMessage(message: error?.localizedDescription ?? apiResponse?.message ?? "", title: "")
+        } else {
+            interactor.sendPerformerFeedback { [weak self] apiResponse, error in
+                if apiResponse?.isErrored == false{
+                    self?.viewDelegate?.dismiss(animated: true)
+                }
+                self?.viewDelegate?.showMessage(message: error?.localizedDescription ?? apiResponse?.message ?? "", title: "")
+            }
         }
     }
     

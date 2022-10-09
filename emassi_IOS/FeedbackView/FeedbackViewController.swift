@@ -43,7 +43,7 @@ class FeedbackViewController: UIViewController, SendFeedbackViewDelegate{
     }
     
     @objc func sendFeedback(){
-        #error("Сделать отправку отзывов у исполнителя и заказчика, добавить экран где можно просматривать дополнительную информацию о заявке")
+        #warning("Сделать отправку отзывов у исполнителя и заказчика, добавить экран где можно просматривать дополнительную информацию о заявке, сделать экран архив заявок, исправить элемент на странице активных заявок")
         presenter?.setFeedbackText(text: commentTextView?.text)
         presenter?.setFeedbackRating(rating: ratingView?.rating ?? 0.0)
         presenter?.sendFeedback()
