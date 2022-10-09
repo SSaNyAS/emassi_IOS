@@ -321,10 +321,6 @@ class PerformerTableViewCell: UITableViewCell{
         guard let buttonsContainer = buttonsContainer, let photoImageView = photoImageView, let ratingView = ratingView else {
             return
         }
-        let topConstraint1 = buttonsContainer.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 5)
-        
-        topConstraint1.priority = .defaultLow
-        topConstraint1.isActive = true
         
         let topConstraint = buttonsContainer.topAnchor.constraint(greaterThanOrEqualTo: ratingView.bottomAnchor, constant: 5)
         
@@ -341,7 +337,7 @@ class PerformerTableViewCell: UITableViewCell{
         leadingConstraintToSuperView.priority = .defaultHigh - 1
         leadingConstraintToSuperView.isActive = true
         
-        let leadingConstraint = buttonsContainer.leadingAnchor.constraint(lessThanOrEqualTo: photoImageView.trailingAnchor, constant: 5)
+        let leadingConstraint = buttonsContainer.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 5)
         leadingConstraint.priority = .defaultHigh + 1
         leadingConstraint.isActive = true
         
@@ -349,8 +345,8 @@ class PerformerTableViewCell: UITableViewCell{
         trailingConstraint.priority = .defaultHigh
         trailingConstraint.isActive = true
         
-        let bottomConstraintToImageView = buttonsContainer.bottomAnchor.constraint(greaterThanOrEqualTo: photoImageView.lastBaselineAnchor)
-        bottomConstraintToImageView.priority = .defaultHigh - 1
+        let bottomConstraintToImageView = buttonsContainer.bottomAnchor.constraint(equalTo: photoImageView.lastBaselineAnchor)
+        bottomConstraintToImageView.priority = .defaultHigh
         bottomConstraintToImageView.isActive = true
         
         let bottomConstraintToContentView = buttonsContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentViewSecond.bottomAnchor, constant: -10)
