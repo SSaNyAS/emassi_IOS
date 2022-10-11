@@ -43,6 +43,11 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
                 
             })
         }
+        tableViewWorker.didClickOnWorkAction = { [weak self] workId in
+            if let viewController = self?.viewDelegate?.getViewController(){
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+            }
+        }
     }
     
     func loadWorks() {
@@ -63,7 +68,6 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
                         
                         getPerformersOperation.action = { [weak self] in
                             DispatchQueue.main.async {
-                                print("gaggg")
                                 self?.getPerformersForWork(workId: work.workId, completion: { performers in
                                     acceptQueue.addOperation{
                                         works[workNum].performersList = performers

@@ -16,6 +16,8 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
     var didAcceptPerformerAction: ((_ workId: String, String) -> Void)?
     var didDenyPerformerAction: ((_ workId: String, String) -> Void)?
     var didSendMessageToPerformerAction: ((_ workId: String, String) -> Void)?
+    var didClickOnPerformerAction: ((_ performerId: String) -> Void)?
+    var didClickOnWorkAction: ((_ workId: String) -> Void)?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return works[section].performersList.count
@@ -48,6 +50,9 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
             activeWorksHeaderView.commentsTextLabel?.text = currentWork.comments
             activeWorksHeaderView.commentsTextLabel?.invalidateIntrinsicContentSize()
             activeWorksHeaderView.dateTimeLabel?.text = currentWork.dateStarted.formattedAsDateTime()
+            activeWorksHeaderView.didClickOnWorkAction = { [weak self, workId = currentWork.workId] in
+                self?.didClickOnWorkAction?(workId)
+            }
         }
         activeWorksHeaderView?.layoutIfNeeded()
         return activeWorksHeaderView
@@ -97,6 +102,10 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
             let offerText = performer.offer.text.trimmingCharacters(in: .whitespacesAndNewlines)
             if offerText.isEmpty == false{
                 cell.setReviewText(text: offerText)
+            }
+            
+            cell.didClickOnPerformerAction = { [weak self] in
+                
             }
         }
         

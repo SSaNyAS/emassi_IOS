@@ -1,0 +1,46 @@
+/* 
+  Localizable.strings
+  emassi_IOS
+
+  Created by Алексей Рябин on 11.10.2022.
+  
+*/
+"EmassiApiStatusMessage_0" = "Successful";
+"EmassiApiStatusMessage_10" = "Invalid api key";
+"EmassiApiStatusMessage_11" = "Invalid Token";
+"EmassiApiStatusMessage_12" = "Invalid Sign";
+"EmassiApiStatusMessage_13" = "Invalid email";
+"EmassiApiStatusMessage_14" = "Invalid phone number";
+"EmassiApiStatusMessage_15" = "Invalid pin code";
+"EmassiApiStatusMessage_16" = "Invalid password";
+"EmassiApiStatusMessage_17" = "Too small password";
+"EmassiApiStatusMessage_18" = "Too long password";
+"EmassiApiStatusMessage_19" = "Invalid type";
+"EmassiApiStatusMessage_20" = "Invalid username";
+"EmassiApiStatusMessage_21" = "Invalid address";
+"EmassiApiStatusMessage_22" = "Invalid params";
+"EmassiApiStatusMessage_30" = "File upload error";
+"EmassiApiStatusMessage_31" = "File too large";
+"EmassiApiStatusMessage_32" = "File type error";
+"EmassiApiStatusMessage_40" = "Passwords do not match";
+"EmassiApiStatusMessage_41" = "Sign check error";
+"EmassiApiStatusMessage_42" = "Pin code check error";
+"EmassiApiStatusMessage_50" = "Account not found";
+"EmassiApiStatusMessage_51" = "Account not found or token expired";
+"EmassiApiStatusMessage_52" = "Account already exists";
+"EmassiApiStatusMessage_60" = "Customer not found";
+"EmassiApiStatusMessage_70" = "Performer not found";
+"EmassiApiStatusMessage_71" = "Too many docs";
+"EmassiApiStatusMessage_80" = "Work not found";
+"EmassiApiStatusMessage_81" = "Work in progress";
+"EmassiApiStatusMessage_82" = "Private work";
+"EmassiApiStatusMessage_83" = "Photo not found";
+"EmassiApiStatusMessage_84" = "Too many photos";
+"EmassiApiStatusMessage_90" = "Contact not found";
+"EmassiApiStatusMessage_91" = "Message not found";
+"EmassiApiStatusMessage_92" = "Text is Empty";
+"EmassiApiStatusMessage_100" = "Feedback already exists";
+"EmassiApiStatusMessage_404" = "not found";
+"EmassiApiStatusMessage_500" = "Internal server error";
+
+

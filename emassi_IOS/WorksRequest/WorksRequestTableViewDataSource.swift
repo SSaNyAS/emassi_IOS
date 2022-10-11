@@ -14,6 +14,9 @@ class WorksRequestTableViewDataSource:NSObject, UITableViewDataSource{
     public var sendMessageAction: ((_ work: AllWork) -> Void)?
     public var getCategoryNameAction: ((_ categoryId: String, @escaping (String?) -> Void) -> Void)?
     public var getSuperCategoryNameAction: ((_ categoryId: String, @escaping (String?) -> Void) -> Void)?
+    public var sendWorkStatus: ((_ workId: String, WorkStatus, _ completion: @escaping (Bool) -> Void) -> Void)?
+    public var didSelectWork: ((_ workId: String) -> Void)?
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return works.count
     }
@@ -24,8 +27,26 @@ class WorksRequestTableViewDataSource:NSObject, UITableViewDataSource{
             let work = works[indexPath.row]
             if work.type == .public{
                 cell.orderTypeLabel?.text = "Заявка"
+                cell.createButton(title: "Внести в календарь") { [weak self, work] in
+                    self?.addToCalendarAction?(work)
+                }
+                
+                cell.createButton(title: "Написать") { [weak self, work] in
+                    self?.sendMessageAction?(work)
+                }
             } else {
                 cell.orderTypeLabel?.text = "Вызов"
+                cell.createButton(title: "Отказаться") { [weak self] in
+                    self?.sendWorkStatus?(work.id, WorkStatus.cancel){ isSuccess in
+                        
+                    }
+                }
+                
+                cell.createButton(title: "Принять") { [weak self] in
+                    self?.sendWorkStatus?(work.id, WorkStatus.accept){ isSuccess in
+                        
+                    }
+                }
             }
             
             getCategoryNameAction?(work.category.level2) {[weak self,weak categoryLabel = cell.categoryLabel] categoryName in
@@ -48,18 +69,12 @@ class WorksRequestTableViewDataSource:NSObject, UITableViewDataSource{
                     }
                 }
             }
-            
-            cell.dateLabel?.text = work.offer.date.formattedAsDateTime()
-            cell.addressLabel?.text = "address"
-            
-            cell.createButton(title: "Внести в календарь") { [weak self, work] in
-                self?.addToCalendarAction?(work)
+            let workPeriod = "\(work.date.start.formattedAsDateTime()) - \(work.date.end.formattedAsDateTime())"
+            cell.dateLabel?.text = workPeriod
+            cell.addressLabel?.text = work.comments
+            cell.didSelectAction = { [weak self] in
+                self?.didSelectWork?(work.id)
             }
-            
-            cell.createButton(title: "Написать") { [weak self, work] in
-                self?.sendMessageAction?(work)
-            }
-            
         }
         return cell
     }

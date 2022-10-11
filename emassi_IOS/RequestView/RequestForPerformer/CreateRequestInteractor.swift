@@ -68,10 +68,15 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
     }
     
     func createRequest(completion: @escaping (_ workId: String?, _ apiResponse: EmassiApiResponse?, _ message: String?) -> Void){
-        emassiApi.addNewWork(work: workCreate) {[weak self] workId, apiResponseWorkCreate, errorAddNewWork in
-            guard let self = self else {return}
+        if createdWorkId == nil{
+            emassiApi.addNewWork(work: workCreate) {[weak self] workId, apiResponseWorkCreate, errorAddNewWork in
+                guard let self = self else {return}
                 self.createdWorkId = workId
                 completion(workId, apiResponseWorkCreate, errorAddNewWork?.localizedDescription ?? apiResponseWorkCreate?.message)
+            }
+        } else {
+            let apiResponse = EmassiApiResponse.init(status: .WORK_IN_PROCESS)
+            completion(createdWorkId,apiResponse, apiResponse.message)
         }
     }
     

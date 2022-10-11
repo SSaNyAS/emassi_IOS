@@ -22,6 +22,11 @@ class WorksRequestTableViewCell: UITableViewCell{
         return buttonsContainer?.arrangedSubviews as? [UIButton]
     }
     
+    public var didSelectAction: (()->Void)?
+    
+    @objc private func didTapOnContentView(){
+        didSelectAction?()
+    }
     override func prepareForReuse() {
         super.prepareForReuse()
         orderTypeLabel?.text = nil
@@ -47,12 +52,16 @@ class WorksRequestTableViewCell: UITableViewCell{
         secondContentView.backgroundColor = .baseAppColorBackground
         secondContentView.setCornerRadius(value: 12)
         secondContentView.layer.masksToBounds = true
+        secondContentView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnContentView))
+        secondContentView.addGestureRecognizer(tapGesture)
         secondContentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(secondContentView)
         contentView.layer.masksToBounds = true
         self.secondContentView = secondContentView
         
         NSLayoutConstraint.activate([
+            secondContentView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             secondContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             secondContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
             secondContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),

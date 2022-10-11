@@ -112,6 +112,11 @@
 		11F818DB28F2131400769AC1 /* FavoriteInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DA28F2131400769AC1 /* FavoriteInteractor.swift */; };
 		11F818DD28F228BC00769AC1 /* SendFeedbackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DC28F228BC00769AC1 /* SendFeedbackPresenter.swift */; };
 		11F818DF28F22A2000769AC1 /* SendFeedbackInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818DE28F22A2000769AC1 /* SendFeedbackInteractor.swift */; };
+		11F818E128F35A7F00769AC1 /* WorkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E028F35A7F00769AC1 /* WorkStatus.swift */; };
+		11F818E428F4599800769AC1 /* OrderInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E328F4599800769AC1 /* OrderInfoViewController.swift */; };
+		11F818E628F47ECD00769AC1 /* OrderInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E528F47ECD00769AC1 /* OrderInfoPresenter.swift */; };
+		11F818E828F47ED700769AC1 /* OrderInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */; };
+		11F818EB28F4E26500769AC1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F818ED28F4E26500769AC1 /* Localizable.strings */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
@@ -265,6 +270,12 @@
 		11F818DA28F2131400769AC1 /* FavoriteInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteInteractor.swift; sourceTree = "<group>"; };
 		11F818DC28F228BC00769AC1 /* SendFeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFeedbackPresenter.swift; sourceTree = "<group>"; };
 		11F818DE28F22A2000769AC1 /* SendFeedbackInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFeedbackInteractor.swift; sourceTree = "<group>"; };
+		11F818E028F35A7F00769AC1 /* WorkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkStatus.swift; sourceTree = "<group>"; };
+		11F818E328F4599800769AC1 /* OrderInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderInfoViewController.swift; sourceTree = "<group>"; };
+		11F818E528F47ECD00769AC1 /* OrderInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderInfoPresenter.swift; sourceTree = "<group>"; };
+		11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderInfoInteractor.swift; sourceTree = "<group>"; };
+		11F818EC28F4E26500769AC1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		11F818EE28F4E37B00769AC1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
@@ -387,6 +398,8 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				11F818ED28F4E26500769AC1 /* Localizable.strings */,
+				11F818E228F4598100769AC1 /* OrderInfoView */,
 				11FF063D28EC776B00EAEF33 /* OrdersListView */,
 				11FF063A28EBB1A000EAEF33 /* SendOffer */,
 				11FF062D28EB74F200EAEF33 /* ActiveWorksRequest */,
@@ -569,6 +582,7 @@
 				115BB49528DA57D900686670 /* GeoPosition.swift */,
 				1113D2BC28E47B30003C9FD3 /* DocumentType.swift */,
 				11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */,
+				11F818E028F35A7F00769AC1 /* WorkStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -642,6 +656,16 @@
 				11FF062728EA329D00EAEF33 /* RequestForPerformer */,
 			);
 			path = RequestView;
+			sourceTree = "<group>";
+		};
+		11F818E228F4598100769AC1 /* OrderInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				11F818E328F4599800769AC1 /* OrderInfoViewController.swift */,
+				11F818E528F47ECD00769AC1 /* OrderInfoPresenter.swift */,
+				11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */,
+			);
+			path = OrderInfoView;
 			sourceTree = "<group>";
 		};
 		11FF062728EA329D00EAEF33 /* RequestForPerformer */ = {
@@ -786,6 +810,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 114E80A928C108B70028F39B;
 			packageReferences = (
@@ -809,6 +834,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				114E80C528C108B80028F39B /* LaunchScreen.storyboard in Resources */,
+				11F818EB28F4E26500769AC1 /* Localizable.strings in Resources */,
 				114E80C228C108B80028F39B /* Assets.xcassets in Resources */,
 				114E80BD28C108B70028F39B /* Main.storyboard in Resources */,
 			);
@@ -858,6 +884,7 @@
 				114E80B628C108B70028F39B /* AppDelegate.swift in Sources */,
 				1194A15A28CF482F00BAF84B /* URLExtension.swift in Sources */,
 				11DCAE0528D3619B00568D16 /* Address.swift in Sources */,
+				11F818E128F35A7F00769AC1 /* WorkStatus.swift in Sources */,
 				114E80FD28C253D60028F39B /* UITextFieldEmassi.swift in Sources */,
 				115BB4AB28DE06D000686670 /* PerformerInfoPresenter.swift in Sources */,
 				11F818D228EF16F200769AC1 /* UserDefaultsExtension.swift in Sources */,
@@ -871,6 +898,7 @@
 				115BB49228DA0C0D00686670 /* Offer.swift in Sources */,
 				11FF063528EB8C3600EAEF33 /* ActiveWorksHeaderView.swift in Sources */,
 				1140131328CB742200B14D5A /* EmassiURLSession.swift in Sources */,
+				11F818E628F47ECD00769AC1 /* OrderInfoPresenter.swift in Sources */,
 				11FF061E28E7210D00EAEF33 /* UImageViewPagging.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
@@ -929,6 +957,7 @@
 				115BB4A128DC888A00686670 /* PerformersCategoriesPresenter.swift in Sources */,
 				114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */,
 				1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */,
+				11F818E428F4599800769AC1 /* OrderInfoViewController.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,
 				1140130828CA1AF300B14D5A /* LoginPresenter.swift in Sources */,
 				11FF063328EB7AC400EAEF33 /* ActiveWorksInteractor.swift in Sources */,
@@ -947,6 +976,7 @@
 				1140130A28CA1B8800B14D5A /* LoginInteractor.swift in Sources */,
 				11CBB7C428C4F23900FED8D5 /* UILabelBordered.swift in Sources */,
 				114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */,
+				11F818E828F47ED700769AC1 /* OrderInfoInteractor.swift in Sources */,
 				11FF064328EC817800EAEF33 /* OrdersListPresenter.swift in Sources */,
 				11FF063F28EC77A500EAEF33 /* OrdersListViewController.swift in Sources */,
 				11DCADF728D3537A00568D16 /* UITextViewEmassi.swift in Sources */,
@@ -1009,6 +1039,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		11F818ED28F4E26500769AC1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				11F818EC28F4E26500769AC1 /* en */,
+				11F818EE28F4E37B00769AC1 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1016,6 +1055,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1076,6 +1116,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";

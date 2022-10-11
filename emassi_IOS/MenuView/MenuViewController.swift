@@ -66,8 +66,10 @@ class MenuViewController: UIViewController{
                     router?.goToViewController(from: currentVC, to: .myWorks, presentationMode: .push)
                 }
             },
-            .init(title: "Чат", image: "message.fill"){
-                
+            .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
+                if let currentVC = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: currentVC, to: .orderInfo(""), presentationMode: .push)
+                }
             },
             .init(title: "Отзыв", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{

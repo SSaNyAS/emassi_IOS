@@ -16,6 +16,7 @@ class OrdersListTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVie
     var getPerformerPhoto: ((_ performerId: String, @escaping (Data?) ->Void )->Void)?
     var getCustomerPhoto: ((_ photoId: String, @escaping (Data?) ->Void )->Void)?
     var didSendOfferToWorkAction: ((_ workId: String, @escaping (Bool) -> Void) -> Void)?
+    var didClickOnWorkAction: ((_ workId: String) -> Void)?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return works.count
@@ -29,7 +30,11 @@ class OrdersListTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVie
             let work = workTuple.work
             let customer = workTuple.customer
             cell.nameLabel?.text = customer?.username.common
+            
             if let work = work, let customer = customer{
+                cell.didClickOnPerformerAction = { [weak self] in
+                    self?.didClickOnWorkAction?(work.id)
+                }
                 getCategoryNameAction?(work.category.level2) {[weak self,weak categoryLabel = cell.categoryLabel] categoryName in
                     
                     if let categoryName = categoryName{

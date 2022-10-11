@@ -9,7 +9,6 @@ import Foundation
 protocol OrdersListInteractorDelegate: AnyObject{
     func getAllWorks(active: Bool, type: DocumentType,date: Date?, completion: @escaping ([AllWork], EmassiApiResponse?, Error?) ->Void)
     func downloadCustomerPhoto(photoId: String, completion: @escaping (Data?) -> Void)
-    func getSuperCategoryName(categoryId: String, completion: @escaping (String?) -> Void)
     func getCategoryName(categoryId: String, completion: @escaping (String?) -> Void)
     func getWorkInfo(workId: String, completion: @escaping (_ work: WorkWithCustomer?, EmassiApiResponse?, Error?) -> Void)
 }
@@ -30,12 +29,6 @@ class OrdersListInteractor: OrdersListInteractorDelegate{
         }
     }
     
-    func getSuperCategoryName(categoryId: String, completion: @escaping (String?) -> Void){
-        emassiApi.getSuperCategory(subCategoryId: categoryId) { category, _, _ in
-            completion(category?.name)
-        }
-    }
-    
     func downloadCustomerPhoto(photoId: String, completion: @escaping (Data?) -> Void){
         emassiApi.downloadCustomerPhotoPublic(customerId: photoId) { data, _ in
             completion(data)
@@ -43,7 +36,7 @@ class OrdersListInteractor: OrdersListInteractorDelegate{
     }
     
     func getWorkInfo(workId: String, completion: @escaping (_ work: WorkWithCustomer?, EmassiApiResponse?, Error?) -> Void){
-        emassiApi.getWork(workId: workId, completion: completion)
+        emassiApi.getWorkInfoForMe(workId: workId, completion: completion)
     }
     
 }

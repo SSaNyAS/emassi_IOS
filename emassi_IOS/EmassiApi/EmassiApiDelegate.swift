@@ -146,6 +146,13 @@ class EmassiApi: EmassiApiFetcher{
                     return
                 }
             }
+            for categoryMain in categories{
+                if categoryMain.value == category{
+                    let categoryAsSubCategory = PerformersSubCategory(name: categoryMain.name, value: categoryMain.value)
+                    completion(categoryAsSubCategory,nil,nil)
+                    return
+                }
+            }
             completion(nil,nil,nil)
         })
     }
@@ -275,23 +282,28 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func changeWorkStatus(workId: String, action: String, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
+    func changeWorkStatus(workId: String, action: WorkStatus, completion: @escaping (EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
             completion(nil,nil)
             return
         }
-        let bodyString = "{ \"action\": \"\(action)\" }"
+        let bodyString = """
+        {
+            "action": "\(action.rawValue)"
+        }
+        """
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "content-type")
+        
         request.httpBody = bodyString.data(using: .utf8)
+        request.addValue("application/json", forHTTPHeaderField: "content-type")
         
         let task = baseDataRequest(request: request,completion: completion)
         task.resume()
     }
     
-    func getWork(workId: String,  completion: @escaping (WorkRequest?,EmassiApiResponse?,Error?) -> Void){
+    func getWorkForPerformer(workId: String,  completion: @escaping (WorkRequest?,EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
             completion(nil,nil,nil)
             return
@@ -311,7 +323,7 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func getWork(workId: String,  completion: @escaping (_ workWithCustomer: WorkWithCustomer?,EmassiApiResponse?,Error?) -> Void){
+    func getWorkInfoForMe(workId: String,  completion: @escaping (_ workWithCustomer: WorkWithCustomer?,EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/performer/\(token ?? "")/work/\(workId)",relativeTo: hostUrl) else{
             completion(nil,nil,nil)
             return
@@ -943,7 +955,9 @@ class EmassiApi: EmassiApiFetcher{
                 if let apiResponse = self?.getApiResponse(data: data){
                     if let responseData = apiResponse.data{
                         if let dataWithToken = try? JSONSerialization.jsonObject(with: responseData) as? [String: String]{
-                            self?.token = dataWithToken["token"]
+                            if let token = dataWithToken["token"], token.isEmpty == false{
+                                self?.token = token
+                            }
                         }
                     }
                     completion(apiResponse,error)

@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  emassi_IOS
+
+  Created by Алексей Рябин on 11.10.2022.
+  
+*/
+"EmassiApiStatusMessage_0" = "Операция прошла успешно";
+"EmassiApiStatusMessage_10" = "Invalid api key";
+"EmassiApiStatusMessage_11" = "Invalid Token";
+"EmassiApiStatusMessage_12" = "Invalid Sign";
+"EmassiApiStatusMessage_13" = "Проверьте email";
+"EmassiApiStatusMessage_14" = "Неправильный номер телефона";
+"EmassiApiStatusMessage_15" = "Invalid pin code";
+"EmassiApiStatusMessage_16" = "Неправильный пароль";
+"EmassiApiStatusMessage_17" = "Пароль должен быть не менее 8 символов";
+"EmassiApiStatusMessage_18" = "Пароль слишком длинный";
+"EmassiApiStatusMessage_19" = "Invalid type";
+"EmassiApiStatusMessage_20" = "Имя указано неверно";
+"EmassiApiStatusMessage_21" = "Проверьте правильность адреса";
+"EmassiApiStatusMessage_22" = "Invalid params";
+"EmassiApiStatusMessage_30" = "Ошибка загрузки файла";
+"EmassiApiStatusMessage_31" = "Файл слишком велик";
+"EmassiApiStatusMessage_32" = "Неправильный формат файла";
+"EmassiApiStatusMessage_40" = "Пароли не совпадают";
+"EmassiApiStatusMessage_41" = "Sign check error";
+"EmassiApiStatusMessage_42" = "Pin code check error";
+"EmassiApiStatusMessage_50" = "Аккаунт не найден";
+"EmassiApiStatusMessage_51" = "Аккаунт не найден или токен просрочен";
+"EmassiApiStatusMessage_52" = "Данный аккаунт уже существует";
+"EmassiApiStatusMessage_60" = "Заказчик не найден";
+"EmassiApiStatusMessage_70" = "Исполнитель не найден";
+"EmassiApiStatusMessage_71" = "Вы достигли ограничение количества документов";
+"EmassiApiStatusMessage_80" = "Работа не найдена";
+"EmassiApiStatusMessage_81" = "Данная работа уже в процессе";
+"EmassiApiStatusMessage_82" = "Работа является приватной";
+"EmassiApiStatusMessage_83" = "Фото не найдено";
+"EmassiApiStatusMessage_84" = "Большое количество фотографий";
+"EmassiApiStatusMessage_90" = "Контакт не найден";
+"EmassiApiStatusMessage_91" = "Сообщение не найдено";
+"EmassiApiStatusMessage_92" = "Текст не указан";
+"EmassiApiStatusMessage_100" = "Отзыв уже существует";
+"EmassiApiStatusMessage_404" = "Не найдено";
+"EmassiApiStatusMessage_500" = "Ошибка удаленного сервера";

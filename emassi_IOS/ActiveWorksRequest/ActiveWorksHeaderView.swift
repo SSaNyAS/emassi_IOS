@@ -16,6 +16,7 @@ class ActiveWorksHeaderView: UITableViewHeaderFooterView {
     weak var commentsTextLabel: UILabel?
     weak var showPerformersButton: UIButton?
     var didCancelWorkAction: (()-> Void)?
+    var didClickOnWorkAction: (()-> Void)?
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -38,12 +39,20 @@ class ActiveWorksHeaderView: UITableViewHeaderFooterView {
         didCancelWorkAction?()
     }
     
+    @objc private func didClickOnWork(){
+        didClickOnWorkAction?()
+    }
+    
     private func setupDefaultSettings(){
         let contentViewSecond = UIView()
         contentViewSecond.backgroundColor = .baseAppColorBackground
         contentViewSecond.setCornerRadius(value: 12)
         contentViewSecond.layer.masksToBounds = true
         contentViewSecond.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didClickOnWork))
+        contentViewSecond.isUserInteractionEnabled = true
+        contentViewSecond.addGestureRecognizer(tapGesture)
         
         self.contentView.addSubview(contentViewSecond)
         self.contentViewSecond = contentViewSecond

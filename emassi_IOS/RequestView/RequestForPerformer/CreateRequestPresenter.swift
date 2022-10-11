@@ -53,6 +53,8 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
                                 viewController.dismiss(animated: true)
                             }
                         }
+                    } else{
+                        self?.viewDelegate?.showMessage(message: "Ошибка отправки изображений", title: "")
                     }
                 }
                 

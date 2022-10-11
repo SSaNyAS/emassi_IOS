@@ -33,7 +33,7 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
         super.viewDidLoad()
         title = "Работа"
         setupViews()
-        presenter?.viewDidLoad()
+        presenter?.viewDidLoad(date: datePicker?.date)
     }
     
     private func setupViews(){
@@ -66,7 +66,7 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
     @objc func reloadData(){
         refreshControl?.beginRefreshing()
         if goToCreatePerformerAccountView == nil{
-            presenter?.getAllWorks()
+            presenter?.getAllWorks(date: datePicker?.date)
             removeBackgroundViews()
         } else {
             refreshControl?.endRefreshing()
@@ -203,7 +203,7 @@ extension WorksRequestViewController{
         }
         
         let topToSuperView = ordersTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
-        topToSuperView.priority = .defaultHigh
+        topToSuperView.priority = .defaultHigh - 1
         
         NSLayoutConstraint.activate([
             ordersTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -220,6 +220,8 @@ extension WorksRequestViewController{
         tableView.refreshControl = refreshControl
         self.refreshControl = refreshControl
         tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(WorksRequestTableViewCell.self, forCellReuseIdentifier: WorksRequestTableViewCell.identifire)
         

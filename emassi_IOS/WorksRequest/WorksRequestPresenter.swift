@@ -7,8 +7,8 @@
 
 import Foundation
 protocol WorksRequestPresenterDelegate: AnyObject{
-    func viewDidLoad()
-    func getAllWorks()
+    func viewDidLoad(date: Date?)
+    func getAllWorks(date: Date?)
     func goToRegisterAsPerformer()
 }
 
@@ -21,28 +21,82 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
     init(interactor: WorksRequestInteractorDelegate) {
         self.interactor = interactor
         worksDataSource = .init()
+        worksDataSource.sendWorkStatus = { [weak self] workId, workStatus, completion in
+            self?.sendWorkStatus(workId: workId, status: workStatus, completion: completion)
+        }
+        worksDataSource.didSelectWork = { [weak self] workId in
+            if let viewController = self?.viewDelegate?.getViewController(){
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+            }
+        }
+        worksDataSource.getCategoryNameAction = { [weak self] categoryId, completion in
+            self?.interactor.getCategoryName(categoryId: categoryId, completion: completion)
+        }
+        worksDataSource.getSuperCategoryNameAction = { [weak self] categoryId, completion in
+            self?.interactor.getCategoryName(categoryId: categoryId, completion: completion)
+        }
     }
     
-    func viewDidLoad() {
+    func viewDidLoad(date: Date? = nil) {
         getAccountInfo { [weak self] IsNeedsToLoadData in
             if IsNeedsToLoadData{
-                self?.getAllWorks()
+                self?.getAllWorks(date: date)
             }
         }
     }
     
-    func getAllWorks(){
-        interactor.getAllWorks(active: true, type: .public, date: nil) {[weak self] works, message in
-            self?.worksDataSource.works = works
+    func getAllWorks(date: Date?){
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            let getAllWorksTypeOperationQueue = OperationQueue()
+            getAllWorksTypeOperationQueue.maxConcurrentOperationCount = 2
+            
+            let acceptWorksOperationQueue = OperationQueue()
+            acceptWorksOperationQueue.maxConcurrentOperationCount = 1
+            
+            var allTypesWorks: [AllWork] = []
+            let getPublicWorksOperation = AsyncBlockOperation()
+            getPublicWorksOperation.action = { [weak self] in
+                self?.interactor.getAllWorks(active: true, type: .public, date: date) {works, message in
+                    acceptWorksOperationQueue.addOperation{
+                        allTypesWorks.append(contentsOf: works)
+                    }
+                    getPublicWorksOperation.finish()
+                }
+            }
+            let getPrivateWorksOperation = AsyncBlockOperation()
+            getPrivateWorksOperation.action = { [weak self] in
+                self?.interactor.getAllWorks(active: true, type: .private, date: date) {works, message in
+                    acceptWorksOperationQueue.addOperation{
+                        allTypesWorks.append(contentsOf: works)
+                    }
+                    getPrivateWorksOperation.finish()
+                }
+            }
+            
+            getAllWorksTypeOperationQueue.addOperation(getPrivateWorksOperation)
+            getAllWorksTypeOperationQueue.addOperation(getPublicWorksOperation)
+            
+            getAllWorksTypeOperationQueue.waitUntilAllOperationsAreFinished()
+            acceptWorksOperationQueue.waitUntilAllOperationsAreFinished()
+            
+            allTypesWorks = allTypesWorks.sorted(by: {$0.type.rawValue < $1.type.rawValue})
+            
+            self?.worksDataSource.works = allTypesWorks
             if let worksDataSource = self?.worksDataSource{
                 self?.viewDelegate?.setTableViewDataSource(dataSource: worksDataSource)
                 self?.viewDelegate?.reloadTableViewData()
             }
-            if works.isEmpty{
+            if allTypesWorks.isEmpty{
                 self?.viewDelegate?.setEmptyListView()
             } else {
                 self?.viewDelegate?.removeBackgroundViews()
             }
+        }
+    }
+    
+    func sendWorkStatus(workId: String, status: WorkStatus, completion: @escaping (Bool) -> Void){
+        interactor.sendWorkStatus(workId: workId, status: status) { apiResponse, error in
+            completion(error == nil && (apiResponse?.isErrored == false))
         }
     }
     
@@ -69,4 +123,5 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
             completion(isNeedToLoadData)
         }
     }
+    
 }

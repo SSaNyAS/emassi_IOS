@@ -18,11 +18,6 @@ class PerformersListDataSourceAndDelegate: NSObject, UITableViewDataSource, UITa
         return performers.count
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let performer = performers[indexPath.row]
-        didSelectAction?(performer)
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PerformerTableViewCell.identifire, for: indexPath)
         if let cell = cell as? PerformerTableViewCell{
@@ -33,6 +28,9 @@ class PerformersListDataSourceAndDelegate: NSObject, UITableViewDataSource, UITa
                 DispatchQueue.main.async {
                     photoImageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
                 }
+            }
+            cell.didClickOnPerformerAction = { [weak self] in
+                self?.didSelectAction?(currentPerformer)
             }
             cell.photoImageView?.image = .noPhotoUser
             cell.ratingView?.rating = currentPerformer.rating

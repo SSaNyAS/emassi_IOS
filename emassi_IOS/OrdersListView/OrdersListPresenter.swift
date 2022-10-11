@@ -28,10 +28,15 @@ class OrdersListPresenter: OrdersListPresenterDelegate{
             self?.interactor.getCategoryName(categoryId: categoryId, completion: completion)
         }
         ordersListDataUIWorker.getSuperCategoryNameAction = { [weak self] categoryId, completion in
-            self?.interactor.getSuperCategoryName(categoryId: categoryId, completion: completion)
+            self?.interactor.getCategoryName(categoryId: categoryId, completion: completion)
         }
         ordersListDataUIWorker.didSendOfferToWorkAction = { [weak self] workId, _ in
             self?.sendOfferForWork(workId: workId)
+        }
+        ordersListDataUIWorker.didClickOnWorkAction = { [weak self] workId in
+            if let viewController = self?.viewDelegate?.getViewController(){
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+            }
         }
     }
     

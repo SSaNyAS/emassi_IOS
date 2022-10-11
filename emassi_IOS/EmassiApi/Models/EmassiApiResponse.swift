@@ -30,6 +30,12 @@ struct EmassiApiResponse: Codable{
         self.data = data
     }
     
+    init(status: EmassiApiStatus, data: Data? = nil){
+        self.status = status.rawValue
+        self.message = status.localizedMessage
+        self.data = data
+    }
+    
     public var isErrored: Bool{
         return statusMessage != .NO_ERRORS
     }
@@ -80,5 +86,9 @@ struct EmassiApiResponse: Codable{
         case FEEDBACK_ALREADY_EXISTS = 100
         case HTTP_404_NOT_FOUND = 404
         case HTTP_500_INTERNAL_SERVER_ERROR = 500
+        
+        var localizedMessage: String{
+            return NSLocalizedString("EmassiApiStatusMessage_\(self.rawValue)", comment: "")
+        }
     }
 }

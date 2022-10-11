@@ -11,6 +11,8 @@ protocol WorksRequestInteractorDelegate{
     func getWorksRequests(completion: @escaping (_ works: [Work],_ message: String?) -> Void)
     func getActiveWorks(completion: @escaping (_ works: [Work],_ message: String?) -> Void)
     func getAccountInfo(completion: @escaping (_ accountInfo: AccountInfoModel?,_ message: String?) -> Void)
+    func sendWorkStatus(workId: String, status: WorkStatus, completion: @escaping (_ apiResponse: EmassiApiResponse?, _ error: Error?) -> Void)
+    func getCategoryName(categoryId: String, completion: @escaping (String?) -> Void)
 }
 
 class WorksRequestInteractor: WorksRequestInteractorDelegate {
@@ -18,6 +20,16 @@ class WorksRequestInteractor: WorksRequestInteractorDelegate {
     
     init(emassiApi: EmassiApi) {
         self.emassiApi = emassiApi
+    }
+    
+    func sendWorkStatus(workId: String, status: WorkStatus, completion: @escaping (_ apiResponse: EmassiApiResponse?, _ error: Error?) -> Void){
+        emassiApi?.changeWorkStatus(workId: workId, action: status, completion: completion)
+    }
+    
+    func getCategoryName(categoryId: String, completion: @escaping (String?) -> Void){
+        emassiApi?.getCategoryInfo(category: categoryId, completion: { category, _, _ in
+            completion(category?.name)
+        })
     }
     
     func getWorksRequests(completion: @escaping (_ works: [Work],_ message: String?) -> Void){

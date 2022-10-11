@@ -22,6 +22,11 @@ class PerformerTableViewCell: UITableViewCell{
     weak var showPerformerInfoButton: UIButton?
     weak var selectorView: UISwitch?
     
+    var didClickOnPerformerAction: (() -> Void)?
+    @objc func didClickOnPerformer(){
+        didClickOnPerformerAction?()
+    }
+    
     var sendMessageButtonAction: (() ->Void)?
     var callButtonAction: (() ->Void)?
     var denyButtonAction: (()->Void)?
@@ -190,7 +195,9 @@ class PerformerTableViewCell: UITableViewCell{
             
             contentViewSecond.backgroundColor = .baseAppColorBackground
             contentViewSecond.setCornerRadius(value: 12)
-            
+            contentViewSecond.isUserInteractionEnabled = true
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didClickOnPerformer))
+            contentViewSecond.addGestureRecognizer(tapGesture)
             selectionStyle = .none
 
             setupPhotoImageView()
