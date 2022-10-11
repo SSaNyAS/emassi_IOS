@@ -27,4 +27,21 @@ extension UIViewController{
         }
     }
     
+    func subscribeToCheckConnection(){
+        DispatchQueue.main.asyncAfter(deadline: .now()+2){
+            let connectionView = NetworkErrorView()
+            self.view.addSubview(connectionView)
+        }
+    }
+    
+    func subsribeToHideKeyboardWhenTappedAround(){
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard(){
+        view.endEditing(true)
+    }
+    
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol PerformersCategoriesPresenterDelegate: NSObject{
     func getCategories(completion:@escaping (Bool)->Void)
     func didChangeSearchText(searchText: String)

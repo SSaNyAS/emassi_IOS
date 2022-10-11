@@ -26,8 +26,8 @@ class PerformersListPresenter:NSObject, PerformersListPresenterDelegate{
         dataSourceDelegate.didSelectAction = { [weak self] performer in
             self?.didSelectPerformer(performerId: performer.id)
         }
-        dataSourceDelegate.imageDownloadAction = { [weak interactor] performer, completion in
-            interactor?.downloadPerformerPhoto(performerId: performer.id) { imageData, apiResponse in
+        dataSourceDelegate.imageDownloadAction = { [weak self] performer, completion in
+            self?.interactor.downloadPerformerPhoto(performerId: performer.id) { imageData, apiResponse in
                 completion(imageData)
             }
         }

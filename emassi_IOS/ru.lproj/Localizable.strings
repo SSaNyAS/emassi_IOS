@@ -42,3 +42,5 @@
 "EmassiApiStatusMessage_100" = "Отзыв уже существует";
 "EmassiApiStatusMessage_404" = "Не найдено";
 "EmassiApiStatusMessage_500" = "Ошибка удаленного сервера";
+
+"send_images_error" = "Ошибка отправки изображений";

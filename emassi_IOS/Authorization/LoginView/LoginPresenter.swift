@@ -21,9 +21,19 @@ class LoginPresenter:NSObject, LoginPresenterProtocol{
     weak var loginView: LoginViewDelegate?
     weak var router: RouterDelegate?
     
+    deinit{
+        NotificationCenter.default.removeObserver(self, name: .ConnectivityDidChange, object: nil)
+    }
+    
     init(interactor: LoginInteractorProtocol,router: RouterDelegate?){
         self.interactor = interactor
         self.router = router
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeInternetConnection(sender:)), name: .ConnectivityDidChange, object: nil)
+    }
+    
+    @objc private func didChangeInternetConnection(sender: Any){
+        
     }
     
     func login(login: String?, password: String?) {

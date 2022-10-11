@@ -105,7 +105,7 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
             }
             
             cell.didClickOnPerformerAction = { [weak self] in
-                
+                self?.didClickOnPerformerAction?(performer.id)
             }
         }
         

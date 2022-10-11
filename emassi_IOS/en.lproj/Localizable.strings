@@ -43,4 +43,4 @@
 "EmassiApiStatusMessage_404" = "not found";
 "EmassiApiStatusMessage_500" = "Internal server error";
 
-
+"send_images_error" = "images upload error";

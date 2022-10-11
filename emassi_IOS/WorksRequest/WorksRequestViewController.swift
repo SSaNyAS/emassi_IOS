@@ -217,10 +217,11 @@ extension WorksRequestViewController{
         let tableView = UITableView()
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        refreshControl.attributedTitle = .init(string: "Обновление...", attributes: [.foregroundColor: UIColor.placeholderText])
         tableView.refreshControl = refreshControl
         self.refreshControl = refreshControl
         tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableView.automaticDimension
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(WorksRequestTableViewCell.self, forCellReuseIdentifier: WorksRequestTableViewCell.identifire)

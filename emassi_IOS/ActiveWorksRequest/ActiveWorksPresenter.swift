@@ -48,6 +48,11 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
                 self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
             }
         }
+        tableViewWorker.didClickOnPerformerAction = { [weak self] performerId in
+            if let viewController = self?.viewDelegate?.getViewController(){
+                self?.router?.goToViewController(from: viewController, to: .performerInfo(performerId), presentationMode: .push)
+            }
+        }
     }
     
     func loadWorks() {

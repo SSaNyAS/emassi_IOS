@@ -15,7 +15,7 @@ protocol PerformersCategoriesViewDelegate: NSObjectProtocol{
 }
 
 class PerformersCategoriesViewController: UIViewController, PerformersCategoriesViewDelegate{
-    
+    weak var refreshControl: UIRefreshControl?
     weak var tableView: UITableView?
     weak var searchBar: UISearchBar?
     var presenter: PerformersCategoriesPresenterDelegate?
@@ -24,7 +24,7 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
-        getCategories()
+        reloadData()
     }
     
     func getViewController() -> UIViewController {
@@ -43,11 +43,18 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         }
     }
     
-    private func getCategories(){
-        presenter?.getCategories(completion: { isSuccess in
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView?.reloadData()
-            }
+    func reloadTableViewData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView?.reloadData()
+        }
+    }
+    
+    @objc func reloadData(){
+        refreshControl?.beginRefreshing()
+        presenter?.getCategories(completion: { [weak self] isSuccess in
+            let sections = IndexSet(integersIn: 0..<(self?.tableView?.numberOfSections ?? 0))
+            self?.tableView?.reloadSections(sections, with: .automatic)
+            self?.refreshControl?.endRefreshing()
         })
     }
     
@@ -75,15 +82,6 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         self.searchBar = searchBar
 
         navigationItem.titleView = searchBar
-//            let bottomConstraint = searchBar.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
-//        bottomConstraint.priority = .defaultHigh
-//
-//        NSLayoutConstraint.activate([
-//            searchBar.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 10),
-//            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 12),
-//            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -12),
-//            bottomConstraint
-//        ])
     }
     
     func setupTableView(){
@@ -92,20 +90,26 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         tableView.register(UITableViewCell.self,forCellReuseIdentifier: PerformersCategoriesTableViewDataSourceDelegate.subCategoryCellIdentifire)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
-        //tableView.estimatedRowHeight = 44
+        tableView.estimatedRowHeight = 44
         
         tableView.showsHorizontalScrollIndicator = false
         tableView.showsVerticalScrollIndicator = false
         tableView.alwaysBounceVertical = false
-        
+        tableView.contentInset = .init(top: 0, left: 0, bottom: 30, right: 0)
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        refreshControl.attributedTitle = .init(string: "Обновление...",attributes: [.foregroundColor: UIColor.placeholderText])
+        tableView.refreshControl = refreshControl
+        self.refreshControl = refreshControl
         view.addSubview(tableView)
         self.tableView = tableView
-        let buttomConstraint = tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
-        buttomConstraint.priority = .sceneSizeStayPut
+        let buttomConstraint = tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        buttomConstraint.priority = .required
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             buttomConstraint
             
         ])

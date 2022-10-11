@@ -26,7 +26,7 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
         }
         worksDataSource.didSelectWork = { [weak self] workId in
             if let viewController = self?.viewDelegate?.getViewController(){
-                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId, profileMode: .performer), presentationMode: .push)
             }
         }
         worksDataSource.getCategoryNameAction = { [weak self] categoryId, completion in

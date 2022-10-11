@@ -42,22 +42,20 @@ class CreateRequestPresenter: CreateRequestPresenterDelegate{
         interactor.createRequest { [weak self] workId, apiResponse, message in
             if (apiResponse?.isErrored ?? true){
                 self?.viewDelegate?.showMessage(message: message ?? "", title: "")
-            } else {
-                guard let workId = workId else {
-                    return
-                }
-                self?.interactor.uploadWorkPhotos(workId: workId, photosJpeg: self?.imagesToRequest ?? []) { [weak self] isSuccess in
-                    if isSuccess {
-                        if let viewController = self?.viewDelegate?.getViewController(){
-                            DispatchQueue.main.async {
-                                viewController.dismiss(animated: true)
-                            }
+            }
+            guard let workId = workId else {
+                return
+            }
+            self?.interactor.uploadWorkPhotos(workId: workId, photosJpeg: self?.imagesToRequest ?? []) { [weak self] isSuccess in
+                if isSuccess {
+                    if let viewController = self?.viewDelegate?.getViewController(){
+                        DispatchQueue.main.async {
+                            viewController.dismiss(animated: true)
                         }
-                    } else{
-                        self?.viewDelegate?.showMessage(message: "Ошибка отправки изображений", title: "")
                     }
+                } else{
+                    self?.viewDelegate?.showMessage(message: NSLocalizedString("send_images_error", comment: ""), title: "")
                 }
-                
             }
         }
     }

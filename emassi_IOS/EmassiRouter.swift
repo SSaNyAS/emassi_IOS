@@ -87,7 +87,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case ordersList
     case settings
     case feedback(_ workId: String, _ profileMode: ProfileMode = .customer)
-    case orderInfo(_ workId: String)
+    case orderInfo(_ workId: String, profileMode: ProfileMode = .customer)
     case sendOfferForWork(_ workId: String)
     case performersList(_ categoryId: String)
     case performerInfo(_ performerId: String)
@@ -134,8 +134,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "settings"
         case .feedback(let workId, let profileMode):
             return "feedbackForWork\(workId)\(profileMode)"
-        case .orderInfo(let workId):
-            return "orderInfo\(workId)"
+        case .orderInfo(let workId,let profileMode):
+            return "orderInfo\(workId)\(profileMode)"
         case .sendOfferForWork(let workId):
             return "sendOfferForWork\(workId)"
         case .performersList(let category):
@@ -186,6 +186,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.loginView = loginVC
                 presenter.router = router
                 loginVC.presenter = presenter
+                loginVC.subscribeToCheckConnection()
+                loginVC.subsribeToHideKeyboardWhenTappedAround()
             }
             SessionConfiguration.isDontNeedShowOnboarding = true
             authorizationData?.setupLoginViewController(loginVC: loginVC)
@@ -198,6 +200,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 registerVC.presenter = presenter
                 presenter.registerView = registerVC
                 presenter.router = router
+                registerVC.subscribeToCheckConnection()
+                registerVC.subsribeToHideKeyboardWhenTappedAround()
             }
             SessionConfiguration.isDontNeedShowOnboarding = true
             authorizationData?.setupRegisterViewController(registerVC: registerVC)
@@ -213,6 +217,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             }
             let menuNavigationController = MenuNavigationViewController(rootViewController: categoriesVC)
             menuNavigationController.router = router
+            menuNavigationController.subscribeToCheckConnection()
+            menuNavigationController.subsribeToHideKeyboardWhenTappedAround()
             router?.authorizationData = nil
             return menuNavigationController
         case .favorites:
@@ -265,11 +271,11 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 ordersListVC.presenter = presenter
             }
             return ordersListVC
-        case .orderInfo(let workId):
+        case .orderInfo(let workId,let profileMode):
             let orderInfoVC = OrderInfoViewController()
             if let api = router?.emassiApi{
                 let interactor = OrderInfoInteractor(emassiApi: api)
-                let presenter = OrderInfoPresenter(interactor: interactor, workId: workId)
+                let presenter = OrderInfoPresenter(interactor: interactor, workId: workId, profileMode: profileMode)
                 presenter.router = router
                 presenter.viewDelegate = orderInfoVC
                 orderInfoVC.presenter = presenter

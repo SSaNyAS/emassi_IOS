@@ -35,7 +35,7 @@ class OrdersListPresenter: OrdersListPresenterDelegate{
         }
         ordersListDataUIWorker.didClickOnWorkAction = { [weak self] workId in
             if let viewController = self?.viewDelegate?.getViewController(){
-                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId, profileMode: .performer), presentationMode: .push)
             }
         }
     }

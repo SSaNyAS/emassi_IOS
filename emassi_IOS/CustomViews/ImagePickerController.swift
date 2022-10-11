@@ -19,6 +19,7 @@ public class ImagePickerController: UIImagePickerController, UIImagePickerContro
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         didCancelPickImage?()
+        self.dismiss(animated: true)
     }
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

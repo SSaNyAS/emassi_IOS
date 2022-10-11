@@ -117,6 +117,7 @@
 		11F818E628F47ECD00769AC1 /* OrderInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E528F47ECD00769AC1 /* OrderInfoPresenter.swift */; };
 		11F818E828F47ED700769AC1 /* OrderInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */; };
 		11F818EB28F4E26500769AC1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F818ED28F4E26500769AC1 /* Localizable.strings */; };
+		11F818F028F4F64400769AC1 /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
@@ -276,6 +277,7 @@
 		11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderInfoInteractor.swift; sourceTree = "<group>"; };
 		11F818EC28F4E26500769AC1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11F818EE28F4E37B00769AC1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 				115BB4BB28E1E3F300686670 /* ImagePickerController.swift */,
 				11FF061D28E7210D00EAEF33 /* UImageViewPagging.swift */,
 				11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */,
+				11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -925,6 +928,7 @@
 				1140131628CBB07A00B14D5A /* PerformersListViewController.swift in Sources */,
 				11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */,
 				1194A16328CFA7C000BAF84B /* RegisterInteractor.swift in Sources */,
+				11F818F028F4F64400769AC1 /* NetworkErrorView.swift in Sources */,
 				115BB4A528DCE6E300686670 /* PerformersListPresenter.swift in Sources */,
 				11DCADF928D3580500568D16 /* Performer.swift in Sources */,
 				1194A16128CFA70E00BAF84B /* RegisterPresenter.swift in Sources */,

@@ -13,6 +13,10 @@ protocol OrderInfoInteractorDelegate: AnyObject{
     func downloadWorkImages(workId: String, completion: @escaping ([Data]) -> Void)
     func downloadWorkImage(workId: String, photoId: String, completion: @escaping (Data?,EmassiApiResponse?) ->Void)
     func getWorkInfoForCustomer(workId: String, completion: @escaping (WorkActive?, EmassiApiResponse?, Error?) -> Void)
+    func getCustomerProfile(completion: @escaping (CustomerProfile?, EmassiApiResponse?, Error?) -> Void)
+    func getMyCustomerPhoto(completion: @escaping (Data?, EmassiApiResponse?) -> Void)
+    func getCustomerPhoto(photoId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void)
+    func workComplete(workId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void)
 }
 
 class OrderInfoInteractor: OrderInfoInteractorDelegate{
@@ -23,6 +27,18 @@ class OrderInfoInteractor: OrderInfoInteractorDelegate{
     
     func getWorkInfo(workId: String, completion: @escaping (WorkWithCustomer?, EmassiApiResponse?, Error?) -> Void){
         emassiApi.getWorkInfoForMe(workId: workId, completion: completion)
+    }
+    
+    func getCustomerProfile(completion: @escaping (CustomerProfile?, EmassiApiResponse?, Error?) -> Void){
+        emassiApi.getCustomerProfile(completion: completion)
+    }
+    
+    func getMyCustomerPhoto(completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        emassiApi.downloadCustomerPhotoPublic(completion: completion)
+    }
+    
+    func getCustomerPhoto(photoId: String, completion: @escaping (Data?, EmassiApiResponse?) -> Void){
+        emassiApi.downloadCustomerPhotoPublic(customerId: photoId, completion: completion)
     }
     
     func getWorkInfoForCustomer(workId: String, completion: @escaping (WorkActive?, EmassiApiResponse?, Error?) -> Void){
@@ -98,6 +114,10 @@ class OrderInfoInteractor: OrderInfoInteractorDelegate{
     
     func downloadWorkImage(workId: String, photoId: String, completion: @escaping (Data?,EmassiApiResponse?) ->Void){
         emassiApi.downloadWorkPhoto(workId: workId, photoId: photoId, completion: completion)
+    }
+    
+    func workComplete(workId: String, completion: @escaping (EmassiApiResponse?, Error?) -> Void){
+        emassiApi.changeWorkStatus(workId: workId, action: .finish, completion: completion)
     }
     
     func createRoute(address: Address){

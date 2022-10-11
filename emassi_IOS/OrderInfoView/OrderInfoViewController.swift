@@ -24,6 +24,7 @@ protocol OrderInfoViewDelegate: AnyObject{
     func setReviewsCount(count: Int)
     func setReviewsRating(rating: Float)
     func setPhotos(imagesData: [Data])
+    func showInfoForCurrentPerformer()
 }
 
 class OrderInfoViewController: UIViewController{
@@ -51,28 +52,47 @@ class OrderInfoViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        title = "О специалисте"
+        title = "Информация о заявке"
         setupViews()
         presenter?.viewDidLoad()
+        profileImageView?.isHidden = true
+        ratingView?.isHidden = true
+        nameLabel?.isHidden = true
+        reviewsRatingView?.superview?.isHidden = true
+        emailTextField?.superview?.isHidden = true
+        phoneTextField?.superview?.isHidden = true
+        workCompletedButton?.isHidden = true
+        createRoadButton?.isHidden = true
     }
     
-    @objc func saveButtonClick(){
-        
+    @objc func workCompleteButtonClick(){
+        presenter?.workComplete()
+    }
+    @objc func createRoadButtonClick(){
+        presenter?.createRoad()
     }
 }
 
 
 // MARK: PerformerProfile ViewDelegate
 extension OrderInfoViewController: OrderInfoViewDelegate {
+    
+    func showInfoForCurrentPerformer(){
+        createRoadButton?.isHidden = false
+        workCompletedButton?.isHidden = false
+    }
+    
     func setOrderDate(date: String?) {
         DispatchQueue.main.async {
             self.orderDateLabel?.text = date
+            self.orderDateLabel?.superview?.isHidden = date?.isEmpty ?? true
         }
     }
     
     func setPrice(price: String?) {
         DispatchQueue.main.async {
             self.priceLabel?.text = price
+            self.priceLabel?.superview?.isHidden = price?.isEmpty ?? true
         }
     }
     
@@ -83,12 +103,14 @@ extension OrderInfoViewController: OrderInfoViewDelegate {
     func setAddress(address: String?) {
         DispatchQueue.main.async { [weak self] in
             self?.addressTextField?.text = address
+            self?.addressTextField?.superview?.isHidden = address?.isEmpty ?? true
         }
     }
     
     func setProfileImage(imageData: Data?) {
         DispatchQueue.main.async { [weak self] in
-            self?.profileImageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
+            let image = UIImage(data: imageData ?? Data())
+            self?.profileImageView?.image = image ?? .noPhotoUser
         }
     }
     
@@ -101,6 +123,11 @@ extension OrderInfoViewController: OrderInfoViewDelegate {
     func setName(name: String?) {
         DispatchQueue.main.async { [weak self] in
             self?.nameLabel?.text = name
+            self?.nameLabel?.isHidden = name?.isEmpty ?? true
+            self?.ratingView?.isHidden = name?.isEmpty ?? true
+            self?.profileImageView?.isHidden = name?.isEmpty ?? true
+            self?.reviewsRatingView?.superview?.isHidden = name?.isEmpty ?? true
+            self?.ordersCountLabel?.isHidden = name?.isEmpty ?? true
         }
     }
     
@@ -115,6 +142,7 @@ extension OrderInfoViewController: OrderInfoViewDelegate {
                 emailTextField?.rightViewMode = .always
             }
             emailTextField?.text = email
+            emailTextField?.superview?.isHidden = email?.isEmpty ?? true
         }
     }
     
@@ -129,22 +157,25 @@ extension OrderInfoViewController: OrderInfoViewDelegate {
                 phoneTextField?.rightViewMode = .always
             }
             phoneTextField?.text = phone
+            phoneTextField?.superview?.isHidden = phone?.isEmpty ?? true
         }
     }
     
     func setDetails(details: String?) {
         DispatchQueue.main.async { [weak self] in
             self?.detailsTextView?.text = details
+            self?.detailsTextView?.superview?.isHidden = details?.isEmpty ?? true
         }
     }
     
     func setPhotos(imagesData: [Data]) {
         DispatchQueue.main.async { [weak self] in
-            for imageData in imagesData {
-                if let image = UIImage(data: imageData){
-                    self?.imageContainer?.addImage(image: image)
-                }
-            }
+            var images: [UIImage] = []
+            images = imagesData.compactMap({
+                UIImage(data: $0)
+            })
+            self?.imageContainer?.isHidden = images.count < 1
+            self?.imageContainer?.images = images
         }
     }
     
@@ -169,6 +200,7 @@ extension OrderInfoViewController: OrderInfoViewDelegate {
     func createConfirmedImageView(isConfirmed: Bool = false) -> UIImageView{
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: isConfirmed ? "checkmark.circle.fill" : "checkmark.circle.badge.xmark.fill")?.applyingSymbolConfiguration(.init(pointSize: 25))?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
         imageView.image = image
@@ -228,25 +260,32 @@ extension OrderInfoViewController{
         
         createTextField(with: "email", attachTo: &emailTextField)
         emailTextField?.textContentType = .emailAddress
+        emailTextField?.isUserInteractionEnabled = false
         createTextField(with: "Номер телефона", attachTo: &phoneTextField)
         phoneTextField?.textContentType = .telephoneNumber
+        phoneTextField?.isUserInteractionEnabled = false
         createTextField(with: "Адрес", attachTo: &addressTextField)
         addressTextField?.textContentType = .fullStreetAddress
+        addressTextField?.isUserInteractionEnabled = false
         if let addressTextField = addressTextField as? UITextFieldEmassi{
             addressTextField.isTextEditable = false
         }
         
+        
         createDetailsTextView()
         createImageContainer()
         
-        createSaveButton(in: contentView)
-        createGoToUserProfileButton(in: contentView)
+        detailsTextView?.isEditable = false
+        imageContainer?.isHidden = true
+        
+        createCreateRoadButton(in: contentView)
+        createWorkCompletedButton(in: contentView)
         
         self.reviewsCountLabel?.text = "Оценок: 0"
         ordersCountLabel?.text = "Выполнено заказов: 0"
         
         createRoadButton?.setTitle("Построить маршрут", for: .normal)
-        createRoadButton?.setTitle("Работа выполнена", for: .normal)
+        workCompletedButton?.setTitle("Работа выполнена", for: .normal)
         
         createProfileImageViewConstraints(in: contentView)
         createRatingViewConstraints(in: contentView)
@@ -256,16 +295,18 @@ extension OrderInfoViewController{
         createWorkCompletedButtonConstraints(in: contentView)
     }
     
-    private func createGoToUserProfileButton(in view: UIView){
+    private func createWorkCompletedButton(in view: UIView){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(workCompleteButtonClick), for: .touchUpInside)
         view.addSubview(button)
         workCompletedButton = button
     }
     
-    private func createSaveButton(in view: UIView){
+    private func createCreateRoadButton(in view: UIView){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(createRoadButtonClick), for: .touchUpInside)
         view.addSubview(button)
         createRoadButton = button
     }

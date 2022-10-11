@@ -14,6 +14,8 @@ class PerformersCategoryTableViewCell: UITableViewCell{
     weak var backgroundImageView: UIImageView?
     weak var titleTextLabel: UILabel?
     private var isSetuppedConstraints = false
+    weak private var backgroundImageViewLeadingConstraint: NSLayoutConstraint?
+    weak private var backgroundImageViewTrailingConstraint: NSLayoutConstraint?
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -32,6 +34,16 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         setupDefaultSettings()
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        let constantToLeadingAndTrailing: CGFloat = selected ? 0 : 10
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.backgroundImageViewLeadingConstraint?.constant = constantToLeadingAndTrailing
+            self?.backgroundImageViewTrailingConstraint?.constant = -constantToLeadingAndTrailing
+        }
+        
+    }
+    
     @MainActor
     public func setText(text: String){
         titleTextLabel?.text = text
@@ -47,8 +59,20 @@ class PerformersCategoryTableViewCell: UITableViewCell{
     
     func setupDefaultSettings(){
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
+        let maskView = UIView()
+        maskView.backgroundColor = .black.withAlphaComponent(0.3)
+        maskView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.addSubview(maskView)
+        
+        NSLayoutConstraint.activate([
+            maskView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            maskView.topAnchor.constraint(equalTo: imageView.topAnchor),
+            maskView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            maskView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+        ])
+        
         imageView.setCornerRadius(value: 12)
         contentView.addSubview(imageView)
         backgroundImageView = imageView
@@ -61,8 +85,8 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 28, weight: .medium)
         label.textAlignment = .center
+        label.layer.zPosition = .infinity
         
-        contentView.contentMode = .scaleToFill
         contentView.addSubview(label)
         titleTextLabel = label
         setNeedsUpdateConstraints()
@@ -81,18 +105,22 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         imageView.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
         let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: 150)
-        let widthConstraint = imageView.widthAnchor.constraint(equalToConstant: 354)
+        let widthConstraint = imageView.widthAnchor.constraint(equalToConstant: 350)
         
         heightConstraint.priority = .defaultLow
         widthConstraint.priority = .defaultLow
         
+        backgroundImageViewLeadingConstraint = imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10)
+        backgroundImageViewLeadingConstraint?.isActive = true
+        
+        backgroundImageViewTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -10)
+        backgroundImageViewTrailingConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
             heightConstraint,
             widthConstraint,
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -10),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 150/350 ),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             label.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
