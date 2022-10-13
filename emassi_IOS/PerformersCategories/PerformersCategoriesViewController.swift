@@ -12,6 +12,7 @@ protocol PerformersCategoriesViewDelegate: NSObjectProtocol{
     func setDataSource(dataSource: UITableViewDataSource)
     func setTableViewDelegate(delegate: UITableViewDelegate)
     func getViewController() -> UIViewController
+    func reloadTableViewData()
 }
 
 class PerformersCategoriesViewController: UIViewController, PerformersCategoriesViewDelegate{
@@ -19,12 +20,30 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
     weak var tableView: UITableView?
     weak var searchBar: UISearchBar?
     var presenter: PerformersCategoriesPresenterDelegate?
+    public var isVisible: Bool = false{
+        didSet{
+            if isLazyReload {
+                reloadTableViewData()
+            }
+        }
+    }
+    private var isLazyReload: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
         reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isVisible = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        isVisible = false
     }
     
     func getViewController() -> UIViewController {
@@ -45,17 +64,21 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
     
     func reloadTableViewData() {
         DispatchQueue.main.async { [weak self] in
-            self?.tableView?.reloadData()
+            if self?.isVisible == true{
+//                let sections = IndexSet(integersIn: 0..<(self?.tableView?.numberOfSections ?? 0))
+//                self?.tableView?.reloadSections(sections, with: .automatic)
+                self?.tableView?.reloadData()
+                self?.refreshControl?.endRefreshing()
+                self?.isLazyReload = false
+            } else {
+                self?.isLazyReload = true
+            }
         }
     }
     
     @objc func reloadData(){
         refreshControl?.beginRefreshing()
-        presenter?.getCategories(completion: { [weak self] isSuccess in
-            let sections = IndexSet(integersIn: 0..<(self?.tableView?.numberOfSections ?? 0))
-            self?.tableView?.reloadSections(sections, with: .automatic)
-            self?.refreshControl?.endRefreshing()
-        })
+        presenter?.getCategories()
     }
     
     func setupViews(){
@@ -71,7 +94,7 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         searchBar.showsSearchResultsButton = true
         searchBar.searchBarStyle = .minimal
     
-        searchBar.searchTextField.backgroundColor = .white
+        searchBar.searchTextField.backgroundColor = .systemBackground
         searchBar.searchTextField.borderStyle = .none
         searchBar.searchTextField.setCornerRadius(value: 12)
         searchBar.searchTextField.setBorder()
@@ -96,6 +119,7 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         tableView.showsVerticalScrollIndicator = false
         tableView.alwaysBounceVertical = false
         tableView.contentInset = .init(top: 0, left: 0, bottom: 30, right: 0)
+        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         refreshControl.attributedTitle = .init(string: "Обновление...",attributes: [.foregroundColor: UIColor.placeholderText])
@@ -108,8 +132,8 @@ class PerformersCategoriesViewController: UIViewController, PerformersCategories
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,constant: -10),
             buttomConstraint
             
         ])

@@ -31,8 +31,6 @@ class UITextFieldEmassi: UITextField, UITextFieldDelegate{
         }
     }
     
-//    public var isUseCustomInputView: Bool = false
-    
     init(){
         super.init(frame: .zero)
         setupDefaultSettings()
@@ -52,9 +50,11 @@ class UITextFieldEmassi: UITextField, UITextFieldDelegate{
         font = .systemFont(ofSize: 16)
         minimumFontSize = 8
         adjustsFontSizeToFitWidth = true
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = .systemBackground
+        textColor = .label
         setTextLeftInset(value: 8)
         setCornerRadius(value: 12)
+        setBorder()
         delegate = self
     }
 }

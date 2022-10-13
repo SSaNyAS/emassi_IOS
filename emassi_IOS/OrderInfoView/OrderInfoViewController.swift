@@ -51,7 +51,7 @@ class OrderInfoViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Информация о заявке"
         setupViews()
         presenter?.viewDidLoad()
@@ -569,9 +569,12 @@ extension OrderInfoViewController{
         }
         let heightConstraint = profileImageView.heightAnchor.constraint(equalToConstant: 120)
         heightConstraint.priority = .defaultLow
+        let widthConstraint = profileImageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.4)
+        widthConstraint.priority = .defaultHigh + 1
         
         NSLayoutConstraint.activate([
             heightConstraint,
+            widthConstraint,
             profileImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor, multiplier: 1.2),

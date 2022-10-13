@@ -155,7 +155,7 @@ class MenuViewController: UIViewController{
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .clear

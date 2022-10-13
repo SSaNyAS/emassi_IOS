@@ -19,7 +19,7 @@ class ResetPasswordViewController: UIViewController, ResetPasswordViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
         emailLabel?.text = "Укажите email адрес для получения дальнейшей инструкции"
         recoverButton?.setTitle("Восстановить пароль", for: .normal)

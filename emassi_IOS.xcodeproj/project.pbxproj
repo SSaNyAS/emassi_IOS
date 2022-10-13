@@ -118,6 +118,7 @@
 		11F818E828F47ED700769AC1 /* OrderInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */; };
 		11F818EB28F4E26500769AC1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F818ED28F4E26500769AC1 /* Localizable.strings */; };
 		11F818F028F4F64400769AC1 /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */; };
+		11F818F228F634BF00769AC1 /* KeyboardSizeObserverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818F128F634BF00769AC1 /* KeyboardSizeObserverView.swift */; };
 		11FF061428E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */; };
 		11FF061628E5B51700EAEF33 /* CreateRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */; };
 		11FF061828E5C2C300EAEF33 /* CreateRequestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */; };
@@ -278,6 +279,7 @@
 		11F818EC28F4E26500769AC1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11F818EE28F4E37B00769AC1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
+		11F818F128F634BF00769AC1 /* KeyboardSizeObserverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardSizeObserverView.swift; sourceTree = "<group>"; };
 		11FF061328E5081F00EAEF33 /* WorksRequestTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorksRequestTableViewDataSource.swift; sourceTree = "<group>"; };
 		11FF061528E5B51700EAEF33 /* CreateRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestViewController.swift; sourceTree = "<group>"; };
 		11FF061728E5C2C300EAEF33 /* CreateRequestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRequestPresenter.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 		114E80B428C108B70028F39B /* emassi_IOS */ = {
 			isa = PBXGroup;
 			children = (
+				11F818F328F872E900769AC1 /* WorksHistory */,
 				11F818ED28F4E26500769AC1 /* Localizable.strings */,
 				11F818E228F4598100769AC1 /* OrderInfoView */,
 				11FF063D28EC776B00EAEF33 /* OrdersListView */,
@@ -517,6 +520,7 @@
 				11FF061D28E7210D00EAEF33 /* UImageViewPagging.swift */,
 				11FF062128E755C000EAEF33 /* AddressSearchViewController.swift */,
 				11F818EF28F4F64400769AC1 /* NetworkErrorView.swift */,
+				11F818F128F634BF00769AC1 /* KeyboardSizeObserverView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -669,6 +673,13 @@
 				11F818E728F47ED700769AC1 /* OrderInfoInteractor.swift */,
 			);
 			path = OrderInfoView;
+			sourceTree = "<group>";
+		};
+		11F818F328F872E900769AC1 /* WorksHistory */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WorksHistory;
 			sourceTree = "<group>";
 		};
 		11FF062728EA329D00EAEF33 /* RequestForPerformer */ = {
@@ -904,6 +915,7 @@
 				11F818E628F47ECD00769AC1 /* OrderInfoPresenter.swift in Sources */,
 				11FF061E28E7210D00EAEF33 /* UImageViewPagging.swift in Sources */,
 				11CBB7C828C6105D00FED8D5 /* PerformerReviewsTableVIewDataSource.swift in Sources */,
+				11F818F228F634BF00769AC1 /* KeyboardSizeObserverView.swift in Sources */,
 				114E80B828C108B70028F39B /* SceneDelegate.swift in Sources */,
 				11F818D028EDEF8E00769AC1 /* AsyncOperation.swift in Sources */,
 				114E80F228C219630028F39B /* LoginViewController.swift in Sources */,

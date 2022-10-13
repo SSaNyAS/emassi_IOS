@@ -66,7 +66,7 @@ class CreateRequestViewController: UIViewController, CreateRequestViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
         presenter?.viewDidLoad()
         self.timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] timer in
@@ -768,7 +768,7 @@ extension CreateRequestViewController{
     
     private func createTextField() -> UITextFieldEmassi{
         let textfield = UITextFieldEmassi()
-        textfield.backgroundColor = .white
+        textfield.backgroundColor = .systemBackground
         textfield.setBorder()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield

@@ -831,7 +831,7 @@ class EmassiApi: EmassiApiFetcher{
         task.resume()
     }
     
-    func getAccountInfo(completion: @escaping (AccountInfoModel?,EmassiApiResponse?,Error?) -> Void){
+    func getAccountInfo( completion: @escaping (AccountInfoModel?,EmassiApiResponse?,Error?) -> Void){
         guard let url = URL(string: "/api/v1/account/\(token ?? "")",relativeTo: hostUrl) else{
             completion(nil,nil,nil)
             return

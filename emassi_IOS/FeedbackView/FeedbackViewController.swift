@@ -43,7 +43,7 @@ class FeedbackViewController: UIViewController, SendFeedbackViewDelegate{
     }
     
     @objc func sendFeedback(){
-        #warning("Сделать отправку отзывов у исполнителя и заказчика, добавить экран где можно просматривать дополнительную информацию о заявке, сделать экран архив заявок, исправить элемент на странице активных заявок")
+        #warning("Сделать отправку отзывов у исполнителя и заказчика, сделать экран архив заявок")
         presenter?.setFeedbackText(text: commentTextView?.text)
         presenter?.setFeedbackRating(rating: ratingView?.rating ?? 0.0)
         presenter?.sendFeedback()
@@ -53,7 +53,7 @@ class FeedbackViewController: UIViewController, SendFeedbackViewDelegate{
 // MARK: CreateViews
 extension FeedbackViewController{
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createOverRatingViewLabel()
         createRatingView()
         createOverCommentLabel()
@@ -148,7 +148,7 @@ extension FeedbackViewController{
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 16)
         textView.isUserInteractionEnabled = true
-        textView.backgroundColor = .white
+        textView.backgroundColor = .systemBackground
         textView.setCornerRadius(value: 12)
         textView.setBorder()
         textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)

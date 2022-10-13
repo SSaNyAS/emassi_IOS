@@ -31,11 +31,11 @@ class PerformerReviewsTableViewDataSource: NSObject, UITableViewDataSource{
             DispatchQueue.main.async {
                 if #available(iOS 14.0, *) {
                     var config = UIListContentConfiguration.subtitleCell()
-                    config.attributedText = NSAttributedString(string: customer?.username.firstname ?? "",attributes: [.foregroundColor: UIColor.black])
+                    config.attributedText = NSAttributedString(string: customer?.username.firstname ?? "",attributes: [.foregroundColor: UIColor.label])
                     config.secondaryText = review.text
                     cell?.contentConfiguration = config
                 } else {
-                    cell?.textLabel?.textColor = .black
+                    cell?.textLabel?.textColor = .label
                     cell?.textLabel?.numberOfLines = 0
                     cell?.detailTextLabel?.numberOfLines = 0
                     cell?.textLabel?.text = customer?.username.firstname

@@ -24,7 +24,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     func setProfileImage(image: UIImage?) {
         DispatchQueue.main.async { [weak self] in
-            self?.profileImageView?.image = image
+            self?.profileImageView?.image = image ?? .noPhotoUser
         }
     }
     
@@ -54,7 +54,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     func setReviewsCount(count: Int) {
         DispatchQueue.main.async { [weak self] in
-            self?.reviewsCountLabel?.text = "\(count) оценок"
+            self?.reviewsCountLabel?.text = "Оценок: \(count)"
         }
     }
     
@@ -66,7 +66,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     func setCompletedOrdersCount(count: Int) {
         DispatchQueue.main.async { [weak self] in
-            self?.completedOrdersLabel?.text = "Выполнено \(count) заказов"
+            self?.completedOrdersLabel?.text = "Заказов выполнено: \(count)"
         }
     }
     
@@ -95,7 +95,8 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        title = "Исполнитель"
+        view.backgroundColor = .systemBackground
         setupViews()
         presenter?.viewDidLoad()
     }
@@ -111,6 +112,13 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     @objc private func sendOfferForPerformer(){
         presenter?.sendOfferForPerformer()
+    }
+    
+    @objc private func didShowAllReviews(){
+        presenter?.didShowAllReviews()
+        UIView.animate(withDuration: 0.5) {
+            self.allReviewsButton?.isHidden = true
+        }
     }
     
     func setupViews(){
@@ -203,6 +211,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     func setupAllReviewsButton(attachTo view: UIView){
         let button = UIButtonEmassi()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didShowAllReviews), for: .touchUpInside)
         button.setTitle("Все отзывы", for: .normal)
         
         view.addSubview(button)
@@ -244,7 +253,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         guard let completedOrdersLabel = completedOrdersLabel else {
             return
         }
-        let minHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 200)
+        let minHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 150)
         minHeightConstraint.priority = .defaultLow
         
         NSLayoutConstraint.activate([
@@ -344,6 +353,10 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
             return
         }
         
+        if let phoneLabel = phoneLabel{
+            labelTitle.topAnchor.constraint(greaterThanOrEqualTo: phoneLabel.bottomAnchor, constant: 10).isActive = true
+        }
+        
         NSLayoutConstraint.activate([
             labelTitle.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             labelTitle.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
@@ -359,6 +372,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     func setupPhoneLabel(attachTo view: UIView){
         let label = UILabel()
         label.textAlignment = .left
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(label)
@@ -378,6 +392,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     func setupNameLabel(attachTo view: UIView){
         let label = UILabel()
         label.textAlignment = .left
+        label.numberOfLines = 3
         label.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(label)
@@ -418,7 +433,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         imageView.backgroundColor = .lightText
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "nophotouser")
+        imageView.image = .noPhotoUser
         
         imageView.contentMode = .scaleAspectFill
         view.addSubview(imageView)

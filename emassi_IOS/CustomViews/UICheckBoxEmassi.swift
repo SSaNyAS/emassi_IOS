@@ -68,6 +68,8 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
         label.insetsLayoutMarginsFromSafeArea = false
         label.automaticallyAdjustsScrollIndicatorInsets = false
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.defaultLow - 1, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
         addSubview(label)
         
         self.textView = label
@@ -94,8 +96,8 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
             
             textPaddingConstraint,
             label.topAnchor.constraint(equalTo: topAnchor,constant: 5),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
         setupTapGesture()
@@ -104,13 +106,11 @@ class UICheckBoxEmassi: UISwitch, UITextViewDelegate{
     
     func setupTapGesture(){
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapChecker))
-        tapGesture.numberOfTapsRequired = 1
-        tapGesture.numberOfTouchesRequired = 1
         
         imageView?.isUserInteractionEnabled = true
         isUserInteractionEnabled = true
         textView?.isUserInteractionEnabled = true
-        imageView?.addGestureRecognizer(tapGesture)
+        self.addGestureRecognizer(tapGesture)
   
     }
     

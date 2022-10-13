@@ -32,7 +32,7 @@ class NetworkErrorView: UIView{
         didSet{
             DispatchQueue.main.async {
                 self.connectionTextLabel?.text = self.isConnected ? "Подключение установлено" : "Отсутствует интернет соединение"
-                self.connectionStateImageView?.image = self.connectedImage
+                self.connectionStateImageView?.image = self.isConnected ? self.connectedImage : self.disconnectedImage
                 self.animateAlert(isShow: !self.isConnected)
             }
         }
@@ -49,33 +49,41 @@ class NetworkErrorView: UIView{
     }
     
     func setupDefaultSettings(){
-        //self.backgroundColor = .white.withAlphaComponent(0.3)
+        self.isHidden = true
+        self.backgroundColor = .baseAppColorBackground
         self.setCornerRadius(value: 12)
         self.layer.masksToBounds = true
         let image = disconnectedImage
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(imageView)
+        self.connectionStateImageView = imageView
         
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 24,weight: .bold)
+        label.textColor = .label
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
+        self.connectionTextLabel = label
         
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            imageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
-            imageView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            label.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            label.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            label.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 10),
             label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5),
-            label.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            label.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -10),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
         ])
-        self.layer.zPosition = .infinity
+        self.layer.zPosition = 2000
         self.frame = .init(origin: .zero, size: .init(width: 200, height: 200))
         
         NotificationCenter.default.addObserver(self, selector: #selector(didConnectionChanged(notification:)), name: .ConnectivityDidChange, object: nil)
@@ -87,18 +95,28 @@ class NetworkErrorView: UIView{
                 let centerX = superViewFrame.midX - (self.frame.width / 2)
                 let startPosY = -self.frame.height
                 let endPosY = self.frame.height
-                let duration = isShow ? 0.6 : 0.9
+                let duration = isShow ? 0.6 : 0.6
+                let damping = isShow ? 0.3 : 0
                 if isShow {
                     self.isHidden = false
                 }
-                UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0, options: [.preferredFramesPerSecond60]) {
-                    if isShow {
+                if isShow{
+                    UIView.animate(withDuration: duration,
+                                   delay: 0,
+                                   usingSpringWithDamping: damping,
+                                   initialSpringVelocity: 0,
+                                   options: [.preferredFramesPerSecond60]) {
                         self.frame = .init(origin: .init(x: centerX, y: endPosY), size: self.frame.size)
-                    } else {
-                        self.frame = .init(origin: .init(x: centerX, y: startPosY), size: self.frame.size)
                     }
-                } completion: { _ in
-                    self.isHidden = !isShow
+                } else {
+                    UIView.animate(withDuration: duration,
+                                   delay: 0.6,
+                                   options: [.curveEaseInOut]) {
+                        self.frame = .init(origin: .init(x: centerX, y: startPosY), size: self.frame.size)
+                    } completion: { _ in
+                        self.isHidden = true
+                    }
+
                 }
             }
         }

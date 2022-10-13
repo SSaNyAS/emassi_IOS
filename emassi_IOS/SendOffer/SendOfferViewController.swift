@@ -45,7 +45,7 @@ class SendOfferViewController: UIViewController{
     }
     
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createOverUsernameTextFieldLabel()
         createUsernameTextField()
         createOverCommentLabel()
@@ -140,7 +140,7 @@ class SendOfferViewController: UIViewController{
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 16)
         textView.isUserInteractionEnabled = true
-        textView.backgroundColor = .white
+        textView.backgroundColor = .systemBackground
         textView.setCornerRadius(value: 12)
         textView.setBorder()
         textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)

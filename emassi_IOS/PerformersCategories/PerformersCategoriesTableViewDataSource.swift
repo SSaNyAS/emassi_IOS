@@ -19,7 +19,7 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
                 return
             }
             
-            var searchText = searchText.lowercased()
+            let searchText = searchText.lowercased()
             for categoryId in 0..<self.performersCategories.count{
                 self.performersCategories[categoryId].isOpened = true
             }

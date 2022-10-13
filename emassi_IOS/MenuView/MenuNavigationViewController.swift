@@ -20,6 +20,7 @@ class MenuNavigationViewController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.isUserInteractionEnabled = true
     }
     
     override init(rootViewController: UIViewController) {
@@ -53,16 +54,16 @@ class MenuNavigationViewController: UINavigationController {
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        let backImage = UIImage(systemName: "chevron.left")
-        let goBackBarButton = UIBarButtonItem(image: backImage, style: .done, target: self, action: #selector(goBack))
-        goBackBarButton.tintColor = .black
+        let goBackBarButton = UIBarButtonItem()
+        goBackBarButton.tintColor = .invertedSystemBackground
         
-        let horizontalLinesImage = UIImage(systemName: "line.3.horizontal")
+        let horizontalLinesImage = UIImage(systemName: "line.3.horizontal")?.applyingSymbolConfiguration(.init(weight: .bold))
+        
         let openMenuBarButton = UIBarButtonItem(image: horizontalLinesImage, style: .done, target: self, action: #selector(toggleMenu))
-        openMenuBarButton.tintColor = .black
+        openMenuBarButton.tintColor = .invertedSystemBackground
         
-        viewController.navigationItem.leftBarButtonItem = goBackBarButton
         viewController.navigationItem.rightBarButtonItem = openMenuBarButton
+        viewController.navigationItem.backBarButtonItem = goBackBarButton
         if isOpenedMenu {
             toggleMenu()
         }
@@ -128,12 +129,6 @@ class MenuNavigationViewController: UINavigationController {
                     }
                     
                 }
-            }
-            router.emassiApi.getCustomerProfile { profile, apiResponse, error in
-                print("\ncustomerProfile:\n \(String(describing: profile))\n")
-            }
-            router.emassiApi.getPerformerProfile { profile, apiResponse, error in
-                print("\nperformerProfile:\n \(String(describing: profile))\n")
             }
         }
     }

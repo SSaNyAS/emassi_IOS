@@ -69,7 +69,7 @@ class PerformerProfileViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Профиль"
         setupViews()
         presenter?.viewDidLoad(profileMode: profileMode)
@@ -293,7 +293,7 @@ extension PerformerProfileViewController{
         addressTextField?.addTarget(self, action: #selector(openAddressSearchViewController), for: .editingDidBegin)
         
         createSupportRegionSelector()
-        createCategorySelector();#warning("second category showing as empty field")
+        createCategorySelector()
         createAboutPerformerView()
         
         let reviewsCountLabel = createReviewsCountLabel()
@@ -459,7 +459,6 @@ extension PerformerProfileViewController{
         let textfield = UITextFieldEmassi()
         textfield.setCornerRadius(value: 12)
         textfield.setBorder()
-        textfield.backgroundColor = .clear
         textfield.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(textfield)
         
@@ -488,6 +487,7 @@ extension PerformerProfileViewController{
         stackView.contentMode = .top
         stackView.spacing = 10
         stackView.distribution = .equalSpacing
+        stackView.backgroundColor = .clear
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         self.stackViewForFields = stackView

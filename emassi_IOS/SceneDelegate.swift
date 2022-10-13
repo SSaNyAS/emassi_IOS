@@ -39,13 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         router = EmassiRouter(emassiApi: api)
         connectivity = Connectivity()
-        connectivity?.whenDisconnected = { connectivity in
-            print(connectivity.status.description)
-        }
         connectivity?.isPollingEnabled = true
-        connectivity?.whenConnected = { connectivity in
-            print(connectivity.status.description)
-        }
         let dispatchQueue = DispatchQueue(label: "networkCheck")
         connectivity?.startNotifier(queue: dispatchQueue)
         
@@ -55,11 +49,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
-        if SessionConfiguration.isDontNeedShowOnboarding == false {
-            navigationController.viewControllers = [EmassiRoutedViews.onboarding.viewController]
+        func setLoginViewOrOnboarding(){
+            guard let navigationController = window?.rootViewController as? UINavigationController else {
+                return
+            }
+            if SessionConfiguration.isDontNeedShowOnboarding == false {
+                navigationController.viewControllers = [EmassiRoutedViews.onboarding.viewController]
+            }
+            else {
+                navigationController.viewControllers = [EmassiRoutedViews.login.viewController]
+            }
         }
-        else {
-            navigationController.viewControllers = [EmassiRoutedViews.login.viewController]
+        
+        if api.isValidToken{
+            if connectivity?.isConnected == true{
+                api.getAccountInfo { [weak navigationController] info, apiResponse, error in
+                    guard let apiResponse = apiResponse else {
+                        setLoginViewOrOnboarding()
+                        return
+                    }
+                    if (apiResponse.isErrored) == false {
+                        DispatchQueue.main.async { [weak navigationController] in
+                            let categoriesVC = EmassiRoutedViews.categories.viewController
+                            categoriesVC.modalPresentationStyle = .fullScreen
+                            navigationController?.present(categoriesVC, animated: true)
+                        }
+                    } else {
+                        setLoginViewOrOnboarding()
+                    }
+                }
+            } else {
+                setLoginViewOrOnboarding();
+                #warning("Здесь лучше всего реализовать экран где будет отображаться, что нет подключения, где после появления подключения будет проверка аккаунта и открытие либо авторизации либо основного экрана приложения")
+            }
+        } else {
+            setLoginViewOrOnboarding()
         }
     }
 }

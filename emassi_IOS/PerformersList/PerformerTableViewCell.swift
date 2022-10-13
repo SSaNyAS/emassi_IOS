@@ -192,7 +192,6 @@ class PerformerTableViewCell: UITableViewCell{
                 contentViewSecond.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
                 contentViewSecond.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             ])
-            
             contentViewSecond.backgroundColor = .baseAppColorBackground
             contentViewSecond.setCornerRadius(value: 12)
             contentViewSecond.isUserInteractionEnabled = true
@@ -279,7 +278,8 @@ class PerformerTableViewCell: UITableViewCell{
     
     private func setupReviewLabel(){
         let label = UILabelBordered()
-        label.backgroundColor = .white
+        label.backgroundColor = .lightText
+        label.textColor = .darkText
         label.isUseBorder = false
         label.cornerRadius = 12
         label.numberOfLines = 0
@@ -377,6 +377,7 @@ class PerformerTableViewCell: UITableViewCell{
         stackView.contentMode = .scaleToFill
         stackView.distribution = .fillEqually
         stackView.spacing = 5
+        stackView.backgroundColor = .clear
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentViewSecond.addSubview(stackView)
         buttonsContainer = stackView
@@ -423,6 +424,7 @@ class PerformerTableViewCell: UITableViewCell{
     private func setupCategoryLabel(){
         let label = UILabel()
         label.numberOfLines = 0
+        label.textColor = .label
         label.font = .systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentViewSecond.addSubview(label)
@@ -446,6 +448,7 @@ class PerformerTableViewCell: UITableViewCell{
     private func setupNameLabel(){
         let label = UILabel()
         label.numberOfLines = 3
+        label.textColor = .label
         label.font = .systemFont(ofSize: 16,weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
 

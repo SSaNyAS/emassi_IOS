@@ -45,7 +45,7 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
         }
         tableViewWorker.didClickOnWorkAction = { [weak self] workId in
             if let viewController = self?.viewDelegate?.getViewController(){
-                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId), presentationMode: .push)
+                self?.router?.goToViewController(from: viewController, to: .orderInfo(workId, profileMode: .customer), presentationMode: .push)
             }
         }
         tableViewWorker.didClickOnPerformerAction = { [weak self] performerId in

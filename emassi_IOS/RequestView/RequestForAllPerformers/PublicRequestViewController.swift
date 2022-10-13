@@ -47,7 +47,7 @@ class PublicRequestViewController: UIViewController, PublicRequestViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
     }
     
@@ -544,7 +544,7 @@ extension PublicRequestViewController{
     
     private func createTextField() -> UITextField{
         let textfield = UITextFieldEmassi()
-        textfield.backgroundColor = .white
+        textfield.backgroundColor = .systemBackground
         textfield.setBorder()
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield

@@ -57,7 +57,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         setNeedsUpdateConstraints()
     }
     
-    func setupDefaultSettings(){
+    func setupDefaultSettings(){        
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -71,6 +71,8 @@ class PerformersCategoryTableViewCell: UITableViewCell{
             maskView.topAnchor.constraint(equalTo: imageView.topAnchor),
             maskView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             maskView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+            maskView.widthAnchor.constraint(equalTo: imageView.widthAnchor),
+            maskView.heightAnchor.constraint(equalTo: imageView.heightAnchor),
         ])
         
         imageView.setCornerRadius(value: 12)
@@ -85,7 +87,6 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 28, weight: .medium)
         label.textAlignment = .center
-        label.layer.zPosition = .infinity
         
         contentView.addSubview(label)
         titleTextLabel = label
@@ -107,20 +108,23 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         let heightConstraint = imageView.heightAnchor.constraint(equalToConstant: 150)
         let widthConstraint = imageView.widthAnchor.constraint(equalToConstant: 350)
         
-        heightConstraint.priority = .defaultLow
-        widthConstraint.priority = .defaultLow
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
         
-        backgroundImageViewLeadingConstraint = imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 10)
+        widthConstraint.priority = .defaultHigh
+        widthConstraint.isActive = true
+        
+        let imageViewAspectRatio = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.4)
+        imageViewAspectRatio.priority = .defaultHigh
+        
+        backgroundImageViewLeadingConstraint = imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         backgroundImageViewLeadingConstraint?.isActive = true
         
-        backgroundImageViewTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -10)
+        backgroundImageViewTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         backgroundImageViewTrailingConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
-            heightConstraint,
-            widthConstraint,
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 150/350 ),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             label.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),

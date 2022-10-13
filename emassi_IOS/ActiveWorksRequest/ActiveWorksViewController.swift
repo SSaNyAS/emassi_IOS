@@ -36,7 +36,7 @@ class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
     }
     
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createWorksTableView()
         
         setupTableViewConstraints()

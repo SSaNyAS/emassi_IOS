@@ -11,6 +11,7 @@ protocol PerformerInfoPresenterDelegate: NSObject{
     func viewDidLoad()
     func getPerformerInfo()
     func sendOfferForPerformer()
+    func didShowAllReviews()
 }
 
 class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
@@ -37,6 +38,11 @@ class PerformerInfoPresenter:NSObject, PerformerInfoPresenterDelegate{
         if let viewController = viewDelegate?.getViewController(){
             router?.goToViewController(from: viewController, to: .createRequest(performerId, nil), presentationMode: .present)
         }
+    }
+    
+    func didShowAllReviews() {
+        reviewsDataSource.isUseLimitedCount = false
+        viewDelegate?.setReviewsDataSource(dataSource: reviewsDataSource)
     }
     
     func getPerformerInfo() {

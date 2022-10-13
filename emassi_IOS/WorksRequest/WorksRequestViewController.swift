@@ -37,7 +37,7 @@ class WorksRequestViewController: UIViewController, WorksRequestViewDelegate{
     }
     
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createWorksTableView()
         createDataPicker()
         

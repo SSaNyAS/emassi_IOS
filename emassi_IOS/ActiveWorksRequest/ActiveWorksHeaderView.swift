@@ -109,7 +109,7 @@ extension ActiveWorksHeaderView{
         let label = UILabelBordered()
         label.font = .systemFont(ofSize: 16)
         label.layer.masksToBounds = true
-        label.backgroundColor = .white
+        label.backgroundColor = .systemBackground
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUseBorder = false

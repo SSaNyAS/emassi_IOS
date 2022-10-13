@@ -32,7 +32,7 @@ class AddressSearchViewController: UIViewController, UISearchResultsUpdating{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Выбор адреса"
         
         searchController.searchBar.textContentType = .fullStreetAddress

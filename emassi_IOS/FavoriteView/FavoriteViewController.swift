@@ -25,7 +25,7 @@ class FavoriteViewController: UIViewController, FavoriteViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "Избранное"
         setupViews()
         presenter?.viewDidLoad()

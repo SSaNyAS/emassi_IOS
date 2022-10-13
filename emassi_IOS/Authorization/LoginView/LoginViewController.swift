@@ -46,7 +46,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad() 
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
     }
     
@@ -107,8 +107,8 @@ class LoginViewController: UIViewController, LoginViewDelegate{
             return
         }
         
-        let bottomConstraint = button.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
-        bottomConstraint.priority = .defaultLow
+        let bottomConstraint = button.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        bottomConstraint.priority = .required
         
         NSLayoutConstraint.activate([
             button.topAnchor.constraint(equalTo: goRegisterButton.bottomAnchor, constant: 10),
@@ -131,7 +131,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         
         NSLayoutConstraint.activate([
             button.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 10),
-            button.heightAnchor.constraint(equalToConstant: 46),
+            button.heightAnchor.constraint(equalToConstant: UIButtonEmassi.defaultHeight),
             button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
@@ -150,7 +150,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         
         NSLayoutConstraint.activate([
             button.topAnchor.constraint(equalTo: rememberPasswordChecker.bottomAnchor, constant: 10),
-            button.heightAnchor.constraint(equalToConstant: 46),
+            button.heightAnchor.constraint(equalToConstant: UIButtonEmassi.defaultHeight),
             button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
@@ -174,7 +174,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         NSLayoutConstraint.activate([
             checker.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 10),
             checker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            checker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            checker.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
     }
     
@@ -204,6 +204,7 @@ class LoginViewController: UIViewController, LoginViewDelegate{
         let textField = UITextFieldEmassi()
         textField.textContentType = .emailAddress
         textField.keyboardType = .emailAddress
+        textField.setBorder()
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(textField)

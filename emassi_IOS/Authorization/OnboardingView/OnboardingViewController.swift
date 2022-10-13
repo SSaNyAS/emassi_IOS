@@ -25,7 +25,7 @@ class OnboardingViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         setupViews()
         loginButton?.setTitle("Войти", for: .normal)
         registerButton?.setTitle("Зарегистрироваться", for: .normal)
@@ -70,7 +70,7 @@ class OnboardingViewController: UIViewController{
             registerButton.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor),
             registerButton.widthAnchor.constraint(equalTo: loginButton.widthAnchor),
             registerButton.heightAnchor.constraint(equalTo: loginButton.heightAnchor),
-            registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            registerButton.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
     
@@ -109,9 +109,9 @@ class OnboardingViewController: UIViewController{
         guard let collectionView = collectionView else {
             return
         }
-        let widthConstraint = collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -20)
-        let leadingAnchor = collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 10)
-        let trailingAnchor = collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,constant: -10)
+        let widthConstraint = collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor)
+        let leadingAnchor = collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+        let trailingAnchor = collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         leadingAnchor.priority = .defaultHigh
         trailingAnchor.priority = .defaultHigh
         widthConstraint.priority = .defaultLow
@@ -132,7 +132,6 @@ class OnboardingViewController: UIViewController{
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         

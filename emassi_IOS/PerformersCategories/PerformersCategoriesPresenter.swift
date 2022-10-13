@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PerformersCategoriesPresenterDelegate: NSObject{
-    func getCategories(completion:@escaping (Bool)->Void)
+    func getCategories()
     func didChangeSearchText(searchText: String)
 }
 
@@ -37,15 +37,14 @@ class PerformersCategoriesPresenter: NSObject, PerformersCategoriesPresenterDele
         dataSource.searchAndScroollToRow(searchText: searchText)
     }
     
-    func getCategories(completion:@escaping (_ isSuccess: Bool)->Void) {
+    func getCategories() {
         interactor.getCategories { [weak self] categories in
             self?.dataSource.performersCategories = categories
             if let dataSourceAndDelegate = self?.dataSource{
                 self?.viewDelegate?.setDataSource(dataSource: dataSourceAndDelegate)
                 self?.viewDelegate?.setTableViewDelegate(delegate: dataSourceAndDelegate)
+                self?.viewDelegate?.reloadTableViewData()
             }
-            
-            completion(!categories.isEmpty)
         }
         
     }

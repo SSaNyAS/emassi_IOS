@@ -43,7 +43,7 @@ class SettingsViewController: UIViewController{
     }
     
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createOrdersTableView()
         setupTableViewConstraints()
         

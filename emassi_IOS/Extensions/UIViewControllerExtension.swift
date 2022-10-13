@@ -34,7 +34,15 @@ extension UIViewController{
         }
     }
     
-    func subsribeToHideKeyboardWhenTappedAround(){
+    func subscribeToCheckKeyboardSize(){
+        DispatchQueue.main.async {
+            let observerView = KeyboardObserverView()
+            observerView.frame = .zero
+            self.view.addSubview(observerView)
+        }
+    }
+    
+    func subscribeToHideKeyboardWhenTappedAround(){
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)

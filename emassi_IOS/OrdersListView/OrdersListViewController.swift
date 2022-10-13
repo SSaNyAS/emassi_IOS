@@ -37,7 +37,7 @@ class OrdersListViewController: UIViewController, OrdersListViewDelegate{
     }
     
     private func setupViews(){
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         createWorksTableView()
         createDatePicker()
         

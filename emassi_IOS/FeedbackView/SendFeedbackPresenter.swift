@@ -14,7 +14,7 @@ protocol SendFeedbackPresenterDelegate: AnyObject{
 
 class SendFeedbackPresenter: SendFeedbackPresenterDelegate{
     var interactor: SendFeedbackInteractorDelegate
-    var profileMode: ProfileMode = .customer
+    var profileMode: ProfileMode
     weak var router: RouterDelegate?
     weak var viewDelegate: SendFeedbackViewDelegate?
     
@@ -24,8 +24,9 @@ class SendFeedbackPresenter: SendFeedbackPresenterDelegate{
         }
     }
     
-    init(interactor: SendFeedbackInteractorDelegate) {
+    init(interactor: SendFeedbackInteractorDelegate, profileMode: ProfileMode) {
         self.interactor = interactor
+        self.profileMode = profileMode
     }
     
     func sendFeedback(){
