@@ -18,6 +18,7 @@ protocol ActiveWorksViewDelegate: AnyObject{
     func removeBackgroundViews()
     func setGoToRegisterAccountView()
     func setEmptyListView()
+    func setTitle(title: String)
 }
 
 class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
@@ -30,7 +31,6 @@ class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Активные заявки"
         setupViews()
         presenter?.viewDidLoad()
     }
@@ -38,7 +38,6 @@ class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
     private func setupViews(){
         view.backgroundColor = .systemBackground
         createWorksTableView()
-        
         setupTableViewConstraints()
     }
     
@@ -67,6 +66,12 @@ class ActiveWorksViewController: UIViewController, ActiveWorksViewDelegate{
     
     func getViewController() -> UIViewController {
         return self
+    }
+    
+    func setTitle(title: String) {
+        DispatchQueue.main.async {
+            self.title = title
+        }
     }
     
     func setTableViewDataSource(dataSource: UITableViewDataSource) {

@@ -174,26 +174,22 @@ class FavoriteTableViewDataUIWorker:NSObject, UITableViewDataSource, UITableView
             let performer = performers[indexPath.row]
             
 //            getCategoryNameAction?(performer) {[weak self,weak categoryLabel = cell.categoryLabel] categoryName in
-//                
+//
 //                if let categoryName = categoryName{
 //                    DispatchQueue.main.async {
-//                        categoryLabel?.text = categoryName + "\r\n\(work.startDate.formattedAsDateTime())"
+//                        categoryLabel?.text = categoryName
 //                    }
 //                } else {
-//                    self?.getSuperCategoryNameAction?(work.category.level1) { [weak categoryLabel] superCategoryName in
+//                    self?.getSuperCategoryNameAction?(performer.category.level1) { [weak categoryLabel] superCategoryName in
 //                        if let superCategoryName = superCategoryName{
 //                            DispatchQueue.main.async {
-//                                categoryLabel?.text = superCategoryName + "\r\n\(work.startDate.formattedAsDateTime())"
-//                            }
-//                        } else {
-//                            DispatchQueue.main.async {
-//                                categoryLabel?.text = work.startDate.formattedAsDateTime()
+//                                categoryLabel?.text = superCategoryName
 //                            }
 //                        }
 //                    }
 //                }
 //            }
-            
+        
             cell.nameLabel?.text = performer.username.common
             cell.ratingView?.rating = performer.rating5
             cell.isSelectingEnabled = isSelectionMode
@@ -201,7 +197,7 @@ class FavoriteTableViewDataUIWorker:NSObject, UITableViewDataSource, UITableView
                 print("send message")
             }
             getPerformerPhoto?(performer.id){ [weak photoImageView = cell.photoImageView] imageData in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak photoImageView] in
                     photoImageView?.image = UIImage(data: imageData ?? Data()) ?? .noPhotoUser
                 }
             }

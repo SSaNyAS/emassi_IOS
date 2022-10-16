@@ -9,8 +9,11 @@ import Foundation
 import UIKit
 
 class KeyboardObserverView: UIView{
-    
+    static let bottomIdentifire = "bottomToView"
     private var superViewFrameStored: CGRect?
+    private var superViewBottomConstantStoredValue: CGFloat?
+    private var bottomConstraint: NSLayoutConstraint?
+    
     public var keyboardFrame: CGRect?{
         didSet{
             if keyBoardIsPresent {
@@ -21,7 +24,6 @@ class KeyboardObserverView: UIView{
         }
     }
     public var keyBoardIsPresent: Bool = false
-    weak var viewToChangeSize: UIView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +38,7 @@ class KeyboardObserverView: UIView{
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        print("keyboardObserver removed")
     }
     
     @objc
@@ -44,40 +47,48 @@ class KeyboardObserverView: UIView{
         if let keyboardFrame = userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect{
             self.keyboardFrame = keyboardFrame
         }
-        
-        if superViewFrameStored == nil{
-            superViewFrameStored = self.viewToChangeSize?.frame
-        }
     }
     
     @objc
     private func willShowKeyboard(notification: NSNotification){
         setOpenedKeyBoardFrame()
-        //keyBoardIsPresent = true
     }
     
     @objc
     private func willHideKeyboard(notification: NSNotification){
-        if let superViewFrameStored = superViewFrameStored{
-            viewToChangeSize?.frame = superViewFrameStored
+        if let superViewBottomConstantStoredValue = superViewBottomConstantStoredValue{
+            UIView.animate(withDuration: 0.6) {
+                self.bottomConstraint?.constant = superViewBottomConstantStoredValue
+            }
+            return
         }
-        //keyBoardIsPresent = false
+        if let superViewFrameStored = superViewFrameStored{
+            superview?.frame = superViewFrameStored
+        }
     }
     
     private func setOpenedKeyBoardFrame(){
+        if let bottomConstraint = bottomConstraint{
+            UIView.animate(withDuration: 0.6) {
+                bottomConstraint.constant = bottomConstraint.constant - (self.keyboardFrame?.height ?? 0) - 50
+            }
+            return
+        }
         if let keyboardFrame = keyboardFrame, let superViewFrameStored = superViewFrameStored{
-            viewToChangeSize?.frame = .init(origin: superViewFrameStored.origin, size: .init(width: superViewFrameStored.width, height: superViewFrameStored.height - keyboardFrame.height))
+            superview?.frame = .init(origin: superViewFrameStored.origin, size: .init(width: superViewFrameStored.width, height: superViewFrameStored.height - keyboardFrame.height))
         }
     }
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        if let superviewToSuperView = superview?.superview{
-            viewToChangeSize = superviewToSuperView
-        } else {
-            viewToChangeSize = superview
+        if let verticalConstraints = superview?.constraintsAffectingLayout(for: .vertical){
+            if let lastBottom = verticalConstraints.last(where: { $0.firstAttribute == .bottom && $0.secondAttribute == .bottom }){
+                bottomConstraint = lastBottom
+                self.superViewBottomConstantStoredValue = lastBottom.constant
+                return
+            }
         }
-        superViewFrameStored = viewToChangeSize?.frame
+        superViewFrameStored = superview?.frame
     }
     
     private func setupDefaultSettings(){

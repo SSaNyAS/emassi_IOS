@@ -254,7 +254,6 @@ extension PerformerProfileViewController{
         
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        
         scrollView.addSubview(contentView)
         
         NSLayoutConstraint.activate([
@@ -534,12 +533,15 @@ extension PerformerProfileViewController{
         guard let saveButton = saveButton, let goToUserProfileButton = goToUserProfileButton else{
             return
         }
+        let bottomConstraint = goToUserProfileButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        bottomConstraint.identifier = KeyboardObserverView.bottomIdentifire
+        bottomConstraint.isActive = true
         
         NSLayoutConstraint.activate([
             goToUserProfileButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             goToUserProfileButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 10),
             goToUserProfileButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            goToUserProfileButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            
             goToUserProfileButton.heightAnchor.constraint(equalToConstant: UIButtonEmassi.defaultHeight),
         ])
     }

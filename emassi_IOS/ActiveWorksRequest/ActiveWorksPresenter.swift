@@ -16,6 +16,7 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
     weak var router: RouterDelegate?
     weak var viewDelegate: ActiveWorksViewDelegate?
     var tableViewWorker: ActiveWorksTableViewDataUIWorker
+    var isShowActive: Bool = true
     
     init(interactor: ActiveWorksInteractorDelegate) {
         self.interactor = interactor
@@ -56,7 +57,7 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
     }
     
     func loadWorks() {
-        interactor.getWorks(active: true) { [weak self] works, apiResponse, error in
+        interactor.getWorks(active: isShowActive) { [weak self] works, apiResponse, error in
             DispatchQueue.global().async {
                 var works = works
                 if works.isEmpty{
@@ -128,6 +129,12 @@ class ActiveWorksPresenter: ActiveWorksPresenterDelegate{
     }
     
     func viewDidLoad() {
+        if isShowActive{
+            viewDelegate?.setTitle(title: "Активные заявки")
+        } else {
+            viewDelegate?.setTitle(title: "История заявок")
+            tableViewWorker.isShowCancelButton = false
+        }
         loadWorks()
     }
     

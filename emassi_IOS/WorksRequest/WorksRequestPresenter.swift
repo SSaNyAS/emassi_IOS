@@ -55,21 +55,21 @@ class WorksRequestPresenter: WorksRequestPresenterDelegate{
             
             var allTypesWorks: [AllWork] = []
             let getPublicWorksOperation = AsyncBlockOperation()
-            getPublicWorksOperation.action = { [weak self] in
+            getPublicWorksOperation.action = { [weak self, weak getPublicWorksOperation] in
                 self?.interactor.getAllWorks(active: true, type: .public, date: date) {works, message in
                     acceptWorksOperationQueue.addOperation{
                         allTypesWorks.append(contentsOf: works)
                     }
-                    getPublicWorksOperation.finish()
+                    getPublicWorksOperation?.finish()
                 }
             }
             let getPrivateWorksOperation = AsyncBlockOperation()
-            getPrivateWorksOperation.action = { [weak self] in
+            getPrivateWorksOperation.action = { [weak self, weak getPrivateWorksOperation] in
                 self?.interactor.getAllWorks(active: true, type: .private, date: date) {works, message in
                     acceptWorksOperationQueue.addOperation{
                         allTypesWorks.append(contentsOf: works)
                     }
-                    getPrivateWorksOperation.finish()
+                    getPrivateWorksOperation?.finish()
                 }
             }
             

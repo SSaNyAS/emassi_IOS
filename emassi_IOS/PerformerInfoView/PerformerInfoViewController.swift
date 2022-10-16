@@ -42,7 +42,12 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     
     func setPhone(phone: String?) {
         DispatchQueue.main.async { [weak self] in
-            self?.phoneLabel?.text = phone
+            guard let phone = phone, phone.isEmpty == false else {
+                return
+            }
+            
+            //let attributedPhone = NSAttributedString(string: phone, attributes: [.link: "tel://\(phone)"])
+            self?.phoneTextView?.text = phone
         }
     }
     
@@ -80,7 +85,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     weak var profileImageView: UIImageView?
     weak var profileRatingView: UIRatingView?
     weak var nameLabel: UILabel?
-    weak var phoneLabel: UILabel?
+    weak var phoneTextView: UITextView?
     weak var descriptionLabel: UILabel?
     weak var reviewsRatingBlock: UIView?
     weak var reviewsCountLabel: UILabel?
@@ -353,7 +358,7 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
             return
         }
         
-        if let phoneLabel = phoneLabel{
+        if let phoneLabel = phoneTextView{
             labelTitle.topAnchor.constraint(greaterThanOrEqualTo: phoneLabel.bottomAnchor, constant: 10).isActive = true
         }
         
@@ -370,22 +375,32 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
     }
     
     func setupPhoneLabel(attachTo view: UIView){
-        let label = UILabel()
-        label.textAlignment = .left
-        label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(label)
-        phoneLabel = label
+        let textView = UITextView()
+        textView.textAlignment = .left
+        textView.textContainer.maximumNumberOfLines = 1
+        textView.textContentType = .telephoneNumber
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
+        textView.isEditable = false
+        textView.showsVerticalScrollIndicator = false
+        textView.showsHorizontalScrollIndicator = false
+        textView.contentInset = .zero
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = .zero
+        textView.textContainer.widthTracksTextView = true
+        textView.dataDetectorTypes = .phoneNumber
+        textView.linkTextAttributes = [.foregroundColor: UIColor.label,.font: UIFont.systemFont(ofSize: 16)]
+        view.addSubview(textView)
+        phoneTextView = textView
         
         guard let profileImageView = profileImageView, let nameLabel = nameLabel else {
             return
         }
         
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
-            label.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+            textView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
+            textView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
     }
     
@@ -430,7 +445,6 @@ class PerformerInfoViewController: UIViewController, PerformerInfoViewDelegate{
         let imageView = UIImageView()
         imageView.setCornerRadius(value: 12)
         imageView.setBorder()
-        imageView.backgroundColor = .lightText
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = .noPhotoUser

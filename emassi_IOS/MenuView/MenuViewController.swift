@@ -53,7 +53,7 @@ class MenuViewController: UIViewController{
             },
             .init(title: "Активные заявки", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{
-                    router?.goToViewController(from: currentVC, to: .activeWorks, presentationMode: .push)
+                    router?.goToViewController(from: currentVC, to: .activeWorks(isShowActive: true), presentationMode: .push)
                 }
             },
             .init(title: "Лента заявок", image: "clock.badge.checkmark.fill"){ [weak menuNavigationController, weak router] in
@@ -67,7 +67,14 @@ class MenuViewController: UIViewController{
                 }
             },
             .init(title: "Чат", image: "message.fill"){ [weak menuNavigationController, weak router] in
-                
+                if let topViewController = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: topViewController, to: .activeWorks(isShowActive: false), presentationMode: .push)
+                }
+            },
+            .init(title: "Календарь", image: "calendar.fill"){ [weak menuNavigationController, weak router] in
+                if let topViewController = menuNavigationController?.topViewController{
+                    router?.goToViewController(from: topViewController, to: .calendar, presentationMode: .push)
+                }
             },
             .init(title: "Отзыв", image: "star.fill"){ [weak menuNavigationController, weak router] in
                 if let currentVC = menuNavigationController?.topViewController{

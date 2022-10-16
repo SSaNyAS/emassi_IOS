@@ -18,6 +18,7 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
     var didSendMessageToPerformerAction: ((_ workId: String, String) -> Void)?
     var didClickOnPerformerAction: ((_ performerId: String) -> Void)?
     var didClickOnWorkAction: ((_ workId: String) -> Void)?
+    var isShowCancelButton: Bool = true
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return works[section].performersList.count
@@ -31,16 +32,20 @@ class ActiveWorksTableViewDataUIWorker: NSObject, UITableViewDelegate, UITableVi
         let activeWorksHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActiveWorksHeaderView.identifire) as? ActiveWorksHeaderView
         let currentWork = works[section]
         if let activeWorksHeaderView = activeWorksHeaderView{
-            activeWorksHeaderView.didCancelWorkAction = { [weak self] in
-                self?.didCancelWorkAction?(currentWork.workId, { [weak self] isSuccess in
-                    if isSuccess{
-                        DispatchQueue.main.async {
-                            tableView.beginUpdates()
-                            self?.works.remove(at: section)
-                            tableView.endUpdates()
+            if isShowCancelButton{
+                activeWorksHeaderView.didCancelWorkAction = { [weak self] in
+                    self?.didCancelWorkAction?(currentWork.workId, { [weak self] isSuccess in
+                        if isSuccess{
+                            DispatchQueue.main.async {
+                                tableView.beginUpdates()
+                                self?.works.remove(at: section)
+                                tableView.endUpdates()
+                            }
                         }
-                    }
-                })
+                    })
+                }
+            } else {
+                activeWorksHeaderView.cancelButton?.isHidden = true
             }
             
             getCategoryNameAction?(currentWork.category.level2){ [weak categoryLabel = activeWorksHeaderView.categoryLabel, weak activeWorksHeaderView] categoryName in

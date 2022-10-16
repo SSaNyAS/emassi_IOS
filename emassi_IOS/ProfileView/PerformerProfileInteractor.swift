@@ -107,6 +107,30 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
                 completion(data)
             })
         }
+        emassiApi?.getMyActiveWorks(active: true, completion: { activeWorks, _, _ in
+            print("getMyActiveWorks(active: true)")
+        })
+        emassiApi?.getMyActiveWorks(active: false, completion: { activeWorks, _, _ in
+            print("getMyActiveWorks(active: false)")
+        })
+        emassiApi?.getMyWorksRequests(active: true, completion: { activeWorks, _, _ in
+            print("getMyWorksRequests(active: true)")
+        })
+        emassiApi?.getMyWorksRequests(active: false, completion: { activeWorks, _, _ in
+            print("getMyWorksRequests(active: false)")
+        })
+        emassiApi?.getAllWorks(active: true, type: "public", completion: { works, _, _ in
+            print("getAllWorks(active: true, type: public)")
+        })
+        emassiApi?.getAllWorks(active: false, type: "public", completion: { works, _, _ in
+            print("getAllWorks(active: false, type: public)")
+        })
+        emassiApi?.getAllWorks(active: true, type: "private", completion: { works, _, _ in
+            print("getAllWorks(active: true, type: private)")
+        })
+        emassiApi?.getAllWorks(active: false, type: "private", completion: { works, _, _ in
+            print("getAllWorks(active: false, type: private)")
+        })
     }
     
     func getCategoryList(completion: @escaping (_ categories: [PerformersSubCategory]) -> Void){

@@ -83,7 +83,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case favorites
     case documents
     case myWorks
-    case activeWorks
+    case activeWorks(isShowActive: Bool)
     case ordersList
     case settings
     case feedback(_ workId: String, _ profileMode: ProfileMode = .customer)
@@ -97,6 +97,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
     case createRequest(_ performerId: String, _ categoryId: String?)
     case imagePicker(_ didSelectAction: ((UIImage) -> Void)?,_ didCancelPickImage: (()->Void)?)
     case addressSelector(_ searchText: String? = nil, _ didSelectAddressAction: ((Address, CLLocation?) -> Void)?)
+    case calendar
     
     
     
@@ -126,8 +127,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "documents"
         case .myWorks:
             return "myWorks"
-        case .activeWorks:
-            return "activeWorks"
+        case .activeWorks(let isShowActive):
+            return "activeWorksIsShowActive\(isShowActive)"
         case .ordersList:
             return "ordersList"
         case .settings:
@@ -154,6 +155,8 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             return "imagePicker"
         case .addressSelector(_,_):
             return "addressSelector"
+        case .calendar:
+            return "calendar"
         }
     }
     
@@ -217,12 +220,11 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.router = router
                 categoriesVC.presenter = presenter
                 categoriesVC.subscribeToCheckConnection()
-                categoriesVC.subscribeToHideKeyboardWhenTappedAround()
                 categoriesVC.subscribeToCheckKeyboardSize()
             }
             let menuNavigationController = MenuNavigationViewController(rootViewController: categoriesVC)
             menuNavigationController.router = router
-            
+            menuNavigationController.subscribeToHideKeyboardWhenTappedAround()
             router?.authorizationData = nil
             return menuNavigationController
         case .favorites:
@@ -235,7 +237,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 favoritesVC.presenter = presenter
                 
                 favoritesVC.subscribeToCheckConnection()
-                favoritesVC.subscribeToHideKeyboardWhenTappedAround()
                 favoritesVC.subscribeToCheckKeyboardSize()
             }
             return favoritesVC
@@ -249,7 +250,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.router = router
                 
                 documentsVC.subscribeToCheckConnection()
-                documentsVC.subscribeToHideKeyboardWhenTappedAround()
                 documentsVC.subscribeToCheckKeyboardSize()
             }
             return documentsVC
@@ -263,20 +263,19 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 worksRequestVC.presenter = presenter
                 
                 worksRequestVC.subscribeToCheckConnection()
-                worksRequestVC.subscribeToHideKeyboardWhenTappedAround()
                 worksRequestVC.subscribeToCheckKeyboardSize()
             }
             return worksRequestVC
-        case .activeWorks:
+        case .activeWorks(let isShowActive):
             let activeWorksVC = ActiveWorksViewController()
             if let api = router?.emassiApi{
                 let interactor = ActiveWorksInteractor(emassiApi: api)
                 let presenter = ActiveWorksPresenter(interactor: interactor)
                 presenter.router = router
                 presenter.viewDelegate = activeWorksVC
+                presenter.isShowActive = isShowActive
                 activeWorksVC.presenter = presenter
                 activeWorksVC.subscribeToCheckConnection()
-                activeWorksVC.subscribeToHideKeyboardWhenTappedAround()
                 activeWorksVC.subscribeToCheckKeyboardSize()
             }
             return activeWorksVC
@@ -289,7 +288,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.viewDelegate = ordersListVC
                 ordersListVC.presenter = presenter
                 ordersListVC.subscribeToCheckConnection()
-                ordersListVC.subscribeToHideKeyboardWhenTappedAround()
                 ordersListVC.subscribeToCheckKeyboardSize()
             }
             return ordersListVC
@@ -302,14 +300,12 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.viewDelegate = orderInfoVC
                 orderInfoVC.presenter = presenter
                 orderInfoVC.subscribeToCheckConnection()
-                orderInfoVC.subscribeToHideKeyboardWhenTappedAround()
                 orderInfoVC.subscribeToCheckKeyboardSize()
             }
             return orderInfoVC
         case .settings:
             let settingsVC = SettingsViewController()
             settingsVC.subscribeToCheckConnection()
-            settingsVC.subscribeToHideKeyboardWhenTappedAround()
             settingsVC.subscribeToCheckKeyboardSize()
             return settingsVC
         case .feedback(let workId, let profileMode):
@@ -322,7 +318,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.workId = workId
                 feedbackVC.presenter = presenter
                 feedbackVC.subscribeToCheckConnection()
-                feedbackVC.subscribeToHideKeyboardWhenTappedAround()
                 feedbackVC.subscribeToCheckKeyboardSize()
             }
             return feedbackVC
@@ -375,7 +370,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 presenter.router = router
                 
                 performersListVC.subscribeToCheckConnection()
-                performersListVC.subscribeToHideKeyboardWhenTappedAround()
                 performersListVC.subscribeToCheckKeyboardSize()
             }
             return performersListVC
@@ -389,7 +383,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 performerInfoVC.presenter = presenter
                 
                 performerInfoVC.subscribeToCheckConnection()
-                performerInfoVC.subscribeToHideKeyboardWhenTappedAround()
                 performerInfoVC.subscribeToCheckKeyboardSize()
             }
             return performerInfoVC
@@ -403,7 +396,6 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
                 profileVC.presenter = presenter
                 
                 profileVC.subscribeToCheckConnection()
-                profileVC.subscribeToHideKeyboardWhenTappedAround()
                 profileVC.subscribeToCheckKeyboardSize()
             }
             return profileVC
@@ -424,6 +416,7 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             let imagePickerVC = ImagePickerController()
             imagePickerVC.didCancelPickImage = didCancel
             imagePickerVC.didSelectImageAction = didSelectAction
+            
             return imagePickerVC
         case .addressSelector(let searchText, let didSelectAddressAction):
             let addressSelectViewController = AddressSearchViewController()
@@ -431,7 +424,18 @@ enum EmassiRoutedViews: Equatable, RawRepresentable{
             addressSelectViewController.didSelectAddressAction = didSelectAddressAction
             let navigationController = UINavigationController(rootViewController: addressSelectViewController)
             navigationController.subscribeToCheckKeyboardSize()
+            navigationController.subscribeToHideKeyboardWhenTappedAround()
             return navigationController
+        case .calendar:
+            let calendarVC = CalendarViewController()
+            if let api = router?.emassiApi{
+                let interactor = CalendarInteractor(emassiApi: api)
+                let presenter = CalendarPresenter(interactor: interactor)
+                presenter.router = router
+                presenter.viewDelegate = calendarVC
+                calendarVC.presenter = presenter
+            }
+            return calendarVC
         }
     }
 }

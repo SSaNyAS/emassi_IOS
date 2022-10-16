@@ -10,15 +10,42 @@ import UIKit
 import Connectivity
 
 class NetworkErrorView: UIView{
+    deinit{
+        print("networkChecker removed")
+        NotificationCenter.default.removeObserver(self, name: .ConnectivityDidChange, object: nil)
+    }
     weak var connectionStateImageView: UIImageView?
     weak var connectionTextLabel: UILabel?
     
-    public var connectedImage: UIImage? = UIImage(systemName: "wifi")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+    public var connectionImage: UIImage?{
+        switch connectionInterface{
+        case .wifi:
+            if isConnected {
+                return UIImage(systemName: "wifi")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            } else {
+                return UIImage(systemName: "wifi.exclamationmark")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            }
+        case .cellular:
+            if isConnected{
+                return UIImage(systemName: "cellularbars")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            } else {
+                return UIImage(systemName: "exclamationmark.triangle.fill")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            }
+        case .ethernet, .loopback, .other:
+            if isConnected{
+                return UIImage(systemName: "wifi")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            } else {
+                return UIImage(systemName: "exclamationmark.triangle.fill")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
+            }
+        }
+        
+    }
     public var disconnectedImage: UIImage? = UIImage(systemName: "wifi.slash")?.withTintColor(.baseAppColor, renderingMode: .alwaysOriginal)
     
     public var superViewFrame: CGRect?{
         didSet{
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {return}
                 if let superViewFrame = self.superViewFrame{
                     let centerX = superViewFrame.midX - (self.frame.width / 2)
                     let startPosY = -self.frame.height
@@ -27,16 +54,8 @@ class NetworkErrorView: UIView{
             }
         }
     }
-    
-    public var isConnected: Bool = true{
-        didSet{
-            DispatchQueue.main.async {
-                self.connectionTextLabel?.text = self.isConnected ? "Подключение установлено" : "Отсутствует интернет соединение"
-                self.connectionStateImageView?.image = self.isConnected ? self.connectedImage : self.disconnectedImage
-                self.animateAlert(isShow: !self.isConnected)
-            }
-        }
-    }
+    public var connectionInterface: ConnectivityInterface = .other
+    public var isConnected: Bool = true
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -122,17 +141,33 @@ class NetworkErrorView: UIView{
         }
     }
     
+    func updateUI(){
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.connectionTextLabel?.text = self.isConnected ? "Подключение установлено" : "Отсутствует интернет соединение"
+            self.connectionStateImageView?.image = self.connectionImage
+            self.animateAlert(isShow: !self.isConnected)
+        }
+    }
+    
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.superViewFrame = self.superview?.frame
         if let connectivityShared = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.connectivity{
             self.isConnected = connectivityShared.isConnected
+            self.connectionInterface = connectivityShared.currentInterface
         }
     }
-    
+
     @objc private func didConnectionChanged(notification: NSNotification){
         if let connectivity = notification.object as? Connectivity{
             self.isConnected = connectivity.isConnected
+            self.connectionInterface = connectivity.currentInterface
+            print("connectedInterface: \(self.connectionInterface)")
+            updateUI()
+            
         }
     }
 }

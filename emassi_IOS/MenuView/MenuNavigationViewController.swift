@@ -64,17 +64,18 @@ class MenuNavigationViewController: UINavigationController {
         
         viewController.navigationItem.rightBarButtonItem = openMenuBarButton
         viewController.navigationItem.backBarButtonItem = goBackBarButton
+        
         if isOpenedMenu {
             toggleMenu()
         }
         let firstWhereTypeEquals = viewControllers.first(where: {type(of: $0) == type(of: viewController)})
         if let viewControllerOld = firstWhereTypeEquals{
-            super.popToViewController(viewControllerOld, animated: true)
+            _ = popToViewController(viewControllerOld, animated: true)
             return
         }
         if let lastVC = viewControllers.last{
             if type(of: lastVC) == type(of: viewController){
-                super.popViewController(animated: true)
+                _ = popViewController(animated: true)
                 return
             }
         }

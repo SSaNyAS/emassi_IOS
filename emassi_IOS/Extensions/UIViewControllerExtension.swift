@@ -28,6 +28,12 @@ extension UIViewController{
     }
     
     func subscribeToCheckConnection(){
+        let containsSubscriber = self.view.subviews.contains { view in
+            view is NetworkErrorView
+        }
+        guard containsSubscriber == false else {
+            return
+        }
         DispatchQueue.main.asyncAfter(deadline: .now()+2){
             let connectionView = NetworkErrorView()
             self.view.addSubview(connectionView)
@@ -35,6 +41,12 @@ extension UIViewController{
     }
     
     func subscribeToCheckKeyboardSize(){
+        let containsSubscriber = self.view.subviews.contains { view in
+            return view is KeyboardObserverView
+        }
+        guard containsSubscriber == false else {
+            return
+        }
         DispatchQueue.main.async {
             let observerView = KeyboardObserverView()
             observerView.frame = .zero

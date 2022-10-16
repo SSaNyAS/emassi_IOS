@@ -148,8 +148,28 @@ class MoreSelectorView: UIControl{
         setNewItemsSource()
     }
     
+    override func willMove(toWindow newWindow: UIWindow?) {
+        if window == nil {
+            allTextFieldTargets = nil
+            stackView.arrangedSubviews.forEach({
+                let textfield = ($0 as? UITextField)
+                textfield?.allTargets.forEach({ [weak textfield] target in
+                    textfield?.removeTarget(target, action: nil, for: .touchUpInside)
+                })
+            })
+        }
+        super.willMove(toWindow: newWindow)
+    }
+    
     public func addTargetForAllTextFields(target: Any?, action: Selector, for event: UIControl.Event){
         allTextFieldTargets = (target, action, event)
+    }
+    
+    public func removeTargetForAllTextFields(target: Any?, action: Selector, for event: UIControl.Event){
+        allTextFieldTargets = nil
+        stackView.arrangedSubviews.forEach({
+            ($0 as? UITextField)?.removeTarget(target, action: action, for: event)
+        })
     }
     
     public var selectedItemsValues: [any Hashable]{
