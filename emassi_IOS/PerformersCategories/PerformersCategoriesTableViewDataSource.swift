@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewDataSource, UITableViewDelegate{
-    public var performersCategories: [PerformersCategory] = []
+    public var performersCategories: [PerformersMainCategory] = []
     weak var tableView: UITableView?
     public var didSelectCategoryAction: ((_ category: String) -> Void)?
     static let subCategoryCellIdentifire = "subCategoryCell"
@@ -54,39 +54,27 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
         }
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        self.tableView = tableView
+        return performersCategories.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let category = performersCategories[section]
-        
         if category.isOpened{
             return category.subCategories.count + 1
+        } else {
+            return 1
         }
-        return 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard indexPath.row == 0 else {
-            let category = performersCategories[indexPath.section].subCategories[indexPath.row-1]
+        if indexPath.row != 0 {
+            let category = performersCategories[indexPath.section].subCategories[indexPath.row]
             didSelectCategoryAction?(category.value)
             return
         }
-        tableView.beginUpdates()
-            performersCategories[indexPath.section].isOpened.toggle()
-            var indexPaths: [IndexPath] = []
-            
-            for itemId in 0..<performersCategories[indexPath.section].subCategories.count{
-                let index = IndexPath(row: itemId+1, section: indexPath.section)
-                indexPaths.append(index)
-            }
-        if performersCategories[indexPath.section].isOpened{
-            tableView.insertRows(at: indexPaths, with: .automatic)
-        } else {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        }
-        
-        tableView.endUpdates()
-        tableView.layoutIfNeeded()
-        self.animatedScrollToIndexPath(indexPath: indexPath)
     }
 
     func animatedScrollToIndexPath(indexPath: IndexPath){
@@ -116,41 +104,73 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
             }
         }
     }
+    
+    @objc private func didTapOnHeader(sender: UITapGestureRecognizer){
+        if let section = sender.view?.tag{
+            guard let tableView = self.tableView else {
+                return
+            }
+            let indexPath = IndexPath(row: 0, section: section)
+            performersCategories[section].isOpened.toggle()
+            
+            tableView.beginUpdates()
+                var indexPaths: [IndexPath] = []
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        self.tableView = tableView
-        return performersCategories.count
+                for itemId in 0..<performersCategories[indexPath.section].subCategories.count{
+                    let index = IndexPath(row: itemId + 1, section: indexPath.section)
+                    indexPaths.append(index)
+                }
+            if let firstIndexPath = indexPaths.first{
+                //tableView.contentSize.height += self.tableView(tableView, estimatedHeightForRowAt: firstIndexPath) * CGFloat(indexPaths.count + 1)
+                
+            }
+                if performersCategories[indexPath.section].isOpened{
+                    tableView.insertRows(at: indexPaths, with: .automatic)
+                    
+                } else {
+                    let offset = tableView.contentOffset.y - self.tableView(tableView, estimatedHeightForRowAt: indexPaths.first!) * CGFloat(indexPaths.count)
+                    tableView.setContentOffset(.init(x: tableView.contentOffset.x, y: max(offset, 0)), animated: false)
+                    tableView.deleteRows(at: indexPaths, with: .automatic)
+                }
+            
+            tableView.endUpdates()
+            
+            tableView.reloadRows(at: indexPaths, with: .none)
+            
+            
+            tableView.layoutIfNeeded()
+           
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            //self.animatedScrollToIndexPath(indexPath: indexPath)
+        }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 140
+        }
+        return 44
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PerformersCategoryTableViewCell.identifire, for: indexPath)
             if let cell = cell as? PerformersCategoryTableViewCell{
-                let category = performersCategories[indexPath.section]
-                cell.setText(text: category.name)
+                let section = indexPath.section
+                let category = performersCategories[section]
                 if category.imageAddress.isEmpty == false{
-                    if let image = UIImage(named: category.imageAddress){
-                        cell.setImage(image: image)
-                    }
+                    cell.backgroundImageView?.image = UIImage(named: category.imageAddress)
                 }
+                cell.titleTextLabel?.text = category.name
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnHeader(sender:)))
+                cell.isUserInteractionEnabled = true
+                cell.addGestureRecognizer(tapGesture)
+                cell.tag = section
             }
-            cell.selectionStyle = .none
-            cell.separatorInset = .init(top: 0, left: tableView.frame.width, bottom: 0, right: 0)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PerformersCategoriesTableViewDataSourceDelegate.subCategoryCellIdentifire, for: indexPath)
-            
-            let subCategory = performersCategories[indexPath.section].subCategories[indexPath.row-1]
+            let subCategory = performersCategories[indexPath.section].subCategories[indexPath.row - 1]
             if #available(iOS 14.0, *) {
                 var contentConfig = UIListContentConfiguration.cell()
                 contentConfig.text = subCategory.name
@@ -166,7 +186,9 @@ class PerformersCategoriesTableViewDataSourceDelegate: NSObject, UITableViewData
             if indexPath.row == performersCategories[indexPath.section].subCategories.count{
                 cell.separatorInset = .init(top: 0, left: tableView.frame.width, bottom: 0, right: 0)
             }
+            
             return cell
         }
+        
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PerformersCategoriesInteractorDelegate{
-    func getCategories(completion:@escaping (_ categories: [PerformersCategory]) -> Void)
+    func getCategories(completion:@escaping (_ categories: [PerformersMainCategory]) -> Void)
 }
 
 class PerformersCategoriesInteractor: PerformersCategoriesInteractorDelegate{
@@ -17,7 +17,7 @@ class PerformersCategoriesInteractor: PerformersCategoriesInteractorDelegate{
         self.emassiApi = emassiApi
     }
     
-    func getCategories(completion:@escaping (_ categories: [PerformersCategory]) -> Void) {
+    func getCategories(completion:@escaping (_ categories: [PerformersMainCategory]) -> Void) {
         emassiApi?.getPerformersCategories(completion: { categories, apiResponse, error in
             completion(categories)
         })

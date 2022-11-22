@@ -9,7 +9,7 @@ import Foundation
 
 protocol PerformerProfileInteractorDelegate{
     func getPerformerProfile(completion: @escaping (_ profile: PerformerProfile?,_ message: String?) -> Void)
-    func getCategoryList(completion: @escaping (_ categories: [PerformersSubCategory]) -> Void)
+    func getCategoryList(completion: @escaping (_ categories: [any PerformersCategory]) -> Void)
     func uploadPhoto(jpegData:Data,with profileMode: ProfileMode, completion: @escaping (_ message: String?,_ isSuccess: Bool) -> Void)
     func getPhoto(for profileMode: ProfileMode, completion: @escaping (_ imageData: Data?) -> Void)
     func updateProfile(profileMode: ProfileMode, completion: @escaping (_ message: String?,_ isSuccess: Bool) -> Void)
@@ -133,8 +133,8 @@ class PerformerProfileInteractor: PerformerProfileInteractorDelegate{
         })
     }
     
-    func getCategoryList(completion: @escaping (_ categories: [PerformersSubCategory]) -> Void){
-        emassiApi?.getAllPerformersSubCategories(completion: { subCategories, apiResponse, error in
+    func getCategoryList(completion: @escaping (_ categories: [any PerformersCategory]) -> Void){
+        emassiApi?.getOnlySubCategories(completion: { subCategories, apiResponse, error in
             completion(subCategories)
         })
     }

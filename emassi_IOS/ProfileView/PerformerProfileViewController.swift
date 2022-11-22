@@ -534,7 +534,6 @@ extension PerformerProfileViewController{
             return
         }
         let bottomConstraint = goToUserProfileButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-        bottomConstraint.identifier = KeyboardObserverView.bottomIdentifire
         bottomConstraint.isActive = true
         
         NSLayoutConstraint.activate([

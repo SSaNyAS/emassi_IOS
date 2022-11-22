@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class KeyboardObserverView: UIView{
-    static let bottomIdentifire = "bottomToView"
     private var superViewFrameStored: CGRect?
     private var superViewBottomConstantStoredValue: CGFloat?
     private var bottomConstraint: NSLayoutConstraint?

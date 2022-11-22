@@ -47,7 +47,7 @@
 		114E810328C37E760028F39B /* UICheckBoxEmassi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810228C37E760028F39B /* UICheckBoxEmassi.swift */; };
 		114E810628C39F760028F39B /* PerformersCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */; };
 		114E810828C3AAE20028F39B /* PerformersCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */; };
-		114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersCategory.swift */; };
+		114E810A28C3C6AE0028F39B /* PerformersMainCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114E810928C3C6AE0028F39B /* PerformersMainCategory.swift */; };
 		115BB49028D9072400686670 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB48F28D9072400686670 /* AccountInfo.swift */; };
 		115BB49228DA0C0D00686670 /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49128DA0C0D00686670 /* Offer.swift */; };
 		115BB49428DA2A0A00686670 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115BB49328DA2A0A00686670 /* Time.swift */; };
@@ -109,6 +109,8 @@
 		11E4C93828FB98A100E62F00 /* CalendarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E4C93728FB98A100E62F00 /* CalendarPresenter.swift */; };
 		11E4C93A28FB98AC00E62F00 /* CalendarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E4C93928FB98AC00E62F00 /* CalendarInteractor.swift */; };
 		11E4C93C28FB99BD00E62F00 /* CalendarTableViewWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E4C93B28FB99BD00E62F00 /* CalendarTableViewWorker.swift */; };
+		11E4C93E28FDA27600E62F00 /* CategoriesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E4C93D28FDA27600E62F00 /* CategoriesStorage.swift */; };
+		11E4C94028FDCBC700E62F00 /* PerformersCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E4C93F28FDCBC700E62F00 /* PerformersCategoryHeaderView.swift */; };
 		11F818D028EDEF8E00769AC1 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */; };
 		11F818D228EF16F200769AC1 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */; };
 		11F818D428EF753100769AC1 /* ResponseWorkWithCustomer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */; };
@@ -213,7 +215,7 @@
 		114E810228C37E760028F39B /* UICheckBoxEmassi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckBoxEmassi.swift; sourceTree = "<group>"; };
 		114E810528C39F760028F39B /* PerformersCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoriesViewController.swift; sourceTree = "<group>"; };
 		114E810728C3AAE20028F39B /* PerformersCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryTableViewCell.swift; sourceTree = "<group>"; };
-		114E810928C3C6AE0028F39B /* PerformersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategory.swift; sourceTree = "<group>"; };
+		114E810928C3C6AE0028F39B /* PerformersMainCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersMainCategory.swift; sourceTree = "<group>"; };
 		115BB48F28D9072400686670 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
 		115BB49128DA0C0D00686670 /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		115BB49328DA2A0A00686670 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
@@ -275,6 +277,8 @@
 		11E4C93728FB98A100E62F00 /* CalendarPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPresenter.swift; sourceTree = "<group>"; };
 		11E4C93928FB98AC00E62F00 /* CalendarInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarInteractor.swift; sourceTree = "<group>"; };
 		11E4C93B28FB99BD00E62F00 /* CalendarTableViewWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableViewWorker.swift; sourceTree = "<group>"; };
+		11E4C93D28FDA27600E62F00 /* CategoriesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesStorage.swift; sourceTree = "<group>"; };
+		11E4C93F28FDCBC700E62F00 /* PerformersCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformersCategoryHeaderView.swift; sourceTree = "<group>"; };
 		11F818CF28EDEF8E00769AC1 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		11F818D128EF16F200769AC1 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
 		11F818D328EF753100769AC1 /* ResponseWorkWithCustomer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseWorkWithCustomer.swift; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 				1140130E28CA400D00B14D5A /* EmassiApiDelegate.swift */,
 				1140131228CB742200B14D5A /* EmassiURLSession.swift */,
 				115BB49E28DB8D7100686670 /* SessionConfiguration.swift */,
+				11E4C93D28FDA27600E62F00 /* CategoriesStorage.swift */,
 			);
 			path = EmassiApi;
 			sourceTree = "<group>";
@@ -544,6 +549,7 @@
 				11CBB7C928C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift */,
 				115BB4A028DC888A00686670 /* PerformersCategoriesPresenter.swift */,
 				115BB4A228DC893400686670 /* PerformersCategoriesInteractor.swift */,
+				11E4C93F28FDCBC700E62F00 /* PerformersCategoryHeaderView.swift */,
 			);
 			path = PerformersCategories;
 			sourceTree = "<group>";
@@ -586,7 +592,7 @@
 				11DCADFA28D35B3300568D16 /* Review.swift */,
 				11DCADFC28D35B4C00568D16 /* Username.swift */,
 				11DCADFE28D35B7100568D16 /* Photo.swift */,
-				114E810928C3C6AE0028F39B /* PerformersCategory.swift */,
+				114E810928C3C6AE0028F39B /* PerformersMainCategory.swift */,
 				11DCAE0028D35B9800568D16 /* Phone.swift */,
 				11DCAE0228D3613B00568D16 /* Customer.swift */,
 				11DCAE0428D3619B00568D16 /* Address.swift */,
@@ -975,6 +981,7 @@
 				114E80FB28C24F340028F39B /* UIButtonEmassi.swift in Sources */,
 				11CBB7C228C4F03F00FED8D5 /* UILabelExtension.swift in Sources */,
 				114E80C028C108B70028F39B /* emassi_IOS.xcdatamodeld in Sources */,
+				11E4C94028FDCBC700E62F00 /* PerformersCategoryHeaderView.swift in Sources */,
 				11FF063C28EBB27600EAEF33 /* SendOfferViewController.swift in Sources */,
 				11F818D428EF753100769AC1 /* ResponseWorkWithCustomer.swift in Sources */,
 				1140131B28CD07D300B14D5A /* DocumentTableViewCell.swift in Sources */,
@@ -983,6 +990,7 @@
 				115BB4B228DF3BB000686670 /* MoreSelector.swift in Sources */,
 				115BB4BA28E1C26100686670 /* UIImageExtension.swift in Sources */,
 				11CBB7CD28C79F1800FED8D5 /* MenuViewController.swift in Sources */,
+				11E4C93E28FDA27600E62F00 /* CategoriesStorage.swift in Sources */,
 				11F818D928F20FA400769AC1 /* FavoritePresenter.swift in Sources */,
 				1140131828CBB40A00B14D5A /* PerformerTableViewCell.swift in Sources */,
 				115BB4A328DC893400686670 /* PerformersCategoriesInteractor.swift in Sources */,
@@ -999,7 +1007,7 @@
 				11CBB7CA28C6111B00FED8D5 /* PerformersCategoriesTableViewDataSource.swift in Sources */,
 				1140130F28CA400D00B14D5A /* EmassiApiDelegate.swift in Sources */,
 				115BB4A128DC888A00686670 /* PerformersCategoriesPresenter.swift in Sources */,
-				114E810A28C3C6AE0028F39B /* PerformersCategory.swift in Sources */,
+				114E810A28C3C6AE0028F39B /* PerformersMainCategory.swift in Sources */,
 				1140130328C90E9500B14D5A /* OnBoardingItem.swift in Sources */,
 				11F818E428F4599800769AC1 /* OrderInfoViewController.swift in Sources */,
 				114E80EF28C2022F0028F39B /* OnboardingCollectionViewCell.swift in Sources */,

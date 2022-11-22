@@ -10,9 +10,10 @@ import UIKit
 
 class PerformersCategoryTableViewCell: UITableViewCell{
     public static var identifire: String = "PerformersCategoryTableViewCell"
+    weak var secondContentView: UIView!
+    weak var backgroundImageView: UIImageView!
+    weak var titleTextLabel: UILabel!
     
-    weak var backgroundImageView: UIImageView?
-    weak var titleTextLabel: UILabel?
     private var isSetuppedConstraints = false
     weak private var backgroundImageViewLeadingConstraint: NSLayoutConstraint?
     weak private var backgroundImageViewTrailingConstraint: NSLayoutConstraint?
@@ -57,7 +58,18 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         setNeedsUpdateConstraints()
     }
     
-    func setupDefaultSettings(){        
+    func setupDefaultSettings(){
+        let secondContentView = UIView()
+        secondContentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(secondContentView)
+        self.secondContentView = secondContentView
+        NSLayoutConstraint.activate([
+            secondContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            secondContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            secondContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            secondContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+        ])
+        
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -76,7 +88,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         ])
         
         imageView.setCornerRadius(value: 12)
-        contentView.addSubview(imageView)
+        secondContentView.addSubview(imageView)
         backgroundImageView = imageView
         backgroundColor = .clear
         
@@ -88,7 +100,7 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         label.font = .systemFont(ofSize: 28, weight: .medium)
         label.textAlignment = .center
         
-        contentView.addSubview(label)
+        secondContentView.addSubview(label)
         titleTextLabel = label
         setNeedsUpdateConstraints()
     }
@@ -117,15 +129,15 @@ class PerformersCategoryTableViewCell: UITableViewCell{
         let imageViewAspectRatio = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 0.4)
         imageViewAspectRatio.priority = .defaultHigh
         
-        backgroundImageViewLeadingConstraint = imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
+        backgroundImageViewLeadingConstraint = imageView.leadingAnchor.constraint(equalTo: secondContentView.leadingAnchor, constant: 10)
         backgroundImageViewLeadingConstraint?.isActive = true
         
-        backgroundImageViewTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+        backgroundImageViewTrailingConstraint = imageView.trailingAnchor.constraint(equalTo: secondContentView.trailingAnchor, constant: -10)
         backgroundImageViewTrailingConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageView.topAnchor.constraint(equalTo: secondContentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: secondContentView.bottomAnchor),
             
             label.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),

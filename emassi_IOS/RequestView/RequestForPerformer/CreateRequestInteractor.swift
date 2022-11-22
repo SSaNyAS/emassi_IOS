@@ -80,7 +80,7 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
         }
     }
     
-    func getSuperCategoryForCategory(categoryId: String, completion: @escaping (PerformersCategory?,EmassiApiResponse?,Error?) -> Void){
+    func getSuperCategoryForCategory(categoryId: String, completion: @escaping (PerformersMainCategory?,EmassiApiResponse?,Error?) -> Void){
         emassiApi.getSuperCategory(subCategoryId: categoryId, completion: completion)
     }
     
@@ -91,7 +91,7 @@ class CreateRequestInteractor: CreateRequestInteractorDelegate{
     }
     
     func getSelectableCategories(completion: @escaping (_ categories: [MoreSelectorItem], _ message: String?) -> Void){
-        emassiApi.getAllPerformersSubCategories(completion: { subCategories, apiResponse, error in
+        emassiApi.getOnlySubCategories(completion: { subCategories, apiResponse, error in
             let selectableItems = subCategories.map({
                 MoreSelectorItem(value: $0.value, name: $0.name)
             })
