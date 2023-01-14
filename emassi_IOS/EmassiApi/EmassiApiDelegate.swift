@@ -873,7 +873,6 @@ class EmassiApi: EmassiApiFetcher{
         
         let completionHandler: (Data?, URLResponse?, Error?) -> Void = { [weak self] data,response, error in
             if let data = data{
-                print("\n____RESPONSE____\n \(String(data: data, encoding: .utf8) ?? "")\n____END____\n")
                 
                 if let apiResponse = self?.getApiResponse(data: data){
                     if let responseData = apiResponse.data{

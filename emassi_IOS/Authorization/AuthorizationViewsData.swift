@@ -10,8 +10,8 @@ import Combine
 import UIKit
 
 class AuthorizationViewsData{
-    var login: CurrentValueSubject<String?,Never> = .init("d.shandyba2007@gmail.com")
-    var password: CurrentValueSubject<String?,Never> = .init("kirilgei092")
+    var login: CurrentValueSubject<String?,Never> = .init("")
+    var password: CurrentValueSubject<String?,Never> = .init("")
     
     public func setupLoginViewController(loginVC: LoginViewController, login: String? = nil,password: String? = nil){
         
